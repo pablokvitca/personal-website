@@ -1,0 +1,83 @@
+* {
+    -webkit-transition: all 0.5s linear;
+    transition: all 0.5s linear;
+}
+
+body {
+    text-align: center;
+    background: url('img/light/006.jpg');
+    background: url('https://dl.dropbox.com/u/98905961/NewYearCountdown/006.jpg');
+    padding-top: 10%;
+    font-family: 'Unica One', 'Shadows Into Light Two', cursive;
+}
+
+h1 {
+    font-size: 3.5em;
+    font-weight: bolder;
+}
+
+.clock {
+    color: black;
+}
+
+#cntdwn {
+    font-size: 4em;
+    font-weight: bold;
+}
+
+.counter {
+    border-radius: 40px;
+    max-width: 80%;
+    min-height: 400px;
+    margin: auto;
+    padding: 2%;
+    /* background: url('img/renders/0001.png'); */
+    background: url('https://dl.dropbox.com/u/98905961/NewYearCountdown/0001.png');
+}
+
+.titleLetter {
+    height: 7em;
+}
+
+#titleLetters {
+    margin-top: 30px;
+    margin-bottom: 150px;
+    -webkit-filter: hue-rotate(240deg);
+    -webkit-animation: ;
+}
+
+.space {
+    margin-left: 2em;
+}
+
+.titleLetter:hover {
+    margin-bottom: -10px;
+    -webkit-filter: hue-rotate(600deg);
+}
+
+#titleLetters:hover {
+    -webkit-filter: hue-rotate(600deg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
