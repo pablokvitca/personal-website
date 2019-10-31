@@ -1,15 +1,10 @@
 # humanstxt.org/
-# The humans responsible & technology colophon
+# The humans responsible & technologies
 
 # TEAM
-
     <Pablo Kvitca> -- <Designer/Developer> -- <@pablokvitca>
 
-# THANKS
-
-    <name>
-
-# TECHNOLOGY COLOPHON
-
-    HTML5, CSS3
-    jQuery, Modernizr
+# TECHNOLOGIES USED
+    - HTML5
+    - CSS3
+    - JS
