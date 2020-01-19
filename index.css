@@ -1,0 +1,153 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background-color: #000000;
+    font-family: "Pathway Gothic One", sans-serif, cursive, arials;
+    color: #f7f5ef;
+}
+
+.background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url("https://source.unsplash.com/collection/9402240/1920x1080");
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    z-index: 1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.photo-credit,
+.photo-credit a {
+    color: white;
+    text-decoration: none;
+    padding: 4px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.2;
+    display: inline-block;
+    border-radius: 3px;
+    z-index: 10;
+    position: fixed;
+    bottom: 10px;
+    right: 5px;
+}
+
+.main {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    align-content: center;
+    height: 100%;
+    z-index: 6;
+    position: relative;
+}
+
+.desc-area {
+    flex-grow: 2;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-name {
+    font-weight: 400;
+    font-size: 30pt;
+}
+
+.desc-text {
+    max-width: 50%;
+    text-align: center;
+}
+
+.pic-area {
+    flex-grow: 3;
+    padding-top: 10px;
+}
+
+.main-picture {
+    border-radius: 100%;
+    box-shadow: 5px 5px 10px #1543c1;
+    width: 200px;
+    height: 200px;
+    -webkit-animation: mover 7.5s infinite alternate;
+    animation: mover 7.5s infinite alternate;
+    animation-timing-function: ease-in-out;
+    /* TODO: disable animation on user agent reduce motion */
+}
+
+.left-area,
+.right-area {
+    flex-grow: 1;
+}
+
+.social-lnks {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.fa {
+    padding: 10px 10px 10px 10px;
+    margin: 0 5px;
+    font-size: 30px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 100%;
+    border-width: 2px;
+    border-style: groove;
+    border-color: #f7f5ef;
+    color: #f7f5ef;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+    opacity: 0.7;
+}
+
+a {
+    align-self: center;
+}
+
+@-webkit-keyframes mover {
+    100% {
+        transform: translateY(15px) translateY(5px);
+    }
+}
+
+@keyframes mover {
+    100% {
+        transform: translateY(15px) translateX(5px);
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .main {
+        flex-direction: column;
+    }
+
+    .main-picture {
+        position: absolute;
+        right: -25px;
+        top: 10%;
+        animation: none;
+        width: 30%;
+        height: auto;
+        object-fit: scale-down;
+    }
+}

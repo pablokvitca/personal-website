@@ -4,7 +4,7 @@
 # TEAM
     <Pablo Kvitca> -- <Designer/Developer> -- <@pablokvitca>
 
-# TECHNOLOGIES USED
-    - HTML5
-    - CSS3
-    - JS
+# Tech Stuff
+    - Made with HTML5 and CSS3
+    - Background Phothos by Unsplash.com
+    - Social Media icons by FontAwesome
