@@ -124,7 +124,10 @@
         },
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
-          "options": {}
+          "options": {
+            "repo": "git@github.com:pablokvitca/pablokvitca.github.com.git",
+            "branch": "master"
+          }
         }
       }
     }
