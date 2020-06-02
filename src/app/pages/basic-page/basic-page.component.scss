@@ -1,5 +1,4 @@
-html,
-body {
+:host {
     height: 100%;
     margin: 0;
     background-color: #000000;
@@ -70,6 +69,7 @@ body {
 .desc-text {
     max-width: 50%;
     text-align: center;
+    align-self: center;
 }
 
 .pic-area {
