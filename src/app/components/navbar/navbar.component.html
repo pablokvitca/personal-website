@@ -1,5 +1,13 @@
-<nav class="w-full h-16 flex gap-2 items-center justify-between bg-gray-900">
-    <app-profile class="flex-grow-0" [size]="8"></app-profile>
-    <span class="flex-grow text-white">Pablo Kvitca</span>
-    <app-icon class="flex-grow-0 text-white" [source]="'material'" [icon]="'menu'"></app-icon>
+<nav class="w-full h-16 flex px-0 items-center justify-between bg-gray-900 shadow-lg">
+    <a class="text-white h-full px-5 flex content-center hover:bg-gray-700 focus:bg-gray-700" href="/">
+        <app-profile class="self-center flex-grow-0" [size]="8"></app-profile>
+    </a>
+    <a class="text-white h-full px-5 flex content-center hover:bg-gray-700 focus:bg-gray-700" href="/">
+        <span class="self-center">Pablo Kvitca</span>
+    </a>
+    <a class="text-white h-full px-5 flex content-center hover:bg-gray-700 focus:bg-gray-700" href="/projects">
+        <span class="self-center">Projects</span>
+    </a>
+    <span class="flex-grow"></span>
+    <!-- <app-icon class="flex-grow-0 text-white" [source]="'material'" [icon]="'menu'"></app-icon> -->
 </nav>
