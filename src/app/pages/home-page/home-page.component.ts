@@ -7,6 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
+  projects: any[] = [
+    {
+      "title": "Project A",
+      "description": "Lorem ipsum dolor sit amet",
+      "techs": ["Angular", "sass", "TypeScript"]
+    },
+    {
+      "title": "Project B",
+      "description": "Lorem ipsum dolor sit amet"
+    },
+    {
+      "title": "Project C",
+      "description": "Lorem ipsum dolor sit amet"
+    }
+  ];
+
   constructor() { }
 
   ngOnInit(): void {

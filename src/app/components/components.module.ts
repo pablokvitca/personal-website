@@ -7,6 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon'
 import { IconComponent } from './icon/icon.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ProjectViewComponent } from './project-view/project-view.component';
 
 
 
@@ -15,7 +16,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     TerminalComponent,
     NavbarComponent,
     ProfileComponent,
-    IconComponent
+    IconComponent,
+    ProjectViewComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   exports: [
     TerminalComponent,
     NavbarComponent,
-    ProfileComponent
+    ProfileComponent,
+    IconComponent,
+    ProjectViewComponent
   ]
 })
 export class ComponentsModule { }
