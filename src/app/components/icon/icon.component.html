@@ -1,0 +1,4 @@
+<ng-container [ngSwitch]="source">
+    <fa-icon *ngSwitchCase="'fontawesome'" [icon]="icon"></fa-icon>
+    <mat-icon *ngSwitchCase="'material'" aria-hidden="false">{{icon}}</mat-icon>
+</ng-container>
