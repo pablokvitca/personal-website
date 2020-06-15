@@ -1,19 +1,28 @@
-<app-navbar></app-navbar>
-<div class="page flex flex-col items-start justify-start h-full w-full pt-16 px-16">
-    <div class="sm:flex flex-row text-center bg-black bg-opacity-75 rounded-lg w-full p-2">
-        <div class="w-full sm:flex sm:flex-row sm:justify-center my-6">
-            <app-profile class="align-center" [size]="32"></app-profile>
+<app-navbar class="fixed w-full"></app-navbar>
+<div class="flex flex-col items-start justify-start h-full w-full pt-16 px-16">
+    <div class="sm:flex flex-row bg-black bg-opacity-75 max-h-screen rounded-lg p-2 pr-6 mt-12 mb-6 text-white">
+        <div class="flex-grow-0 px-10 my-6 w-1/5 justify-start">
+            <app-project-image [image]="mainimg">
+            </app-project-image>
+            <div>
+                <h2 class="text-2xl font-bold my-6 font-primary">Pablo Kvitca</h2>
+                <div class="text-base my-6 font-secondary">Hi, I'm Pablo, I do Software Developement and am a Computer
+                    Science
+                    student.
+                </div>
+            </div>
         </div>
-        <div class="px-6 sm:text-left">
-            <h2 class="text-2xl font-bold text-white my-6">Pablo Kvitca</h2>
-            <div class="text-base text-white my-6">Hi, I'm Pablo, I do Software Developement and am a Computer Science
-                student.
+        <div class="flex-grow w-full flex flex-col my-6">
+            <h1 class="text-4xl font-bold font-primary">Projects</h1>
+            <div class="w-full flex flex-col items-center overflow-x-scroll">
+                <ng-container *ngFor="let project of projects; let odd = odd;">
+                    <app-project-view class="mb-2 self-center" [project]="project" [reverse]="odd">
+                    </app-project-view>
+                </ng-container>
             </div>
         </div>
     </div>
-    <div class="w-full flex flex-col mt-6">
-        <ng-container *ngFor="let project of projects">
-            <app-project-view class="mb-2 w-full" [project]="project"></app-project-view>
-        </ng-container>
-    </div>
 </div>
+<footer class="w-full bg-gray-800 relative">
+    <!-- TODO: footer -->
+</footer>

@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon'
 import { IconComponent } from './icon/icon.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProjectViewComponent } from './project-view/project-view.component';
+import { ProjectImageComponent } from './project-image/project-image.component';
 
 
 
@@ -17,7 +18,8 @@ import { ProjectViewComponent } from './project-view/project-view.component';
     NavbarComponent,
     ProfileComponent,
     IconComponent,
-    ProjectViewComponent
+    ProjectViewComponent,
+    ProjectImageComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { ProjectViewComponent } from './project-view/project-view.component';
     NavbarComponent,
     ProfileComponent,
     IconComponent,
-    ProjectViewComponent
+    ProjectViewComponent,
+    ProjectImageComponent
   ]
 })
 export class ComponentsModule { }

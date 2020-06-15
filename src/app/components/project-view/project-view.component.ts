@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import _ from "lodash";
+import { Project, TechnologyRef } from './Project';
+import { IconSpec } from '../icon/icon.component';
 
 @Component({
   selector: 'app-project-view',
@@ -9,25 +11,12 @@ import _ from "lodash";
 export class ProjectViewComponent implements OnInit {
 
   @Input()
-  public project: any; //TODO: project
+  public project: Project;
 
   @Input()
   public reverse: boolean = false;
 
   constructor() { }
-
-  public get techicons(): any[] {
-    return _.forEach(this.project.technologies, (tech) => {
-      return {
-        source: "fontawesome",
-        icon: this.techToIcon(tech)
-      }
-    });
-  }
-
-  private techToIcon(name: string): any {
-    return ""
-  }
 
   ngOnInit(): void {
   }

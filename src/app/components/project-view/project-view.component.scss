@@ -1,0 +1,30 @@
+// Base Divider class
+.divider {
+  display: flex;
+  
+  &:before,
+  &:after {
+    content: "";
+    flex: 1;
+  }
+}
+
+// Base line
+.line {
+  align-items: center;
+  margin: 1em 2em;
+  
+  &:before,
+  &:after {
+    height: 1px;
+    margin: 0 0em;
+  }
+}
+
+
+.one-line {
+    &:before,
+    &:after {
+        background: white;
+    }
+}
