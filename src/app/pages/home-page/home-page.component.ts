@@ -91,14 +91,22 @@ export class HomePageComponent implements OnInit {
       In leo nunc, lacinia ut nisl ac, ultrices tincidunt est.
       Pellentesque maximus enim quis eros laoreet, ut interdum felis ultricies.`, // Description
       { // Source Reference
-        title: "GitHub",
+        title: "View Source",
         url: "https://example.com",
-        available: true
+        available: true,
+        icon: {
+          source: "fontawesome",
+          icon: faGithub
+        }
       },
       { // Deployment Reference
-        title: "Web",
+        title: "View Live",
         url: "https://exmaple.org",
-        available: true
+        available: true,
+        icon: {
+          source: "fontawesome",
+          icon: faLaptop
+        }
       },
       "January 2021", // Start date
       {
@@ -150,14 +158,22 @@ export class HomePageComponent implements OnInit {
       In leo nunc, lacinia ut nisl ac, ultrices tincidunt est.
       Pellentesque maximus enim quis eros laoreet, ut interdum felis ultricies.`, // Description
       { // Source Reference
-        title: "GitHub",
+        title: "View Source",
         url: "https://example.com",
-        available: true
+        available: true,
+        icon: {
+          source: "fontawesome",
+          icon: faGithub
+        }
       },
       { // Deployment Reference
-        title: "Web",
+        title: "View Live",
         url: "https://exmaple.org",
-        available: true
+        available: true,
+        icon: {
+          source: "fontawesome",
+          icon: faLaptop
+        }
       },
       "January 2021", // Start date
       {
@@ -209,14 +225,22 @@ export class HomePageComponent implements OnInit {
       In leo nunc, lacinia ut nisl ac, ultrices tincidunt est.
       Pellentesque maximus enim quis eros laoreet, ut interdum felis ultricies.`, // Description
       { // Source Reference
-        title: "GitHub",
+        title: "View Source",
         url: "https://example.com",
-        available: true
+        available: true,
+        icon: {
+          source: "fontawesome",
+          icon: faGithub
+        }
       },
       { // Deployment Reference
-        title: "Web",
+        title: "View Live",
         url: "https://exmaple.org",
-        available: true
+        available: true,
+        icon: {
+          source: "fontawesome",
+          icon: faLaptop
+        }
       },
       "January 2021", // Start date
       {
