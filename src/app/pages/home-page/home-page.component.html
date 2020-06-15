@@ -1,17 +1,17 @@
 <app-navbar class="fixed w-full"></app-navbar>
 <div class="flex flex-col items-start justify-start h-full w-full pt-16 px-16">
-    <div class="sm:flex flex-row bg-black bg-opacity-75 max-h-screen rounded-lg p-2 pr-6 mt-12 mb-6 text-white">
-        <div class="flex-grow-0 px-10 my-6 w-1/5 justify-start">
-            <app-project-image [image]="mainimg">
+    <div
+        class="flex flex-col lg:flex-row bg-black bg-opacity-75 max-h-screen rounded-lg p-2 pr-6 mt-12 mb-6 text-white">
+        <!-- PAGE TITLE TEXT -->
+        <div class="flex-grow-0 w-full lg:w-1/5 flex flex-row lg:block px-10 my-6  justify-start">
+            <app-project-image class="flex-grow-0 w-16 lg:w-auto" [image]="mainimg">
             </app-project-image>
-            <div>
-                <h2 class="text-2xl font-bold my-6 font-primary">Pablo Kvitca</h2>
-                <div class="text-base my-6 font-secondary">Hi, I'm Pablo, I do Software Developement and am a Computer
-                    Science
-                    student.
-                </div>
-            </div>
+            <h2 class="flex-grow-1 text-2xl font-bold my-6 font-primary">Pablo Kvitca</h2>
+            <p class="flex-grow-0 text-base my-6 font-secondary">
+                Hi, I'm Pablo, I do Software Developement and am a Computer Science student.
+            </p>
         </div>
+        <!-- PROJECTS VIEW -->
         <div class="flex-grow w-full flex flex-col my-6">
             <h1 class="text-4xl font-bold font-primary">Projects</h1>
             <div class="w-full flex flex-col items-center overflow-x-scroll">

@@ -29,15 +29,24 @@
     }
 }
 
-.rounded-tr-lg {
-    border-top-right-radius: 5rem;
+.custom-rounded-tr-lg {
+    border-top-right-radius: 2.5rem;
 }
-.rounded-bl-lg {
-    border-bottom-left-radius: 5rem;
+.custom-rounded-bl-lg {
+    border-bottom-left-radius: 2.5rem;
 }
-.rounded-tl-lg {
-    border-top-left-radius: 5rem;
+.custom-rounded-tl-lg {
+    border-top-left-radius: 2.5rem;
 }
-.rounded-br-lg {
-    border-bottom-right-radius: 5rem;
+.custom-rounded-br-lg {
+    border-bottom-right-radius: 2.5rem;
+}
+.custom-w-100px {
+    width: 1000px;
+}
+.custom-flex-grow-1 {
+    flex-grow: 1;
+}
+.custom-flex-grow-2 {
+    flex-grow: 2;
 }

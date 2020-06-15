@@ -5,13 +5,15 @@ export type ExternalLink = {
     url: string,
     title: string,
     available: boolean,
+    customClasses?: any,
     icon?: any //TODO: type, display
 };
 
 export type ImageRef = {
     type?: string,
     ref: string,
-    alt?: string
+    alt?: string,
+    customClasses?: any
 };
 
 export type TechnologyRef = {
@@ -22,17 +24,17 @@ export type TechnologyRef = {
 
 export type ProjecType = {
     name: "Personal" | "Academic" | "Research" | "Group" | "Freelance" | "Professional",
-    customClasses?: string
+    customClasses?: any
 };
 
 export type ProjectStatus = {
     name: "Active" | "Paused" | "Ended",
-    customClasses?: string
+    customClasses?: any
 };
 
 export type ProjectReleaseStatus = {
     name: "Launched" | "Released" | "Published" | "Public" | "In Development" | "Coming Soon";
-    customClasses?: string
+    customClasses?: any
 }
 
 export class Project {

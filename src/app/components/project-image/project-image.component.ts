@@ -11,6 +11,9 @@ export class ProjectImageComponent implements OnInit {
   @Input()
   image: ImageRef;
 
+  @Input()
+  classes: string = "";
+
   constructor() { }
 
   ngOnInit(): void {
