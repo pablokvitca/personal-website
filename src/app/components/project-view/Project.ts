@@ -3,7 +3,9 @@ import _ from "lodash";
 
 export type ExternalLink = {
     url: string,
-    platform: string
+    title: string,
+    available: boolean,
+    icon?: any //TODO: type, display
 };
 
 export type ImageRef = {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Project, ImageRef } from 'src/app/components/project-view/Project';
-import { faAngular } from "@fortawesome/free-brands-svg-icons";
+import { faAngular, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faMobileAlt, faLaptop } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
@@ -23,12 +23,22 @@ export class HomePageComponent implements OnInit {
       Donec odio felis, molestie vitae vehicula quis, convallis sit amet diam. 
       Morbi eu volutpat justo. Aliquam gravida sapien eu libero fringilla gravida.`, // Description
       { // Source Reference
-        platform: "GitHub",
-        url: "https://example.com"
+        title: "View Source",
+        url: "https://example.com",
+        available: true,
+        icon: {
+          source: "fontawesome",
+          icon: faGithub
+        }
       },
       { // Deployment Reference
-        platform: "Web",
-        url: "https://exmaple.org"
+        title: "View Live",
+        url: "https://exmaple.org",
+        available: true,
+        icon: {
+          source: "fontawesome",
+          icon: faLaptop
+        }
       },
       "January 2020", // Start date
       {
@@ -81,12 +91,14 @@ export class HomePageComponent implements OnInit {
       In leo nunc, lacinia ut nisl ac, ultrices tincidunt est.
       Pellentesque maximus enim quis eros laoreet, ut interdum felis ultricies.`, // Description
       { // Source Reference
-        platform: "GitHub",
-        url: "https://example.com"
+        title: "GitHub",
+        url: "https://example.com",
+        available: true
       },
       { // Deployment Reference
-        platform: "Web",
-        url: "https://exmaple.org"
+        title: "Web",
+        url: "https://exmaple.org",
+        available: true
       },
       "January 2021", // Start date
       {
@@ -138,12 +150,14 @@ export class HomePageComponent implements OnInit {
       In leo nunc, lacinia ut nisl ac, ultrices tincidunt est.
       Pellentesque maximus enim quis eros laoreet, ut interdum felis ultricies.`, // Description
       { // Source Reference
-        platform: "GitHub",
-        url: "https://example.com"
+        title: "GitHub",
+        url: "https://example.com",
+        available: true
       },
       { // Deployment Reference
-        platform: "Web",
-        url: "https://exmaple.org"
+        title: "Web",
+        url: "https://exmaple.org",
+        available: true
       },
       "January 2021", // Start date
       {
@@ -195,12 +209,14 @@ export class HomePageComponent implements OnInit {
       In leo nunc, lacinia ut nisl ac, ultrices tincidunt est.
       Pellentesque maximus enim quis eros laoreet, ut interdum felis ultricies.`, // Description
       { // Source Reference
-        platform: "GitHub",
-        url: "https://example.com"
+        title: "GitHub",
+        url: "https://example.com",
+        available: true
       },
       { // Deployment Reference
-        platform: "Web",
-        url: "https://exmaple.org"
+        title: "Web",
+        url: "https://exmaple.org",
+        available: true
       },
       "January 2021", // Start date
       {
