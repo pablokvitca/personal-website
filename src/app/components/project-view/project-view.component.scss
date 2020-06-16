@@ -17,14 +17,26 @@
   &:before,
   &:after {
     height: 1px;
-    margin: 0 0em;
+    margin: 0 -1.5em;
   }
 }
 
 
 .one-line {
+    
+    border-style: none;
+    
     &:before,
     &:after {
+        
+        background: rgba(255,255,255,1);
+    }
+}
+
+.md:one-line {
+    &:before,
+    &:after {
+        border-style: none;
         background: white;
     }
 }
@@ -41,12 +53,22 @@
 .custom-rounded-br-lg {
     border-bottom-right-radius: 2.5rem;
 }
+
 .custom-w-100px {
     width: 1000px;
 }
+
 .custom-flex-grow-1 {
     flex-grow: 1;
 }
 .custom-flex-grow-2 {
     flex-grow: 2;
+}
+
+.custom-justify-start {
+    justify-content: flex-start;
+}
+
+.custom-justify-end {
+    justify-content: flex-end;
 }
