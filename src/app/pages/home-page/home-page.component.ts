@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Project, ImageRef } from 'src/app/components/project-view/Project';
 import { faAngular, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faMobileAlt, faLaptop } from "@fortawesome/free-solid-svg-icons";
+import { ContentfulService } from 'src/app/contentful.service';
+import { Entry } from 'contentful';
+import _ from "lodash";
 
 @Component({
   selector: 'app-home-page',
@@ -288,9 +291,15 @@ export class HomePageComponent implements OnInit {
     ref: 'assets/illustrations/undraw_dev_productivity_umsq.svg'
   }
 
-  constructor() { }
+  constructor(private contentfulService: ContentfulService) { }
 
   ngOnInit(): void {
+    this.contentfulService.getProjects()
+      .then(projectEntries => {
+        this.projects = _.map(projectEntries, (entry: Entry<Project>) => {
+          return entry.fields;
+        });
+      });
   }
 
 }
