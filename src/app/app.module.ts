@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { PagesModule } from './pages/pages.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ContentfulService } from './contentful.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     PagesModule,
     FontAwesomeModule
   ],
-  providers: [],
+  providers: [
+    ContentfulService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
