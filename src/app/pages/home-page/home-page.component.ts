@@ -1,7 +1,8 @@
-import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, NgZone, OnChanges, OnInit} from '@angular/core';
 import { Project, ImageRef } from 'src/app/components/project-view/Project';
 import { ContentfulService } from 'src/app/services/contentful.service';
 import { Entry } from 'contentful';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-home-page',
@@ -15,14 +16,18 @@ export class HomePageComponent implements OnInit {
     ref: 'assets/illustrations/undraw_dev_productivity_umsq.svg'
   }; // TODO: add to contentful?
 
+  public loading: boolean = true;
+
   constructor(private contentfulService: ContentfulService, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.loading = true;
     this.contentfulService.getProjects().then((projects: Entry<any>[]) => {
-        this.projects = projects.map((entry) => new Project(entry.fields));
-        this.changeDetectorRef.detectChanges();
+        this.projects = _.map(projects, (entry) => new Project(entry.fields));
+    }).then(() => {
+      this.changeDetectorRef.detectChanges();
+      this.loading = false;
     });
-    this.changeDetectorRef.detectChanges();
   }
 
 }
