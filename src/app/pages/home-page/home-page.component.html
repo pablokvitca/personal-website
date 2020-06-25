@@ -15,10 +15,15 @@
         <div class="flex-grow w-full flex flex-col my-6 lg:overflow-hidden">
             <h1 class="text-4xl font-bold font-primary">Projects</h1>
             <div class="w-full flex flex-col items-center overflow-y-scroll lg:overflow-x-scroll">
-                <ng-container *ngFor="let project of projects; let odd = odd;">
-                    <app-project-view class="mb-2 self-center" [project]="project" [reverse]="odd">
-                    </app-project-view>
+                <ng-container *ngIf="loading">
+                  <ng-container *ngFor="let project of projects; let odd = odd;">
+                      <app-project-view class="mb-2 self-center" [project]="project" [reverse]="odd">
+                      </app-project-view>
+                  </ng-container>
                 </ng-container>
+              <ng-container *ngIf="!loading">
+                <h5>Loading...</h5>
+              </ng-container>
             </div>
         </div>
     </div>

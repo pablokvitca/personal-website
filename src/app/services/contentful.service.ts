@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {createClient, Entry, EntryCollection,} from 'contentful';
+import {ContentfulClientApi, createClient, Entry, EntryCollection,} from 'contentful';
 import {Project} from '../components/project-view/Project';
 
 const CONFIG = { // TODO: actual identifiers!!! + .env
@@ -18,13 +18,19 @@ const CONFIG = { // TODO: actual identifiers!!! + .env
 })
 export class ContentfulService {
 
-  private cdaClient = createClient({
-    space: CONFIG.space,
-    accessToken: CONFIG.accessToken,
-    environment: CONFIG.contentEnvironment
-  });
+  private cdaClient: ContentfulClientApi;
 
-  constructor() { }
+  constructor() {
+    this._createClient();
+  }
+
+  private _createClient() {
+    this.cdaClient = createClient({
+      space: CONFIG.space,
+      accessToken: CONFIG.accessToken,
+      environment: CONFIG.contentEnvironment
+    });
+  }
 
   getProjects(query?: object): Promise<Entry<any>[]> {
     return this.cdaClient.getEntries(Object.assign({

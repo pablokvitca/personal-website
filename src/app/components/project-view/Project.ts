@@ -1,6 +1,6 @@
 import { IconSpec } from '../icon/icon.component';
 import {Entry} from 'contentful';
-import {IconDefinition} from '@fortawesome/fontawesome-common-types';
+import * as _ from 'lodash';
 
 export class Project {
 
@@ -36,14 +36,14 @@ export class Project {
           this.status = data.status;
           this.release = data.release;
           this.types = data.types;
-          this.images = data.images.map((image) => {
+          this.images = _.map(data.images, (image) => {
             return {
               type: image.fields.file.contentType,
               ref: 'https:' + image.fields.file.url,
               alt: image.fields.description
             };
           });
-          this.platforms = data.platforms.map((platform) => {
+          this.platforms = _.map(data.platforms, (platform) => {
             return {
               technology: platform.fields.name,
               version: platform.fields.version,
@@ -56,7 +56,7 @@ export class Project {
               }
             };
           });
-          this.technologies = data.technologies.map((technology) => {
+          this.technologies = _.map(data.technologies, (technology) => {
             return {
               technology: technology.fields.name,
               version: technology.fields.version,
