@@ -12,7 +12,7 @@ export class ProjectImageComponent implements OnInit {
   image: ImageRef;
 
   @Input()
-  classes: string = "";
+  classes: string = '';
 
   constructor() { }
 

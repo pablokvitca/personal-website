@@ -1,82 +1,102 @@
 import { IconSpec } from '../icon/icon.component';
-import _ from "lodash";
-
-export type ExternalLink = {
-    url: string,
-    title: string,
-    available: boolean,
-    customClasses?: any,
-    icon?: any //TODO: type, display
-};
-
-export type ImageRef = {
-    type?: string,
-    ref: string,
-    alt?: string,
-    customClasses?: any
-};
-
-export type TechnologyRef = {
-    technology: string,
-    version: string,
-    icon: IconSpec
-};
-
-export type ProjecType = {
-    name: "Personal" | "Academic" | "Research" | "Group" | "Freelance" | "Professional",
-    customClasses?: any
-};
-
-export type ProjectStatus = {
-    name: "Active" | "Paused" | "Ended",
-    customClasses?: any
-};
-
-export type ProjectReleaseStatus = {
-    name: "Launched" | "Released" | "Published" | "Public" | "In Development" | "Coming Soon";
-    customClasses?: any
-}
+import {Entry} from 'contentful';
+import {IconDefinition} from '@fortawesome/fontawesome-common-types';
 
 export class Project {
 
     title: string;
     description: string;
-    source: ExternalLink;
-    deployment: ExternalLink;
+    sourceRef: string;
+    deploymentRef: string;
     startDate: string;
     status: ProjectStatus;
     release: ProjectReleaseStatus;
     images: ImageRef[];
-    types: ProjecType[];
+    types: ProjectType[];
     platforms: TechnologyRef[];
     technologies: TechnologyRef[];
 
-    constructor(
+    constructor(data: {
         title: string,
         description: string,
-        source: ExternalLink, //TODO: display
-        deployment: ExternalLink, //TODO: display
-        startDate: string, //TODO: display
-        status: ProjectStatus, //TODO: display separate from types
-        release: ProjectReleaseStatus, //TODO: display separate from types
-        images: ImageRef[] = [], //TODO: display many???
-        types: ProjecType[] = [],
-        platforms: TechnologyRef[] = [],
-        technologies: TechnologyRef[] = []) {
-        this.title = title;
-        this.description = description;
-        this.source = source;
-        this.deployment = deployment;
-        this.startDate = startDate;
-        this.status = status;
-        this.release = release;
-        this.images = images;
-        this.types = types;
-        this.platforms = platforms;
-        this.technologies = technologies;
+        sourceRef: string,
+        deploymentRef: string,
+        startDate: string, // TODO: display
+        status: ProjectStatus, // TODO: display, separate from types
+        release: ProjectReleaseStatus, // TODO: display, separate from types
+        images: Entry<any>[], // TODO: display many???
+        types: ProjectType[],
+        platforms: Entry<any>[],
+        technologies: Entry<any>[]}) {
+          this.title = data.title;
+          this.description = data.description;
+          this.sourceRef = data.sourceRef;
+          this.deploymentRef = data.deploymentRef;
+          this.startDate = data.startDate;
+          this.status = data.status;
+          this.release = data.release;
+          this.types = data.types;
+          this.images = data.images.map((image) => {
+            return {
+              type: image.fields.file.contentType,
+              ref: 'https:' + image.fields.file.url,
+              alt: image.fields.description
+            };
+          });
+          this.platforms = data.platforms.map((platform) => {
+            return {
+              technology: platform.fields.name,
+              version: platform.fields.version,
+              description: platform.fields.description,
+              icon: {
+                source: platform.fields.icon.fields.source,
+                icon: platform.fields.icon.fields.icon,
+                alt: platform.fields.icon.fields.alt,
+                customClasses: platform.fields.icon.fields.customClasses
+              }
+            };
+          });
+          this.technologies = data.technologies.map((technology) => {
+            return {
+              technology: technology.fields.name,
+              version: technology.fields.version,
+              description: technology.fields.description,
+              icon: {
+                source: technology.fields.icon.fields.source,
+                icon: technology.fields.icon.fields.icon,
+                alt: technology.fields.icon.fields.alt,
+                customClasses: technology.fields.icon.fields.customClasses
+              }
+            };
+          });
     }
+}
 
-    public tags(): any[] {
-        return _.concat(this.types, [this.status, this.release])
-    }
+export interface ImageRef {
+  type?: string;
+  ref: string;
+  alt?: string;
+  customClasses?: any;
+}
+
+export interface TechnologyRef {
+  technology: string;
+  version: string;
+  description?: string;
+  icon: IconSpec;
+}
+
+export interface ProjectType {
+  name: 'Personal' | 'Academic' | 'Research' | 'Group' | 'Freelance' | 'Professional';
+  customClasses?: any;
+}
+
+export interface ProjectStatus {
+  name: 'Active' | 'Paused' | 'Ended';
+  customClasses?: any;
+}
+
+export interface ProjectReleaseStatus {
+  name: 'Launched' | 'Released' | 'Published' | 'Public' | 'In Development' | 'Coming Soon';
+  customClasses?: any;
 }

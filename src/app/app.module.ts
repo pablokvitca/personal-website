@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { PagesModule } from './pages/pages.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ContentfulService } from './contentful.service';
+import { ContentfulService } from './services/contentful.service';
 
 @NgModule({
   declarations: [
