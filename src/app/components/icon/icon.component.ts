@@ -3,7 +3,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 
 export interface IconSpec {
   source: 'fontawesome' | 'material';
-  icon: IconDefinition | [string, string] | string;
+  icon: any;
   alt?: string; // TODO: 1. change to separate input; 2.display on hover
   customClasses?: any;
 }
@@ -13,14 +13,13 @@ export interface IconSpec {
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss']
 })
-export class IconComponent implements OnInit {
+export class IconComponent {
 
   @Input()
   public icon: IconSpec;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  ngOnChanges() {
+    console.log(this.icon);
   }
 
 }

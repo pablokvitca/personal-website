@@ -43,32 +43,33 @@ export class Project {
               alt: image.fields.description
             };
           });
-          this.platforms = _.map(data.platforms, (platform) => {
-            return {
-              technology: platform.fields.name,
-              version: platform.fields.version,
-              description: platform.fields.description,
-              icon: {
-                source: platform.fields.icon.fields.source,
-                icon: platform.fields.icon.fields.icon,
-                alt: platform.fields.icon.fields.alt,
-                customClasses: platform.fields.icon.fields.customClasses
-              }
-            };
-          });
-          this.technologies = _.map(data.technologies, (technology) => {
-            return {
-              technology: technology.fields.name,
-              version: technology.fields.version,
-              description: technology.fields.description,
-              icon: {
-                source: technology.fields.icon.fields.source,
-                icon: technology.fields.icon.fields.icon,
-                alt: technology.fields.icon.fields.alt,
-                customClasses: technology.fields.icon.fields.customClasses
-              }
-            };
-          });
+          this.platforms = Project.mapTechnologies(data.platforms);
+          this.technologies = Project.mapTechnologies(data.technologies);
+    }
+
+    private static mapTechnologies(technologies: any[]) {
+      return _.map(technologies, (technology) => {
+        return {
+          technology: technology.fields.name,
+          version: technology.fields.version,
+          description: technology.fields.description,
+          icon: Project.mapIcon(technology.fields.icon.fields)
+        };
+      });
+    }
+
+    private static mapIcon(fields): IconSpec {
+      let icon = fields.icon;
+      if (fields.source === 'fontawesome') {
+        const words = _.split(fields.icon, ' ');
+        icon = (words.length === 1) ? words[0] : words;
+      }
+      return {
+        source: fields.source,
+        icon,
+        alt: fields.alt,
+        customClasses: fields.customClasses
+      };
     }
 }
 

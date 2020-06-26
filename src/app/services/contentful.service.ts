@@ -32,14 +32,11 @@ export class ContentfulService {
     });
   }
 
-  getProjects(query?: object): Promise<Entry<any>[]> {
+  getProjects(query?: object): Promise<any> {
     return this.cdaClient.getEntries(Object.assign({
       content_type: CONFIG.contentTypeIds.project,
       include: 5
     }, query))
-      .catch((err) => {
-        // TODO: handle error
-      })
       .then((res: EntryCollection<any>) => {
         return res.items;
       });
