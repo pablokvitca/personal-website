@@ -6,7 +6,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { PagesModule } from './pages/pages.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ContentfulService } from './services/contentful.service';
+import { FaConfig, FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faDesktop, faLaptop, faMobileAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faAngular } from '@fortawesome/free-brands-svg-icons';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,20 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     PagesModule,
     FontAwesomeModule
   ],
-  providers: [],
+  providers: [
+    ContentfulService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(library: FaIconLibrary, faConfig: FaConfig) {
+    library.addIcons(
+      faLaptop,
+      faMobileAlt,
+      faDesktop,
+      faQuestionCircle,
+      faAngular
+    );
+    faConfig.fallbackIcon = faQuestionCircle;
+  }
+}
