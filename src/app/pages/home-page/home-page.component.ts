@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, NgZone, OnChanges, OnInit} from '@angular/core';
+import {ApplicationRef, ChangeDetectorRef, Component, NgZone, OnChanges, OnInit} from '@angular/core';
 import { Project, ImageRef } from 'src/app/components/project-view/Project';
 import { ContentfulService } from 'src/app/services/contentful.service';
 import { Entry } from 'contentful';
@@ -18,16 +18,17 @@ export class HomePageComponent implements OnInit {
 
   public loading: boolean = true;
 
-  constructor(private contentfulService: ContentfulService, private changeDetectorRef: ChangeDetectorRef) { }
+  constructor(private contentfulService: ContentfulService) { }
 
   ngOnInit(): void {
-    this.loading = true;
-    this.contentfulService.getProjects().then((projects: Entry<any>[]) => {
-        this.projects = _.map(projects, (entry) => new Project(entry.fields));
-    }).then(() => {
-      this.changeDetectorRef.detectChanges();
-      this.loading = false;
-    });
+      this.loadData().then(() => {
+        this.loading = false;
+      });
+  }
+
+  async loadData(): Promise<void> {
+    const projectEntries = await this.contentfulService.getProjects();
+    this.projects = _.map(projectEntries, (entry) => new Project(entry.fields));
   }
 
 }
