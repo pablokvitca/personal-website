@@ -1148,6 +1148,11 @@
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha1-OP1z3f2bVaux4bLtV4y1W9e30zk=
 
+"@types/lodash@^4.14.155":
+  version "4.14.155"
+  resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/@types/lodash/-/lodash-4.14.155.tgz#e2b4514f46a261fd11542e47519c20ebce7bc23a"
+  integrity sha1-4rRRT0aiYf0RVC5HUZwg6857wjo=
+
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -1749,6 +1754,13 @@ aws4@^1.8.0:
   version "1.10.0"
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/aws4/-/aws4-1.10.0.tgz#a17b3a8ea811060e74d47d306122400ad4497ae2"
   integrity sha1-oXs6jqgRBg501H0wYSJACtRJeuI=
+
+axios@^0.19.1:
+  version "0.19.2"
+  resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
+  integrity sha1-PqNsXYgY0NX4qKl6bTa4bNwAyyc=
+  dependencies:
+    follow-redirects "1.5.10"
 
 axobject-query@2.0.2:
   version "2.0.2"
@@ -2639,6 +2651,32 @@ content-type@~1.0.4:
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/content-type/-/content-type-1.0.4.tgz#e138cc75e040c727b1966fe5e5f8c9aee256fe3b"
   integrity sha1-4TjMdeBAxyexlm/l5fjJruJW/js=
 
+contentful-resolve-response@^1.1.4:
+  version "1.1.4"
+  resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/contentful-resolve-response/-/contentful-resolve-response-1.1.4.tgz#9eb656876eecb2cd00444f0adf26bd91a5ec1992"
+  integrity sha1-nrZWh27sss0ARE8K3ya9kaXsGZI=
+  dependencies:
+    lodash "^4.17.4"
+
+contentful-sdk-core@^6.4.5:
+  version "6.4.5"
+  resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/contentful-sdk-core/-/contentful-sdk-core-6.4.5.tgz#e73f4c5426f354608543fc73e46c17c6730180e9"
+  integrity sha1-5z9MVCbzVGCFQ/xz5GwXxnMBgOk=
+  dependencies:
+    lodash "^4.17.10"
+    qs "^6.5.2"
+
+contentful@^7.14.4:
+  version "7.14.4"
+  resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/contentful/-/contentful-7.14.4.tgz#882c2785cab953c0729453f60dbb8acd556f5f6a"
+  integrity sha1-iCwnhcq5U8BylFP2DbuKzVVvX2o=
+  dependencies:
+    axios "^0.19.1"
+    contentful-resolve-response "^1.1.4"
+    contentful-sdk-core "^6.4.5"
+    json-stringify-safe "^5.0.1"
+    lodash "^4.17.11"
+
 convert-source-map@^1.5.1, convert-source-map@^1.7.0:
   version "1.7.0"
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/convert-source-map/-/convert-source-map-1.7.0.tgz#17a2cb882d7f77d3490585e2ce6c524424a3a442"
@@ -3008,7 +3046,7 @@ debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   dependencies:
     ms "2.0.0"
 
-debug@3.1.0, debug@~3.1.0:
+debug@3.1.0, debug@=3.1.0, debug@~3.1.0:
   version "3.1.0"
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   integrity sha1-W7WgZyYotkFJVmuhaBnmFRjGcmE=
@@ -3839,6 +3877,13 @@ flush-write-stream@^1.0.0:
   dependencies:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
+
+follow-redirects@1.5.10:
+  version "1.5.10"
+  resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
+  integrity sha1-e3qfmuov3/NnhqlP9kPtB/T/Xio=
+  dependencies:
+    debug "=3.1.0"
 
 follow-redirects@^1.0.0:
   version "1.11.0"
@@ -5077,7 +5122,7 @@ json-schema@0.2.3:
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/json-schema/-/json-schema-0.2.3.tgz#b480c892e59a2f05954ce727bd3f2a4e882f9e13"
   integrity sha1-tIDIkuWaLwWVTOcnvT8qTogvnhM=
 
-json-stringify-safe@~5.0.1:
+json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
@@ -5356,7 +5401,7 @@ lodash.uniq@^4.5.0:
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
+lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4:
   version "4.17.15"
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
@@ -7105,6 +7150,11 @@ qs@6.7.0:
   version "6.7.0"
   resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha1-QdwaAV49WB8WIXdr4xr7KHapsbw=
+
+qs@^6.5.2:
+  version "6.9.4"
+  resolved "https://pkgs.dev.azure.com/kovix-group/_packaging/SkyFrame/npm/registry/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
+  integrity sha1-kJCykNH5FyjTwi5UhDykSupatoc=
 
 qs@~6.5.2:
   version "6.5.2"
