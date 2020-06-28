@@ -1,0 +1,25 @@
+<div class="flex flex-col lg:flex-row lg:bg-background-medium lg:bg-opacity-75
+               rounded-lg py-2 px-2 md:px-6 mt-10 md:mt-0 lg:mt-12 mb-6 text-white">
+  <!-- PAGE TITLE TEXT -->
+  <div class="flex-grow-0 flex-wrap w-full lg:w-1/5 flex flex-row lg:block lg:pr-5 lg:pl-3 xl:px-10 my-2 lg:my-6">
+    <app-project-image class="flex-grow-0" [image]="heroIllustration">
+    </app-project-image>
+    <h2 class="flex-grow text-right md:text-left text-2xl pl-6 lg:pl-0 lg:py-6 font-bold font-primary">Pablo Kvitca</h2>
+    <p class="flex-grow-0 mt-2 text-base font-secondary">Look through my current and old projects!</p>
+  </div>
+  <!-- PROJECTS VIEW -->
+  <div class="flex-grow w-full flex flex-col my-6 lg:overflow-hidden">
+    <h1 class="text-4xl font-bold font-primary">Projects</h1>
+    <div class="w-full flex flex-col items-center overflow-y-scroll lg:overflow-x-scroll">
+      <ng-container *ngIf="!loading">
+        <ng-container *ngFor="let project of projects; let odd = odd;">
+          <app-project-view class="mb-2 self-center" [project]="project" [reverse]="odd">
+          </app-project-view>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="loading">
+        <h5>Loading...</h5>
+      </ng-container>
+    </div>
+  </div>
+</div>

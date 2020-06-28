@@ -3,7 +3,8 @@
         <app-profile class="self-center flex-grow-0 mr-5" [size]="8"></app-profile>
         <span class="self-center">Pablo Kvitca</span>
     </a>
-    <a class="text-white h-full px-5 flex content-center hover:bg-background-medium focus:bg-background-medium" href="/projects">
+    <a class="text-white h-full px-5 flex content-center hover:bg-background-medium focus:bg-background-medium"
+        [routerLink]="['/']" fragment="projectsList">
         <span class="self-center">Projects</span>
     </a>
     <span class="flex-grow"></span>
