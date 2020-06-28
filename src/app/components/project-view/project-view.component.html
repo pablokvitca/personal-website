@@ -39,6 +39,13 @@
               <app-icon [icon]="externalLinkIcon"></app-icon>
             </a>
         </div>
+        <!-- SECTION: PROJECT START DATE -->
+        <div class="w-full font-secondary" [ngClass]=" {
+            'text-left ': reverse,
+            'text-right': !reverse
+        } ">
+          <i>Started On: {{project.startDate}}</i>
+        </div>
         <!-- SECTION: DIVIDER -->
         <hr class="divider line one-line md:one-line">
         <!-- SECTION: PROJECT TAGS AND TECHNOLOGIES AND PLATFORMS -->

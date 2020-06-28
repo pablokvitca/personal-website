@@ -32,7 +32,12 @@ export class PageProjectsComponent implements OnInit, AfterViewInit {
 
   async loadData(): Promise<void> {
     const projectEntries = await this.contentfulService.getProjects();
-    this.projects = _.map(projectEntries, (entry) => new Project(entry.fields));
+    this.projects = _.reverse(
+      _.sortBy(
+        _.map(projectEntries, (entry) => new Project(entry.fields)),
+        ['startDate']
+      )
+    );
   }
 
   ngAfterViewInit(): void {
