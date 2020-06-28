@@ -8,6 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HomePageComponent } from './home-page/home-page.component';
 import { ComponentsModule } from '../components/components.module';
 import { PageProjectsComponent } from './page-projects/page-projects.component';
+import { ContactPageComponent } from './contact-page/contact-page.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { PageProjectsComponent } from './page-projects/page-projects.component';
     BasicPageComponent,
     PageNotFoundComponent,
     HomePageComponent,
-    PageProjectsComponent
+    PageProjectsComponent,
+    ContactPageComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { PageProjectsComponent } from './page-projects/page-projects.component';
   exports: [
     BasicPageComponent,
     PageNotFoundComponent,
-    HomePageComponent
+    HomePageComponent,
+    ContactPageComponent
   ]
 })
 export class PagesModule { }
