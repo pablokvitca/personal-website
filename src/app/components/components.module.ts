@@ -10,7 +10,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { ProjectImageComponent } from './project-image/project-image.component';
 import { ProfileHeroComponent } from './profile-hero/profile-hero.component';
-import { HomePageSocialLinkComponent } from './home-page-social-link/home-page-social-link.component';
 import {RouterModule} from '@angular/router';
 
 @NgModule({
@@ -21,8 +20,7 @@ import {RouterModule} from '@angular/router';
     IconComponent,
     ProjectViewComponent,
     ProjectImageComponent,
-    ProfileHeroComponent,
-    HomePageSocialLinkComponent
+    ProfileHeroComponent
   ],
   imports: [
     CommonModule,
@@ -38,8 +36,7 @@ import {RouterModule} from '@angular/router';
     IconComponent,
     ProjectViewComponent,
     ProjectImageComponent,
-    ProfileHeroComponent,
-    HomePageSocialLinkComponent
+    ProfileHeroComponent
   ]
 })
 export class ComponentsModule { }

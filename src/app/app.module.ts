@@ -8,8 +8,8 @@ import { ComponentsModule } from './components/components.module';
 import { PagesModule } from './pages/pages.module';
 import { ContentfulService } from './services/contentful.service';
 import { FaConfig, FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faDesktop, faLaptop, faMobileAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import {faAngular, faLinkedin, faGithub, faStackOverflow} from '@fortawesome/free-brands-svg-icons';
+import { faDesktop, faLaptop, faMobileAlt, faQuestionCircle, faEnvelopeOpenText} from '@fortawesome/free-solid-svg-icons';
+import {faAngular, faLinkedin, faGithub, faStackOverflow, } from '@fortawesome/free-brands-svg-icons';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,8 @@ export class AppModule {
       faAngular,
       faGithub,
       faStackOverflow,
-      faLinkedin
+      faLinkedin,
+      faEnvelopeOpenText
     );
     faConfig.fallbackIcon = faQuestionCircle;
   }

@@ -6,10 +6,10 @@ import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-page-projects',
-  templateUrl: './page-projects.component.html',
-  styleUrls: ['./page-projects.component.scss']
+  templateUrl: './projects-page.component.html',
+  styleUrls: ['./projects-page.component.scss']
 })
-export class PageProjectsComponent implements OnInit, AfterViewInit {
+export class ProjectsPageComponent implements OnInit, AfterViewInit {
 
   private fragment: string = 'projectsList';
 

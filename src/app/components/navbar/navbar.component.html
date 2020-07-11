@@ -1,15 +1,18 @@
-<nav class="w-full h-12 flex px-0 items-center justify-between bg-background-light shadow-lg font-primary font-bold text-lg">
-    <a class="text-t-white-lighter h-full px-5 flex content-center hover:bg-background-medium focus:bg-background-medium" href="/">
-        <app-profile class="self-center flex-grow-0 mr-5" [size]="8"></app-profile>
-        <span class="self-center">Pablo Kvitca</span>
+<nav class="h-full w-full flex flex-col text-center text-t-white-lighter bg-background-light shadow-lg font-primary font-bold text-lg">
+    <a class="p-5 w-full flex flex-row justify-start hover:bg-background-medium focus:bg-background-medium" href="/">
+        <app-profile class="flex-grow-0 m-2" [size]="12"></app-profile>
+        <span class="flex-grow self-center">Pablo<wbr> Kvitca</span>
     </a>
-    <a class="text-white h-full px-5 flex content-center hover:bg-background-medium focus:bg-background-medium"
-        [routerLink]="['/']" fragment="projectsList">
+    <a class="p-5 w-full content-center hover:bg-background-medium focus:bg-background-medium"
+       [routerLink]="['/about']">
+      <span class="self-center">About Me</span>
+    </a>
+    <a class="p-5 w-full content-center hover:bg-background-medium focus:bg-background-medium"
+        [routerLink]="['/projects']">
         <span class="self-center">Projects</span>
     </a>
-    <a class="text-white h-full px-5 flex content-center hover:bg-background-medium focus:bg-background-medium"
-       [routerLink]="['/contact-page']">
+    <a class="p-5 w-full content-center hover:bg-background-medium focus:bg-background-medium"
+       [routerLink]="['/contact']">
       <span class="self-center">Contact</span>
     </a>
-    <span class="flex-grow"></span>
 </nav>

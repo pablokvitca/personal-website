@@ -1,4 +1,4 @@
-<div class="flex flex-row justify-center items-center text-white my-10">
+<div class="flex flex-row justify-center items-center text-white">
   <div class="text-white text-left mr-6 w-1/3">
     <h2 class="text-4xl font-bold font-primary">{{profile.name}}</h2>
     <h4 class="text-2xl font-secondary">{{profile.title}}</h4>
@@ -6,23 +6,4 @@
   </div>
   <app-project-image class="w-64" [image]="profile.image">
   </app-project-image>
-</div>
-<div class="social-links text-center my-10">
-  <ng-container *ngFor="let slink of profile.social">
-    <app-home-page-social-link [icon]="slink.icon" [href]="slink.href"></app-home-page-social-link>
-  </ng-container>
-</div>
-<div class="links text-center my-10">
-  <a [routerLink]="['.']" fragment="projectsList" class="border-2 rounded-sm border-white px-5 py-2 mx-5
-    hover:bg-t-white-darker focus:bg-t-white-darker
-     text-white">Projects</a>
-  <!--<a [routerLink]="['/blog']" class="border-2 rounded-sm border-white px-5 py-2 mx-5
-    hover:bg-t-white-darker focus:bg-t-white-darker
-     text-white">Blog</a>-->
-  <!--<a [routerLink]="['/others']" class="border-2 rounded-sm border-white px-5 py-2 mx-5
-    hover:bg-t-white-darker focus:bg-t-white-darker
-     text-white">Others</a>-->
-  <a [routerLink]="['/contact-page']" class="border-2 rounded-sm border-white px-5 py-2 mx-5
-    hover:bg-t-white-darker focus:bg-t-white-darker
-     text-white">Contact</a>
 </div>

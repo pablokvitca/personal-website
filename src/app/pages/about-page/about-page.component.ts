@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ImageRef } from 'src/app/components/project-view/Project';
 
 @Component({
-  selector: 'app-contact',
-  templateUrl: './contact-page.component.html',
-  styleUrls: ['./contact-page.component.scss']
+  selector: 'app-about-page',
+  templateUrl: './about-page.component.html',
+  styleUrls: ['./about-page.component.scss']
 })
-export class ContactPageComponent {
+export class AboutPageComponent {
 
-  public contact = {
-    header: 'Contact Me',
-    subheader: 'Please reach out to me about my resume, information, or with questions',
+  public profile = {
+    name: 'Pablo Kvitca',
+    title: 'Computer Scientist, Student, and Human.',
+    subtitle: 'Interested on Artificial Intelligence (and Ethics), Data Science, Software Development and others.',
+    image: {
+      ref: 'assets/illustrations/undraw_Hello_qnas.svg'
+    },
     social: [
       {
         icon: {
@@ -37,22 +40,9 @@ export class ContactPageComponent {
           alt: 'LinkedIn Icon',
         },
         href: 'https://www.linkedin.com/in/pablokvitca/',
-        text: 'LinkedIn'
-      },
-      {
-        icon: {
-          source: 'fontawesome',
-          icon: ['fas', 'envelope-open-text'],
-          alt: 'Envelope Open with Text',
-        },
-        href: 'mailto:kvitca.p@northeastern.edu',
-        text: 'e-mail'
+        text: 'Linkedin'
       }
     ]
-  };
-
-  public contactIllustration: ImageRef = {
-    ref: 'assets/illustrations/undraw_conversation_h12g.svg'
-  };
+  }; // TODO: add to contentful?
 
 }
