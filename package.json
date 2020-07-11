@@ -29,7 +29,6 @@
     "@types/lodash": "^4.14.155",
     "angular-cli-ghpages": "^0.6.2",
     "contentful": "^7.14.4",
-    "lodash": "^4.17.15",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
