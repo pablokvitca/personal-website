@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "config": "ts-node ./src/env-config.ts",
+    "start": "npm run config -- && ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -30,6 +31,7 @@
     "angular-cli-ghpages": "^0.6.2",
     "angulartics2": "^10.0.0",
     "contentful": "^7.14.4",
+    "dotenv": "^8.2.0",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
