@@ -9,22 +9,24 @@ import {ActivatedRoute} from '@angular/router';
   templateUrl: './projects-page.component.html',
   styleUrls: ['./projects-page.component.scss']
 })
-export class ProjectsPageComponent implements OnInit, AfterViewInit {
+export class ProjectsPageComponent implements OnInit {
 
-  private fragment: string = 'projectsList';
+  public content = {
+    header: 'Projects',
+    subheader: 'Look through my current and old projects!',
+    lastUpdated: 'Last Updated: July 2020',
+    heroIllustration: {
+      ref: 'assets/illustrations/undraw_dev_productivity_umsq.svg'
+    }
+  };
 
   public projects: Project[] = [];
 
   public loading: boolean = true;
 
-  heroIllustration = {
-    ref: 'assets/illustrations/undraw_dev_productivity_umsq.svg'
-  }; // TODO: move to contentful?
-
-  constructor(private route: ActivatedRoute, private contentfulService: ContentfulService) { }
+  constructor(private contentfulService: ContentfulService) { }
 
   ngOnInit(): void {
-    this.route.fragment.subscribe(fragment => { this.fragment = fragment; });
     this.loadData().then(() => {
       this.loading = false;
     });
@@ -39,11 +41,4 @@ export class ProjectsPageComponent implements OnInit, AfterViewInit {
       )
     );
   }
-
-  ngAfterViewInit(): void {
-    try {
-      document.querySelector('#' + this.fragment).scrollIntoView();
-    } catch (e) { }
-  }
-
 }

@@ -1,15 +1,18 @@
-<div class="flex flex-col lg:flex-row lg:bg-background-medium lg:bg-opacity-75
-               rounded-lg py-2 px-2 md:px-6 mt-10 md:mt-0 lg:mt-12 mb-6 text-white">
+<div class="grid grid-cols-1 py-2 px-2 md:px-6 text-white">
   <!-- PAGE TITLE TEXT -->
-  <div class="flex-grow-0 flex-wrap w-full lg:w-1/5 flex flex-row lg:block lg:pr-5 lg:pl-3 xl:px-10 my-2 lg:my-6">
-    <app-project-image class="flex-grow-0" [image]="heroIllustration">
+  <div class="col-span-1 grid grid-cols-8 py-5">
+    <div clas="col-span-1"></div>
+    <app-project-image class="col-span-1" [image]="content.heroIllustration">
     </app-project-image>
-    <h2 class="flex-grow text-right md:text-left text-2xl pl-6 lg:pl-0 lg:py-6 font-bold font-primary">Pablo Kvitca</h2>
-    <p class="flex-grow-0 mt-2 text-base font-secondary">Look through my current and old projects!</p>
+    <div clas="col-span-1"></div>
+    <div class="col-span-5 flex flex-col justify-center items-start">
+      <h2 class="text-2xl font-bold font-primary">{{content.header}}</h2>
+      <p class="text-base font-secondary">{{content.subheader}}</p>
+      <p class="text-sm font-secondary align-end">{{content.lastUpdated}}</p>
+    </div>
   </div>
   <!-- PROJECTS VIEW -->
-  <div class="flex-grow w-full flex flex-col my-6 lg:overflow-hidden">
-    <h1 class="text-4xl font-bold font-primary">Projects</h1>
+  <div class="col-span-1 w-full flex flex-col my-6 lg:overflow-hidden">
     <div class="w-full flex flex-col items-center overflow-y-scroll lg:overflow-x-scroll">
       <ng-container *ngIf="!loading">
         <ng-container *ngFor="let project of projects; let odd = odd;">
