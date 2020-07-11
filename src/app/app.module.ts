@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { PagesModule } from './pages/pages.module';
-import { ContentfulService } from './services/contentful.service';
 import { Angulartics2Module } from 'angulartics2';
 import { FaConfig, FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {faDesktop, faLaptop, faMobileAlt, faQuestionCircle, faEnvelopeOpenText, faScroll} from '@fortawesome/free-solid-svg-icons';
@@ -24,9 +23,6 @@ import {faAngular, faLinkedin, faGithub, faStackOverflow, faSass} from '@fortawe
     PagesModule,
     FontAwesomeModule,
     Angulartics2Module.forRoot(),
-  ],
-  providers: [
-    ContentfulService
   ],
   bootstrap: [AppComponent]
 })

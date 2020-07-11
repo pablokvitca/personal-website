@@ -9,6 +9,7 @@ import { ContactPageComponent } from './contact-page/contact-page.component';
 import { AboutPageComponent } from './about-page/about-page.component';
 import { ProjectsPageComponent } from './projects-page/projects-page.component';
 import {Angulartics2Module} from 'angulartics2';
+import {ContentfulService} from '../services/contentful.service';
 
 
 @NgModule({
@@ -30,6 +31,9 @@ import {Angulartics2Module} from 'angulartics2';
     ContactPageComponent,
     AboutPageComponent,
     ProjectsPageComponent
-  ]
+  ],
+  providers: [
+    ContentfulService
+  ],
 })
 export class PagesModule { }
