@@ -1,18 +1,31 @@
 <nav class="h-full w-full flex flex-col text-center text-t-white-lighter bg-background-light shadow-lg font-primary font-bold text-lg">
-    <a class="p-5 w-full flex flex-row justify-start hover:bg-background-medium focus:bg-background-medium" href="/">
+    <a class="p-5 w-full flex flex-row justify-start hover:bg-background-medium focus:bg-background-medium"
+       angulartics2On="click"
+       angularticsAction="NavProfileClick"
+       [angularticsCategory]="'nav-profile'"
+       [routerLink]="['/']">
         <app-profile class="flex-grow-0 m-2" [size]="12"></app-profile>
         <span class="flex-grow self-center">Pablo<wbr> Kvitca</span>
     </a>
     <a class="p-5 w-full content-center hover:bg-background-medium focus:bg-background-medium"
-       [routerLink]="['/about']">
+       [routerLink]="['/about']"
+       angulartics2On="click"
+       angularticsAction="NavAboutMeClick"
+       [angularticsCategory]="'nav-aboutme'">
       <span class="self-center">About Me</span>
     </a>
     <a class="p-5 w-full content-center hover:bg-background-medium focus:bg-background-medium"
-        [routerLink]="['/projects']">
+        [routerLink]="['/projects']"
+       angulartics2On="click"
+       angularticsAction="NavProjectsClick"
+       [angularticsCategory]="'nav-projects'">
         <span class="self-center">Projects</span>
     </a>
     <a class="p-5 w-full content-center hover:bg-background-medium focus:bg-background-medium"
-       [routerLink]="['/contact']">
+       [routerLink]="['/contact']"
+       angulartics2On="click"
+       angularticsAction="NavContactClick"
+       [angularticsCategory]="'nav-contact'">
       <span class="self-center">Contact</span>
     </a>
 </nav>

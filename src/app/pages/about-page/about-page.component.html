@@ -2,16 +2,25 @@
   <app-profile-hero [profile]="profile" class="mb-24"></app-profile-hero>
   <div class="nav">
     <div class="links text-center my-10">
-      <a [routerLink]="['/projects']" class="about-btn">Projects</a>
+      <a [routerLink]="['/projects']" class="about-btn"
+         angulartics2On="click"
+         angularticsAction="AboutMeProjectsClick"
+         [angularticsCategory]="'about-projects'">Projects</a>
       <!--<a [routerLink]="['/blog']" class="about-btn">Blog</a>-->
       <!--<a [routerLink]="['/others']" class="about-btn">Others</a>-->
-      <a [routerLink]="['/contact']" class="about-btn">Contact</a>
+      <a [routerLink]="['/contact']" class="about-btn"
+         angulartics2On="click"
+         angularticsAction="AboutMeContactClick"
+         [angularticsCategory]="'about-contact'">Contact</a>
     </div>
   </div>
   <div class="social-links text-center my-10">
     <ng-container *ngFor="let slink of profile.social">
       <a class="about-btn font-secondary"
-         [href]="slink.href" target="_blank">
+         [href]="slink.href" target="_blank"
+         angulartics2On="click"
+         angularticsAction="AboutMeSocial"
+         [angularticsCategory]="'about-social:' + slink.text">
         <app-icon [icon]="slink.icon" [size]="'lg'"></app-icon> {{slink.text}}
       </a>
     </ng-container>

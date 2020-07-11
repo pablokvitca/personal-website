@@ -8,6 +8,7 @@ import { ComponentsModule } from '../components/components.module';
 import { ContactPageComponent } from './contact-page/contact-page.component';
 import { AboutPageComponent } from './about-page/about-page.component';
 import { ProjectsPageComponent } from './projects-page/projects-page.component';
+import {Angulartics2Module} from 'angulartics2';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { ProjectsPageComponent } from './projects-page/projects-page.component';
     CommonModule,
     ComponentsModule,
     PagesRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    Angulartics2Module
   ],
   exports: [
     PageNotFoundComponent,

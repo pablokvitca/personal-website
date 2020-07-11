@@ -11,6 +11,7 @@ import { ProjectViewComponent } from './project-view/project-view.component';
 import { ProjectImageComponent } from './project-image/project-image.component';
 import { ProfileHeroComponent } from './profile-hero/profile-hero.component';
 import {RouterModule} from '@angular/router';
+import {Angulartics2Module} from 'angulartics2';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {RouterModule} from '@angular/router';
     MatToolbarModule,
     MatIconModule,
     FontAwesomeModule,
-    RouterModule
+    RouterModule,
+    Angulartics2Module
   ],
   exports: [
     TerminalComponent,

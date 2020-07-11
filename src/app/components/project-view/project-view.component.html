@@ -26,14 +26,20 @@
         <div class="flex-grow-0 flex flex-row flex-wrap justify-center my-2">
             <a *ngIf="project.sourceRef" [href]="project.sourceRef" target="_blank"
                class="px-1 py-0 my-1 md:my-0 md:px-4 md:py-2 mx-1 rounded-sm inline-block w-auto
-               bg-background-light hover:bg-background-lighter focus:bg-background-lighter active:bg-background-dark">
+               bg-background-light hover:bg-background-lighter focus:bg-background-lighter active:bg-background-dark"
+               angulartics2On="click"
+               angularticsAction="ProjectViewSourceClick"
+               [angularticsCategory]="'project-view-source:' + project.title">
                 <app-icon [icon]="iconSourceRef"></app-icon>
                 <span class="mx-1">View Source</span>
                 <app-icon [icon]="externalLinkIcon"></app-icon>
             </a>
             <a *ngIf="project.deploymentRef" [href]="project.deploymentRef" target="_blank"
                class="px-1 py-0 my-1 md:my-0 md:px-4 md:py-2 mx-1 rounded-sm inline-block w-auto
-               bg-background-light hover:bg-background-lighter focus:bg-background-lighter active:bg-background-dark">
+               bg-background-light hover:bg-background-lighter focus:bg-background-lighter active:bg-background-dark"
+               angulartics2On="click"
+               angularticsAction="ProjectViewLiveClick"
+               [angularticsCategory]="'project-view-live:' + project.title">
               <app-icon [icon]="iconDeploymentRef"></app-icon>
               <span class="mx-1">View Live</span>
               <app-icon [icon]="externalLinkIcon"></app-icon>

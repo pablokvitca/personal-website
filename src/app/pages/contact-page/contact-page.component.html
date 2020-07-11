@@ -6,7 +6,10 @@
       <div class="social-links text-right">
         <ng-container *ngFor="let slink of contact.social">
           <a class="about-btn text-center"
-             [href]="slink.href" target="_blank">
+             [href]="slink.href" target="_blank"
+             angulartics2On="click"
+             angularticsAction="ContactSocialLink"
+             [angularticsCategory]="'contact-social:' + slink.text">
             <app-icon [icon]="slink.icon" [size]="'lg'"></app-icon>
             <span>{{slink.text}}</span>
           </a>

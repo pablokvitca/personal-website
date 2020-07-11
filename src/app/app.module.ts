@@ -7,9 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { PagesModule } from './pages/pages.module';
 import { ContentfulService } from './services/contentful.service';
+import { Angulartics2Module } from 'angulartics2';
 import { FaConfig, FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faDesktop, faLaptop, faMobileAlt, faQuestionCircle, faEnvelopeOpenText} from '@fortawesome/free-solid-svg-icons';
-import {faAngular, faLinkedin, faGithub, faStackOverflow, } from '@fortawesome/free-brands-svg-icons';
+import {faDesktop, faLaptop, faMobileAlt, faQuestionCircle, faEnvelopeOpenText, faScroll} from '@fortawesome/free-solid-svg-icons';
+import {faAngular, faLinkedin, faGithub, faStackOverflow, faSass} from '@fortawesome/free-brands-svg-icons';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {faAngular, faLinkedin, faGithub, faStackOverflow, } from '@fortawesome/f
     BrowserAnimationsModule,
     ComponentsModule,
     PagesModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    Angulartics2Module.forRoot(),
   ],
   providers: [
     ContentfulService
@@ -39,7 +41,9 @@ export class AppModule {
       faGithub,
       faStackOverflow,
       faLinkedin,
-      faEnvelopeOpenText
+      faEnvelopeOpenText,
+      faSass,
+      faScroll
     );
     faConfig.fallbackIcon = faQuestionCircle;
   }

@@ -28,6 +28,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@types/lodash": "^4.14.155",
     "angular-cli-ghpages": "^0.6.2",
+    "angulartics2": "^10.0.0",
     "contentful": "^7.14.4",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
