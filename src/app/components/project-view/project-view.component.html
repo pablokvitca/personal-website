@@ -76,11 +76,13 @@
                 } ">
                     <!-- FIELD: PROJECT TECHNOLOGIES -->
                     <ng-container *ngFor="let tech of project.technologies">
-                        <app-icon [icon]="tech.icon" [ngClass]=" {
-                            'ml-1 md:ml-2': reverse,
-                            'mr-1 md:mr-2': !reverse
+                      <div [ngClass]=" {
+                            'pl-1 md:pl-2': reverse,
+                            'pr-1 md:pr-2': !reverse
                         } ">
-                        </app-icon>
+                        <app-icon *ngIf="tech.icon" [icon]="tech.icon" [size]=""></app-icon>
+                        <img class="w-8" *ngIf="!tech.icon && tech.image" [src]="tech.image.ref">
+                      </div>
                     </ng-container>
                 </div> <!-- TODO: abstract to app-icon-list-display -->
             </div>
