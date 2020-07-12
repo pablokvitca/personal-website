@@ -6,3 +6,23 @@ patch:
   SNYK-JS-LODASH-567746:
     - angular-cli-ghpages > gh-pages > async > lodash:
         patched: '2020-07-11T00:00:53.905Z'
+    - contentful > lodash:
+        patched: '2020-07-12T00:58:52.812Z'
+    - '@angular/localize > @babel/core > lodash':
+        patched: '2020-07-12T00:58:52.812Z'
+    - contentful > contentful-resolve-response > lodash:
+        patched: '2020-07-12T00:58:52.812Z'
+    - contentful > contentful-sdk-core > lodash:
+        patched: '2020-07-12T00:58:52.812Z'
+    - '@angular/localize > @babel/core > @babel/traverse > lodash':
+        patched: '2020-07-12T00:58:52.812Z'
+    - '@angular/localize > @babel/core > @babel/helpers > @babel/traverse > lodash':
+        patched: '2020-07-12T00:58:52.812Z'
+    - '@angular/localize > @babel/core > @babel/helpers > @babel/traverse > @babel/generator > lodash':
+        patched: '2020-07-12T00:58:52.812Z'
+    - '@angular/localize > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash':
+        patched: '2020-07-12T00:58:52.812Z'
+    - '@angular/localize > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash':
+        patched: '2020-07-12T00:58:52.812Z'
+    - angular-cli-ghpages > gh-pages > async > lodash:
+        patched: '2020-07-12T00:58:52.812Z'
