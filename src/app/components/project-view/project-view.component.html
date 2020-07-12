@@ -1,4 +1,4 @@
-<div class="flex flex-col md:flex-row bg-gray-900 text-white px-0 md:px-6 py-6 shadow-md" [ngClass]=" {
+<div class="flex flex-col md:flex-row bg-background-medium bg-opacity-50 text-t-white-lighter px-0 md:px-6 py-6 shadow-md" [ngClass]=" {
     'custom-rounded-tl-lg custom-rounded-br-lg md:flex-row-reverse ': reverse,
     'custom-rounded-tr-lg custom-rounded-bl-lg md:flex-row': !reverse
 } ">
@@ -25,17 +25,32 @@
         <!-- SECTION: PROJECT EXTERNAL LINKS -->
         <div class="flex-grow-0 flex flex-row flex-wrap justify-center my-2">
             <a *ngIf="project.sourceRef" [href]="project.sourceRef" target="_blank"
-                class="px-1 py-0 my-1 md:my-0 md:px-4 md:py-2 mx-1 rounded-sm inline-block bg-gray-500 w-auto">
+               class="px-1 py-0 my-1 md:my-0 md:px-4 md:py-2 mx-1 rounded-sm inline-block w-auto
+               bg-background-light hover:bg-background-lighter focus:bg-background-lighter active:bg-background-dark"
+               angulartics2On="click"
+               angularticsAction="ProjectViewSourceClick"
+               [angularticsCategory]="'project-view-source:' + project.title">
                 <app-icon [icon]="iconSourceRef"></app-icon>
                 <span class="mx-1">View Source</span>
                 <app-icon [icon]="externalLinkIcon"></app-icon>
             </a>
             <a *ngIf="project.deploymentRef" [href]="project.deploymentRef" target="_blank"
-               class="px-1 py-0 my-1 md:my-0 md:px-4 md:py-2 mx-1 rounded-sm inline-block bg-gray-500 w-auto">
+               class="px-1 py-0 my-1 md:my-0 md:px-4 md:py-2 mx-1 rounded-sm inline-block w-auto
+               bg-background-light hover:bg-background-lighter focus:bg-background-lighter active:bg-background-dark"
+               angulartics2On="click"
+               angularticsAction="ProjectViewLiveClick"
+               [angularticsCategory]="'project-view-live:' + project.title">
               <app-icon [icon]="iconDeploymentRef"></app-icon>
               <span class="mx-1">View Live</span>
               <app-icon [icon]="externalLinkIcon"></app-icon>
             </a>
+        </div>
+        <!-- SECTION: PROJECT START DATE -->
+        <div class="w-full font-secondary" [ngClass]=" {
+            'text-left ': reverse,
+            'text-right': !reverse
+        } ">
+          <i>Started On: {{project.startDate}}</i>
         </div>
         <!-- SECTION: DIVIDER -->
         <hr class="divider line one-line md:one-line">
@@ -67,11 +82,13 @@
                 } ">
                     <!-- FIELD: PROJECT TECHNOLOGIES -->
                     <ng-container *ngFor="let tech of project.technologies">
-                        <app-icon [icon]="tech.icon" [ngClass]=" {
-                            'ml-1 md:ml-2': reverse,
-                            'mr-1 md:mr-2': !reverse
+                      <div [ngClass]=" {
+                            'pl-1 md:pl-2': reverse,
+                            'pr-1 md:pr-2': !reverse
                         } ">
-                        </app-icon>
+                        <app-icon *ngIf="tech.icon" [icon]="tech.icon" [size]=""></app-icon>
+                        <img class="w-8" *ngIf="!tech.icon && tech.image" [src]="tech.image.ref">
+                      </div>
                     </ng-container>
                 </div> <!-- TODO: abstract to app-icon-list-display -->
             </div>

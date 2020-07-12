@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {ContentfulClientApi, createClient, Entry, EntryCollection,} from 'contentful';
-import {Project} from '../components/project-view/Project';
+import {ContentfulClientApi, createClient, EntryCollection} from 'contentful';
+import {environment} from '../../environments/environment';
 
-const CONFIG = { // TODO: actual identifiers!!! + .env
-  space: '6pjgrdux22jl',
-  accessToken: 'sLlwHtvfJp4wEb6AdG_OAxw24QWS3OI4lBVa2kPXLkg',
-  contentEnvironment: 'master',
+const CONFIG = {
+  space: environment.CONTENTFUL_SPACE_ID,
+  accessToken: environment.CONTENTFUL_ACCESS_TOKEN,
+  contentEnvironment: environment.CONTENTFUL_CONTENT_ENV,
   contentTypeIds: {
     project: 'project',
     icon: 'icon',
