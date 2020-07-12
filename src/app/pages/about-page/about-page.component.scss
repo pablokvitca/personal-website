@@ -1,0 +1,13 @@
+
+.about-btn {
+  @apply border-2 rounded-sm border-white;
+  @apply text-white text-lg;
+  @apply inline-flex px-5 py-2 mx-5;
+  app-icon {
+    @apply mx-1;
+  }
+}
+.about-btn:hover,
+.about-btn:focus {
+  @apply bg-t-white-darker;
+}

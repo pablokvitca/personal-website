@@ -18,8 +18,10 @@ export class IconComponent {
   @Input()
   public icon: IconSpec;
 
-  ngOnChanges() {
-    console.log(this.icon);
-  }
+  @Input()
+  public border: any;
+
+  @Input()
+  public size: any;
 
 }

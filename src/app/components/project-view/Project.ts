@@ -47,18 +47,21 @@ export class Project {
           this.technologies = Project.mapTechnologies(data.technologies);
     }
 
-    private static mapTechnologies(technologies: any[]) {
+    private static mapTechnologies(technologies: any[]): TechnologyRef[] {
       return _.map(technologies, (technology) => {
         return {
           technology: technology.fields.name,
           version: technology.fields.version,
           description: technology.fields.description,
-          icon: Project.mapIcon(technology.fields.icon.fields)
+          icon: (technology.fields.icon) ? Project.mapIcon(technology.fields.icon.fields) : false,
+          image: (technology.fields.images && technology.fields.images[0]) ? {
+            ref: 'https:' + technology.fields.images[0].fields.file.url
+          } : false
         };
       });
     }
 
-    private static mapIcon(fields): IconSpec {
+    private static mapIcon(fields: any): IconSpec {
       let icon = fields.icon;
       if (fields.source === 'fontawesome') {
         const words = _.split(fields.icon, ' ');
@@ -84,7 +87,8 @@ export interface TechnologyRef {
   technology: string;
   version: string;
   description?: string;
-  icon: IconSpec;
+  icon?: IconSpec | false;
+  image?: ImageRef | false;
 }
 
 export interface ProjectType {

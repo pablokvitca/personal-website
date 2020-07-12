@@ -1,13 +1,31 @@
-<nav class="w-full h-16 flex px-0 items-center justify-between bg-gray-900 shadow-lg font-primary font-bold text-lg">
-    <a class="text-white h-full px-5 flex content-center hover:bg-gray-700 focus:bg-gray-700" href="/">
-        <app-profile class="self-center flex-grow-0" [size]="8"></app-profile>
+<nav class="h-full w-full flex flex-col text-center text-t-white-lighter bg-background-light shadow-lg font-primary font-bold text-lg">
+    <a class="p-5 w-full flex flex-row justify-start hover:bg-background-medium focus:bg-background-medium"
+       angulartics2On="click"
+       angularticsAction="NavProfileClick"
+       [angularticsCategory]="'nav-profile'"
+       [routerLink]="['/']">
+        <app-profile class="flex-grow-0 m-2" [size]="12"></app-profile>
+        <span class="flex-grow self-center">Pablo<wbr> Kvitca</span>
     </a>
-    <a class="text-white h-full px-5 flex content-center hover:bg-gray-700 focus:bg-gray-700" href="/">
-        <span class="self-center">Pablo Kvitca</span>
+    <a class="p-5 w-full content-center hover:bg-background-medium focus:bg-background-medium"
+       [routerLink]="['/about']"
+       angulartics2On="click"
+       angularticsAction="NavAboutMeClick"
+       [angularticsCategory]="'nav-aboutme'">
+      <span class="self-center">About Me</span>
     </a>
-    <!-- <a class="text-white h-full px-5 flex content-center hover:bg-gray-700 focus:bg-gray-700" href="/projects">
+    <a class="p-5 w-full content-center hover:bg-background-medium focus:bg-background-medium"
+        [routerLink]="['/projects']"
+       angulartics2On="click"
+       angularticsAction="NavProjectsClick"
+       [angularticsCategory]="'nav-projects'">
         <span class="self-center">Projects</span>
-    </a> -->
-    <span class="flex-grow"></span>
-    <!-- <app-icon class="flex-grow-0 text-white" [source]="'material'" [icon]="'menu'"></app-icon> -->
+    </a>
+    <a class="p-5 w-full content-center hover:bg-background-medium focus:bg-background-medium"
+       [routerLink]="['/contact']"
+       angulartics2On="click"
+       angularticsAction="NavContactClick"
+       [angularticsCategory]="'nav-contact'">
+      <span class="self-center">Contact</span>
+    </a>
 </nav>

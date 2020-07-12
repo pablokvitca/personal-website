@@ -4,13 +4,14 @@ import { TerminalComponent } from './terminal/terminal.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon';
 import { IconComponent } from './icon/icon.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { ProjectImageComponent } from './project-image/project-image.component';
-
-
+import { ProfileHeroComponent } from './profile-hero/profile-hero.component';
+import {RouterModule} from '@angular/router';
+import {Angulartics2Module} from 'angulartics2';
 
 @NgModule({
   declarations: [
@@ -19,13 +20,16 @@ import { ProjectImageComponent } from './project-image/project-image.component';
     ProfileComponent,
     IconComponent,
     ProjectViewComponent,
-    ProjectImageComponent
+    ProjectImageComponent,
+    ProfileHeroComponent
   ],
   imports: [
     CommonModule,
     MatToolbarModule,
     MatIconModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    RouterModule,
+    Angulartics2Module
   ],
   exports: [
     TerminalComponent,
@@ -33,7 +37,8 @@ import { ProjectImageComponent } from './project-image/project-image.component';
     ProfileComponent,
     IconComponent,
     ProjectViewComponent,
-    ProjectImageComponent
+    ProjectImageComponent,
+    ProfileHeroComponent
   ]
 })
 export class ComponentsModule { }

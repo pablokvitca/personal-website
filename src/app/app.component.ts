@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, isDevMode} from '@angular/core';
+import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'personal-page';
+
+  constructor(angularitics: Angulartics2GoogleAnalytics) {
+    if (!isDevMode()) {
+      angularitics.startTracking();
+    }
+  }
 }
