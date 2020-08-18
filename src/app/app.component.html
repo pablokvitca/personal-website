@@ -1,5 +1,5 @@
 <mat-drawer-container class="w-full h-full" hasBackdrop="false">
-  <mat-drawer #sidenav mode="push"><app-navbar></app-navbar></mat-drawer>
+  <mat-drawer #sidenav mode="over"><app-navbar [sidenav]="sidenav"></app-navbar></mat-drawer>
   <mat-drawer-content>
     <div class="grid grid-cols-12 h-full overflow-scroll">
       <app-topbar class="col-span-12" [sidenav]="sidenav"></app-topbar>

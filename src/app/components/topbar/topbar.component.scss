@@ -1,0 +1,22 @@
+mat-toolbar-row {
+  @apply text-t-white-lighter font-bold text-lg;
+  @apply bg-background-light shadow-lg;
+  @apply py-1;
+
+  .nav-header {
+    @apply flex;
+
+    .nav-title {
+      @apply inline-block p-5;
+    }
+  }
+
+  .menu-spacer {
+    @apply mx-2;
+  }
+}
+
+:host {
+  box-sizing: border-box;
+  margin: 0;
+}

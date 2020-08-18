@@ -1,23 +1,40 @@
 <nav class="font-primary">
-    <a
-       [routerLink]="['/about']"
+  <div class="flex flex-row p-1">
+    <button class="toggle-nav-btn px-2 outline-none focus:outline-none active:outline-none" mat-icon-button>
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </button>
+    <a class="navbar-action nav-header"
        angulartics2On="click"
-       angularticsAction="NavAboutMeClick"
-       [angularticsCategory]="'nav-aboutme'">
-      <span class="self-center">About Me</span>
+       angularticsAction="NavProfileClick"
+       [angularticsCategory]="'nav-profile'"
+       [routerLink]="['/']">
+      <app-profile class="flex-grow-0 hidden md:block m-2" [size]="12"></app-profile>
+      <app-profile class="flex-grow-0 md:hidden m-2" [size]="8"></app-profile>
+      <span class="nav-title">Pablo<wbr> Kvitca</span>
     </a>
-    <a
-        [routerLink]="['/projects']"
-       angulartics2On="click"
-       angularticsAction="NavProjectsClick"
-       [angularticsCategory]="'nav-projects'">
-        <span class="self-center">Projects</span>
-    </a>
-    <a
-       [routerLink]="['/contact']"
-       angulartics2On="click"
-       angularticsAction="NavContactClick"
-       [angularticsCategory]="'nav-contact'">
-      <span class="self-center">Contact</span>
-    </a>
+  </div>
+  <a
+     [routerLink]="['/about']"
+     class="nav-link"
+     angulartics2On="click"
+     angularticsAction="NavAboutMeClick"
+     [angularticsCategory]="'nav-aboutme'">
+    <span class="self-center">About Me</span>
+  </a>
+  <a
+      [routerLink]="['/projects']"
+     class="nav-link"
+      angulartics2On="click"
+     angularticsAction="NavProjectsClick"
+     [angularticsCategory]="'nav-projects'">
+      <span class="self-center">Projects</span>
+  </a>
+  <a
+     [routerLink]="['/contact']"
+     class="nav-link"
+     angulartics2On="click"
+     angularticsAction="NavContactClick"
+     [angularticsCategory]="'nav-contact'">
+    <span class="self-center">Contact</span>
+  </a>
 </nav>
