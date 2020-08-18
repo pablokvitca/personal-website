@@ -10,6 +10,7 @@ import { Angulartics2Module } from 'angulartics2';
 import { FaConfig, FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {faDesktop, faLaptop, faMobileAlt, faQuestionCircle, faEnvelopeOpenText, faScroll} from '@fortawesome/free-solid-svg-icons';
 import {faAngular, faLinkedin, faGithub, faStackOverflow, faSass} from '@fortawesome/free-brands-svg-icons';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {faAngular, faLinkedin, faGithub, faStackOverflow, faSass} from '@fortawe
     ComponentsModule,
     PagesModule,
     FontAwesomeModule,
+    MatSidenavModule,
     Angulartics2Module.forRoot(),
   ],
   bootstrap: [AppComponent]
