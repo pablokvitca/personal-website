@@ -13,6 +13,8 @@ import { ProfileHeroComponent } from './profile-hero/profile-hero.component';
 import {RouterModule} from '@angular/router';
 import {Angulartics2Module} from 'angulartics2';
 import { TopbarComponent } from './topbar/topbar.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { TopbarComponent } from './topbar/topbar.component';
     CommonModule,
     MatToolbarModule,
     MatIconModule,
+    MatTooltipModule,
+    BrowserAnimationsModule,
     FontAwesomeModule,
     RouterModule,
     Angulartics2Module
