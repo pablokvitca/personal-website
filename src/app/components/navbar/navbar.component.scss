@@ -1,0 +1,35 @@
+nav {
+  @apply h-screen relative;
+  @apply text-t-white-lighter font-bold text-lg;
+  @apply bg-background-light shadow-lg;
+  @apply flex flex-col;
+  .nav-header {
+    @apply flex;
+
+    .nav-title {
+      @apply inline-block p-5;
+    }
+  }
+
+  .nav-btn {
+    @apply hidden;
+  }
+
+  .nav-links {
+    @apply inline float-right;
+
+    a {
+      @apply inline-block py-6 px-5;
+      text-decoration: none;
+    }
+
+    a:hover {
+      @apply bg-background-medium;
+    }
+  }
+}
+
+:host {
+  box-sizing: border-box;
+  margin: 0;
+}
