@@ -71,7 +71,7 @@
                         <app-icon [icon]="tech.icon" [ngClass]=" {
                             'ml-1 md:ml-2': reverse,
                             'mr-1 md:mr-2': !reverse
-                        } ">
+                        } " matTooltipPosition="below" matTooltip="{{tech.icon.alt}}" title="{{tech.icon.alt}}">
                         </app-icon>
                     </ng-container>
                 </div> <!-- TODO: abstract to app-icon-list-display -->
@@ -86,8 +86,8 @@
                             'pl-1 md:pl-2': reverse,
                             'pr-1 md:pr-2': !reverse
                         } ">
-                        <app-icon *ngIf="tech.icon" [icon]="tech.icon" [size]=""></app-icon>
-                        <img class="w-8" *ngIf="!tech.icon && tech.image" [src]="tech.image.ref">
+                        <app-icon *ngIf="tech.icon" [icon]="tech.icon" [size]="" matTooltipPosition="below" matTooltip="{{tech.icon.alt}}" title="{{tech.icon.alt}}"></app-icon>
+                        <img class="w-8" *ngIf="!tech.icon && tech.image" [src]="tech.image.ref" matTooltipPosition="below" matTooltip="{{tech.image.alt}}" title="{{tech.image.alt}}">
                       </div>
                     </ng-container>
                 </div> <!-- TODO: abstract to app-icon-list-display -->
