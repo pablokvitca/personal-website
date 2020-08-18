@@ -8,8 +8,8 @@ import { ComponentsModule } from './components/components.module';
 import { PagesModule } from './pages/pages.module';
 import { Angulartics2Module } from 'angulartics2';
 import { FaConfig, FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {faDesktop, faLaptop, faMobileAlt, faQuestionCircle, faEnvelopeOpenText, faScroll} from '@fortawesome/free-solid-svg-icons';
-import {faAngular, faLinkedin, faGithub, faStackOverflow, faSass} from '@fortawesome/free-brands-svg-icons';
+import {faDesktop, faLaptop, faMobileAlt, faQuestionCircle, faEnvelopeOpenText, faScroll, faServer} from '@fortawesome/free-solid-svg-icons';
+import {faAngular, faLinkedin, faGithub, faStackOverflow, faSass, faJava, faDocker} from '@fortawesome/free-brands-svg-icons';
 import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
@@ -41,7 +41,10 @@ export class AppModule {
       faLinkedin,
       faEnvelopeOpenText,
       faSass,
-      faScroll
+      faScroll,
+      faServer,
+      faJava,
+      faDocker
     );
     faConfig.fallbackIcon = faQuestionCircle;
   }
