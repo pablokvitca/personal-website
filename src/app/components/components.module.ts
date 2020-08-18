@@ -12,6 +12,7 @@ import { ProjectImageComponent } from './project-image/project-image.component';
 import { ProfileHeroComponent } from './profile-hero/profile-hero.component';
 import {RouterModule} from '@angular/router';
 import {Angulartics2Module} from 'angulartics2';
+import { TopbarComponent } from './topbar/topbar.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {Angulartics2Module} from 'angulartics2';
     IconComponent,
     ProjectViewComponent,
     ProjectImageComponent,
-    ProfileHeroComponent
+    ProfileHeroComponent,
+    TopbarComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +40,8 @@ import {Angulartics2Module} from 'angulartics2';
     IconComponent,
     ProjectViewComponent,
     ProjectImageComponent,
-    ProfileHeroComponent
+    ProfileHeroComponent,
+    TopbarComponent
   ]
 })
 export class ComponentsModule { }

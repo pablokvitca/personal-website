@@ -1,0 +1,17 @@
+<mat-toolbar class="font-primary">
+  <mat-toolbar-row>
+    <button mat-icon-button class="px-2 outline-none focus:outline-none active:outline-none">
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </button>
+    <span class="menu-spacer"></span>
+    <a class="navbar-action nav-header"
+       angulartics2On="click"
+       angularticsAction="NavProfileClick"
+       [angularticsCategory]="'nav-profile'"
+       [routerLink]="['/']">
+      <app-profile class="flex-grow-0 m-2" [size]="12"></app-profile>
+      <span class="nav-title">Pablo<wbr> Kvitca</span>
+    </a>
+    <span class="menu-spacer"></span>
+  </mat-toolbar-row>
+</mat-toolbar>

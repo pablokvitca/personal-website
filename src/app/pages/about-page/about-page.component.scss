@@ -2,7 +2,7 @@
 .about-btn {
   @apply border-2 rounded-sm border-white;
   @apply text-white text-lg;
-  @apply inline-flex px-5 py-2 mx-5;
+  @apply inline-flex px-5 py-2 m-5;
   app-icon {
     @apply mx-1;
   }

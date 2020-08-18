@@ -1,22 +1,30 @@
 
-.about-btn {
-  @apply border-2 rounded-sm border-white;
-  @apply text-white text-lg;
-  display: inline-grid;
-  @apply grid-cols-6 px-5 py-2 mx-5;
-  app-icon {
-    @apply col-span-1;
-  }
-  span {
-    @apply col-span-5;
-  }
-}
-.about-btn:hover,
-.about-btn:focus {
-  @apply bg-t-white-darker;
-}
 
 .social-links {
-  @apply w-full flex flex-col flex-grow;
-  justify-content: space-evenly;
+  @apply w-full grid mt-5;
+  gap: 0.5rem;
+
+  .social-link {
+    @apply w-full;
+    @apply border-2 rounded-sm border-white;
+    @apply text-white text-lg;
+    @apply px-5 py-2;
+    @apply col-span-3;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+
+    app-icon {
+      @apply flex-grow-0 m-1;
+    }
+    span {
+      @apply flex-grow;
+    }
+
+    :hover,
+    :focus,
+    :active{
+      @apply bg-t-white-darker;
+    }
+  }
 }
