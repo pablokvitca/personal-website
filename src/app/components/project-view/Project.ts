@@ -55,7 +55,8 @@ export class Project {
           description: technology.fields.description,
           icon: (technology.fields.icon) ? Project.mapIcon(technology.fields.icon.fields) : false,
           image: (technology.fields.images && technology.fields.images[0]) ? {
-            ref: 'https:' + technology.fields.images[0].fields.file.url
+            ref: 'https:' + technology.fields.images[0].fields.file.url,
+            alt: technology.fields.images[0].fields.title
           } : false
         };
       });
