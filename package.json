@@ -32,7 +32,7 @@
     "@types/lodash": "^4.14.155",
     "angular-cli-ghpages": "^0.6.2",
     "angulartics2": "^10.0.0",
-    "contentful": "^7.14.4",
+    "contentful": "^11.5.10",
     "dotenv": "^8.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
