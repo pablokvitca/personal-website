@@ -1,4 +1,6 @@
 ---
+import ThemeSwitcher from './ThemeSwitcher';
+
 const currentPath = Astro.url.pathname;
 
 const navItems = [
@@ -35,5 +37,8 @@ function isActive(href: string): boolean {
         </li>
       ))
     }
+    <li>
+      <ThemeSwitcher client:load />
+    </li>
   </ul>
 </nav>
