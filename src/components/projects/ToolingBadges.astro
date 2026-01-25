@@ -1,5 +1,64 @@
 ---
-import { getTechnologyTags, formatTagValue } from '@/lib/tags';
+import { getTechnologyTags } from '@/lib/tags';
+import { getTechnologyInfo } from '@/lib/technologies';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/starwind/tooltip';
+import ExternalLink from '@tabler/icons/outline/external-link.svg';
+
+// Import icon components from simple-icons-astro
+import {
+  Astro as AstroIcon,
+  React as ReactIcon,
+  Typescript as TypeScriptIcon,
+  Tailwindcss as TailwindCSSIcon,
+  Javascript as JavaScriptIcon,
+  Nodedotjs as NodeJSIcon,
+  Python as PythonIcon,
+  Rust as RustIcon,
+  Go as GoIcon,
+  Docker as DockerIcon,
+  Kubernetes as KubernetesIcon,
+  Postgresql as PostgreSQLIcon,
+  Mongodb as MongoDBIcon,
+  Redis as RedisIcon,
+  Googlecloud as GoogleCloudIcon,
+  Github as GithubIcon,
+  Gitlab as GitlabIcon,
+  Nextdotjs as NextJSIcon,
+  Vuedotjs as VueJSIcon,
+  Svelte as SvelteIcon,
+  Graphql as GraphQLIcon,
+  Vercel as VercelIcon,
+  Cloudflare as CloudFlareIcon,
+} from 'simple-icons-astro';
+
+// Map icon component names to actual components
+// Note: AWS and Azure icons may need different component names - they'll fall back to text
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const iconComponents: Record<string, any> = {
+  Astro: AstroIcon,
+  React: ReactIcon,
+  Typescript: TypeScriptIcon,
+  Tailwindcss: TailwindCSSIcon,
+  Javascript: JavaScriptIcon,
+  Nodedotjs: NodeJSIcon,
+  Python: PythonIcon,
+  Rust: RustIcon,
+  Go: GoIcon,
+  Docker: DockerIcon,
+  Kubernetes: KubernetesIcon,
+  Postgresql: PostgreSQLIcon,
+  Mongodb: MongoDBIcon,
+  Redis: RedisIcon,
+  Googlecloud: GoogleCloudIcon,
+  Github: GithubIcon,
+  Gitlab: GitlabIcon,
+  Nextdotjs: NextJSIcon,
+  Vuedotjs: VueJSIcon,
+  Svelte: SvelteIcon,
+  Graphql: GraphQLIcon,
+  Vercel: VercelIcon,
+  Cloudflare: CloudFlareIcon,
+};
 
 interface Props {
   tags: string[];
@@ -12,11 +71,52 @@ const techTags = getTechnologyTags(tags);
 {
   techTags.length > 0 && (
     <div class="flex flex-wrap gap-2">
-      {techTags.map((tag) => (
-        <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
-          {formatTagValue(tag.value)}
-        </span>
-      ))}
+      {techTags.map((tag) => {
+        const techInfo = getTechnologyInfo(tag.value);
+        
+        if (!techInfo) {
+          // Fallback for unknown technologies
+          return (
+            <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
+              {tag.value}
+            </span>
+          );
+        }
+
+        const IconComponent = iconComponents[techInfo.iconComponent];
+        
+        if (!IconComponent) {
+          // Fallback if icon component not found
+          return (
+            <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
+              {techInfo.name}
+            </span>
+          );
+        }
+        
+        return (
+          <Tooltip>
+            <TooltipTrigger>
+              <a
+                href={techInfo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center p-1 transition-opacity hover:opacity-80"
+                aria-label={techInfo.name}
+                style={`color: ${techInfo.color};`}
+              >
+                <IconComponent class="size-5" style={`fill: currentColor;`} />
+              </a>
+            </TooltipTrigger>
+            <TooltipContent side="top">
+              <div class="flex items-center gap-1.5">
+                <span>{techInfo.name}</span>
+                <ExternalLink class="size-3.5" aria-hidden="true" />
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        );
+      })}
     </div>
   )
 }
