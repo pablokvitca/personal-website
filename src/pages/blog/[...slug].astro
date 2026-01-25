@@ -1,0 +1,53 @@
+---
+import BlogPostLayout from '@/layouts/BlogPostLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { getSlugFromId, getBlogSnapshots } from '@/lib/blog';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: getSlugFromId(post.id) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const slug = getSlugFromId(post.id);
+const snapshots = await getBlogSnapshots(slug);
+---
+
+<BlogPostLayout
+  title={post.data.title}
+  abstract={post.data.abstract}
+  publishedAt={post.data.publishedAt}
+  updatedAt={post.data.updatedAt}
+  tags={post.data.tags}
+  seoTitle={post.data.seoTitle}
+  seoDescription={post.data.seoDescription}
+  ogImage={post.data.ogImage}
+>
+  <Content />
+
+  {
+    snapshots.length > 0 && (
+      <aside class="mt-12 pt-8 border-t border-border">
+        <h2 class="text-lg font-semibold mb-4">Edit History</h2>
+        <ul class="space-y-2">
+          {snapshots.map((snapshot) => (
+            <li>
+              <a
+                href={`/blog/${slug}/${snapshot.id.split('/')[1].replace('.snapshot.mdx', '')}`}
+                class="text-sm text-muted-foreground hover:text-primary"
+              >
+                {new Date(snapshot.data.snapshotDate).toLocaleString()}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )
+  }
+</BlogPostLayout>

@@ -1,0 +1,63 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TagBadge from '@/components/blog/TagBadge.astro';
+import { formatDate } from '@/lib/blog';
+
+interface Props {
+  title: string;
+  abstract: string;
+  publishedAt: Date;
+  updatedAt?: Date;
+  tags: string[];
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  abstract,
+  publishedAt,
+  updatedAt,
+  tags,
+  seoTitle,
+  seoDescription,
+  ogImage,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={seoTitle ?? `${title} - Pablo Kvitca`}
+  description={seoDescription ?? abstract}
+  ogImage={ogImage}
+  article={{
+    publishedTime: publishedAt,
+    modifiedTime: updatedAt,
+    tags,
+  }}
+>
+  <article class="max-w-3xl mx-auto">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-4">{title}</h1>
+      <p class="text-xl text-muted-foreground mb-4">{abstract}</p>
+      <div class="flex flex-wrap gap-2 mb-4">
+        {tags.map((tag) => <TagBadge tag={tag} size="md" />)}
+      </div>
+      <div class="flex items-center gap-4 text-sm text-muted-foreground">
+        <time datetime={publishedAt.toISOString()}>
+          Published: {formatDate(publishedAt)}
+        </time>
+        {
+          updatedAt && (
+            <time datetime={updatedAt.toISOString()}>
+              Updated: {formatDate(updatedAt)}
+            </time>
+          )
+        }
+      </div>
+    </header>
+    <div class="prose prose-lg dark:prose-invert max-w-none">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

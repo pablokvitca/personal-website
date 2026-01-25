@@ -1,0 +1,61 @@
+# LLM Information for pablokvitca.com
+
+## Site Purpose
+
+Personal website and technical blog for Pablo Kvitca, a software engineer.
+
+## Content Overview
+
+This site contains:
+- Technical blog posts about software development
+- Project showcases with technology details
+- Professional information about the author
+
+## Primary Topics
+
+- Software Development
+- Web Technologies
+- TypeScript/JavaScript
+- React and Frontend Development
+- System Design
+- Machine Learning (occasional)
+
+## Content Structure
+
+### Blog (/blog)
+Technical articles and tutorials. Each post includes:
+- Title and abstract
+- Publication date
+- Tags for categorization (technology:*, topic:*, language:*)
+- Full article content in MDX format
+
+### Projects (/projects)
+Software project showcases. Each project includes:
+- Title and description
+- Technology stack (via tags)
+- Project status (active/completed/archived)
+- Links to GitHub and live demos
+
+### About (/about)
+Information about the author and contact details.
+
+### Colophon (/colophon)
+Technical details about how this website is built.
+
+## Technology Stack
+
+- Astro (static site generator)
+- React (interactive components)
+- TypeScript
+- Tailwind CSS
+- MDX (content format)
+- Cloudflare Pages (hosting)
+
+## Contact
+
+Best way to reach the author: LinkedIn
+https://linkedin.com/in/pablokvitca
+
+## Source Code
+
+https://github.com/pablokvitca/personal-website

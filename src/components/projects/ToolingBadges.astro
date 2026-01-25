@@ -1,0 +1,22 @@
+---
+import { getTechnologyTags, formatTagValue } from '@/lib/tags';
+
+interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+const techTags = getTechnologyTags(tags);
+---
+
+{
+  techTags.length > 0 && (
+    <div class="flex flex-wrap gap-2">
+      {techTags.map((tag) => (
+        <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
+          {formatTagValue(tag.value)}
+        </span>
+      ))}
+    </div>
+  )
+}

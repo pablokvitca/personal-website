@@ -1,0 +1,35 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectList from '@/components/projects/ProjectList.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+const projects = await getCollection('projects');
+
+// Sort by featured first, then by start date
+const sortedProjects = projects.sort((a, b) => {
+  if (a.data.featured !== b.data.featured) {
+    return a.data.featured ? -1 : 1;
+  }
+  const aDate = a.data.startDate?.getTime() ?? 0;
+  const bDate = b.data.startDate?.getTime() ?? 0;
+  return bDate - aDate;
+});
+---
+
+<BaseLayout
+  title="Projects - Pablo Kvitca"
+  description="A collection of projects I've worked on."
+>
+  <div class="max-w-4xl mx-auto">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold mb-4">Projects</h1>
+      <p class="text-xl text-muted-foreground">
+        A collection of projects I've worked on.
+      </p>
+    </header>
+
+    <ProjectList projects={sortedProjects} />
+  </div>
+</BaseLayout>
