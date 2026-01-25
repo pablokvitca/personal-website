@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Prose from '@/components/ui/starwind/prose';
 
 export const prerender = true;
 ---
@@ -11,7 +12,7 @@ export const prerender = true;
   <div class="max-w-3xl mx-auto">
     <h1 class="text-4xl font-bold mb-8">About Me</h1>
 
-    <div class="prose prose-lg dark:prose-invert">
+    <Prose class="max-w-none">
       <p>
         I'm a software engineer passionate about building great products and
         solving complex problems. I enjoy working across the full stack and
@@ -34,6 +35,6 @@ export const prerender = true;
           LinkedIn
         </a>.
       </p>
-    </div>
+    </Prose>
   </div>
 </BaseLayout>
