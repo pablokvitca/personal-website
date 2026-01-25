@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Prose from '@/components/ui/starwind/prose';
 import { getEntry, render } from 'astro:content';
 
 export const prerender = true;
@@ -18,8 +19,8 @@ const { Content } = await render(colophon);
   description={colophon.data.description}
 >
   <div class="max-w-4xl mx-auto">
-    <div class="prose prose-lg dark:prose-invert max-w-none">
+    <Prose class="max-w-none">
       <Content />
-    </div>
+    </Prose>
   </div>
 </BaseLayout>

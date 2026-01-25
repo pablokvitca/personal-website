@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import TagBadge from '@/components/blog/TagBadge.astro';
+import Prose from '@/components/ui/starwind/prose';
 import { formatDate } from '@/lib/blog';
 
 interface Props {
@@ -56,8 +57,8 @@ const {
         }
       </div>
     </header>
-    <div class="prose prose-lg dark:prose-invert max-w-none">
+    <Prose class="max-w-none">
       <slot />
-    </div>
+    </Prose>
   </article>
 </BaseLayout>

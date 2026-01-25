@@ -6,5 +6,10 @@
     "cssVariables": true
   },
   "componentDir": "src/components/ui/",
-  "components": []
+  "components": [
+    {
+      "name": "prose",
+      "version": "1.0.0"
+    }
+  ]
 }
