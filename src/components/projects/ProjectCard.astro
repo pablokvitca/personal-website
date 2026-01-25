@@ -1,0 +1,35 @@
+---
+import ToolingBadges from './ToolingBadges.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const slug = project.id.replace(/\.mdx$/, '');
+---
+
+<article class="border border-border rounded-lg p-6 hover:border-primary transition-colors">
+  <a href={`/projects/${slug}`} class="block">
+    <div class="flex items-start justify-between mb-2">
+      <h2 class="text-xl font-semibold hover:text-primary transition-colors">
+        {project.data.title}
+      </h2>
+      <span
+        class:list={[
+          'text-xs px-2 py-1 rounded-full',
+          project.data.status === 'active' && 'bg-green-100 text-green-800',
+          project.data.status === 'completed' && 'bg-blue-100 text-blue-800',
+          project.data.status === 'archived' && 'bg-gray-100 text-gray-800',
+        ]}
+      >
+        {project.data.status}
+      </span>
+    </div>
+    <p class="text-muted-foreground mb-4 line-clamp-2">
+      {project.data.description}
+    </p>
+    <ToolingBadges tags={project.data.tags} />
+  </a>
+</article>

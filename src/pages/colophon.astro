@@ -1,0 +1,110 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout
+  title="Colophon - Pablo Kvitca"
+  description="Technical details about how this website was built."
+>
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">Colophon</h1>
+
+    <div class="prose prose-lg dark:prose-invert">
+      <p>
+        This website is built with modern web technologies, prioritizing
+        performance, accessibility, and developer experience.
+      </p>
+
+      <h2>Technology Stack</h2>
+
+      <h3>Framework</h3>
+      <ul>
+        <li>
+          <strong>Astro</strong> - Static site generator with islands
+          architecture
+        </li>
+        <li>
+          <strong>React</strong> - For interactive components
+        </li>
+        <li>
+          <strong>TypeScript</strong> - Type-safe development
+        </li>
+      </ul>
+
+      <h3>Styling</h3>
+      <ul>
+        <li>
+          <strong>Tailwind CSS</strong> - Utility-first CSS framework
+        </li>
+        <li>
+          <strong>Starwind</strong> - Astro component library
+        </li>
+      </ul>
+
+      <h3>Content</h3>
+      <ul>
+        <li>
+          <strong>MDX</strong> - Markdown with JSX components
+        </li>
+        <li>
+          <strong>Astro Content Collections</strong> - Type-safe content
+          management
+        </li>
+      </ul>
+
+      <h3>Hosting & Infrastructure</h3>
+      <ul>
+        <li>
+          <strong>Cloudflare Pages</strong> - Edge deployment and hosting
+        </li>
+        <li>
+          <strong>Cloudflare Web Analytics</strong> - Privacy-first analytics
+        </li>
+      </ul>
+
+      <h3>Security</h3>
+      <ul>
+        <li>
+          <strong>Arcjet</strong> - Application security
+        </li>
+      </ul>
+
+      <h3>Analytics</h3>
+      <ul>
+        <li>
+          <strong>PostHog</strong> - Product analytics and event tracking
+        </li>
+        <li>
+          <strong>Cloudflare Analytics</strong> - Basic web analytics
+        </li>
+      </ul>
+
+      <h2>Development</h2>
+      <ul>
+        <li>
+          <strong>pnpm</strong> - Package manager
+        </li>
+        <li>
+          <strong>mise</strong> - Runtime version management
+        </li>
+        <li>
+          <strong>Git</strong> - Version control with conventional commits
+        </li>
+      </ul>
+
+      <h2>Source Code</h2>
+      <p>
+        The source code for this website is available on{' '}
+        <a
+          href="https://github.com/pablokvitca/personal-website"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout
+  title="About - Pablo Kvitca"
+  description="Learn more about Pablo Kvitca, software engineer and technology enthusiast."
+>
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">About Me</h1>
+
+    <div class="prose prose-lg dark:prose-invert">
+      <p>
+        I'm a software engineer passionate about building great products and
+        solving complex problems. I enjoy working across the full stack and
+        exploring new technologies.
+      </p>
+
+      <p>
+        This website serves as my personal space on the internet where I share
+        my thoughts, projects, and learnings.
+      </p>
+
+      <h2>Get in Touch</h2>
+      <p>
+        The best way to reach me is through{' '}
+        <a
+          href="https://linkedin.com/in/pablokvitca"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn
+        </a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
