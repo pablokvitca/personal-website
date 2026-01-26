@@ -7,10 +7,10 @@ const tagSchema = z.string().regex(
   'Tags must be in format type:value (e.g., technology:react)'
 );
 
-// Blog collection - live posts
+// Blog collection - all versions are snapshots, latest is "live"
 const blog = defineCollection({
   loader: glob({
-    pattern: '**/live.mdx',
+    pattern: '**/*.snapshot.mdx',
     base: './src/content/blog',
   }),
   schema: z.object({
@@ -18,10 +18,10 @@ const blog = defineCollection({
     title: z.string(),
     abstract: z.string(),
     publishedAt: z.coerce.date(),
+    snapshotDate: z.coerce.date(),
     tags: z.array(tagSchema),
 
     // Optional frontmatter
-    updatedAt: z.coerce.date().optional(),
     draft: z.boolean().default(false),
     featured: z.boolean().default(false),
 
@@ -29,21 +29,6 @@ const blog = defineCollection({
     seoTitle: z.string().optional(),
     seoDescription: z.string().optional(),
     ogImage: z.string().optional(),
-  }),
-});
-
-// Blog snapshots collection - historical versions
-const blogSnapshots = defineCollection({
-  loader: glob({
-    pattern: '**/*.snapshot.mdx',
-    base: './src/content/blog',
-  }),
-  schema: z.object({
-    title: z.string(),
-    abstract: z.string(),
-    publishedAt: z.coerce.date(),
-    snapshotDate: z.coerce.date(),
-    tags: z.array(tagSchema),
   }),
 });
 
@@ -83,4 +68,4 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { blog, blogSnapshots, projects, pages };
+export const collections = { blog, projects, pages };

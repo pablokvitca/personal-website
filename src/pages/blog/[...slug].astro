@@ -6,33 +6,53 @@ import { getSlugFromId, getBlogSnapshots } from '@/lib/blog';
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  const snapshots = await getCollection('blogSnapshots');
+  const allSnapshots = await getCollection('blog', ({ data }) => !data.draft);
 
-  // Generate paths for main posts
-  const postPaths = posts.map((post) => ({
-    params: { slug: getSlugFromId(post.id) },
-    props: { post, isSnapshot: false },
-  }));
+  // Group snapshots by slug
+  const bySlug = new Map<string, typeof allSnapshots>();
+  for (const snapshot of allSnapshots) {
+    const slug = getSlugFromId(snapshot.id);
+    if (!bySlug.has(slug)) {
+      bySlug.set(slug, []);
+    }
+    bySlug.get(slug)!.push(snapshot);
+  }
 
-  // Generate paths for snapshot versions
-  const snapshotPaths = snapshots.map((snapshot) => {
-    const slug = snapshot.id.split('/')[0];
-    const version = snapshot.id.split('/')[1].replace('.snapshot.mdx', '');
-    return {
-      params: { slug: `${slug}/${version}` },
-      props: { post: snapshot, isSnapshot: true },
-    };
-  });
+  const paths = [];
 
-  return [...postPaths, ...snapshotPaths];
+  for (const [slug, snapshots] of bySlug) {
+    // Sort by snapshotDate descending
+    const sorted = snapshots.sort(
+      (a, b) =>
+        new Date(b.data.snapshotDate).getTime() -
+        new Date(a.data.snapshotDate).getTime()
+    );
+
+    // Generate path for latest version (live)
+    paths.push({
+      params: { slug },
+      props: { post: sorted[0], isSnapshot: false },
+    });
+
+    // Generate paths for historical snapshots
+    for (let i = 1; i < sorted.length; i++) {
+      const snapshot = sorted[i];
+      // Astro glob loader converts "2026-01-25-17-58.snapshot.mdx" ID to "2026-01-25-17-58snapshot"
+      const filename = snapshot.id.split('/')[1];
+      const timestamp = filename.replace('snapshot', '');
+      paths.push({
+        params: { slug: `${slug}/snapshot/${timestamp}` },
+        props: { post: snapshot, isSnapshot: true },
+      });
+    }
+  }
+
+  return paths;
 }
 
 const { post, isSnapshot } = Astro.props;
 const { Content } = await render(post);
-const slug = isSnapshot
-  ? post.id.split('/')[0]
-  : getSlugFromId(post.id);
+const slug = getSlugFromId(post.id);
 const snapshots = await getBlogSnapshots(slug);
 ---
 
@@ -40,7 +60,7 @@ const snapshots = await getBlogSnapshots(slug);
   title={post.data.title}
   abstract={post.data.abstract}
   publishedAt={post.data.publishedAt}
-  updatedAt={isSnapshot ? new Date(post.data.snapshotDate) : post.data.updatedAt}
+  updatedAt={post.data.snapshotDate}
   tags={post.data.tags}
   seoTitle={post.data.seoTitle}
   seoDescription={post.data.seoDescription}
@@ -48,7 +68,7 @@ const snapshots = await getBlogSnapshots(slug);
   snapshots={snapshots}
   slug={slug}
   isSnapshot={isSnapshot}
-  snapshotDate={isSnapshot ? new Date(post.data.snapshotDate) : undefined}
+  snapshotDate={isSnapshot ? post.data.snapshotDate : undefined}
 >
   <Content />
 </BlogPostLayout>
