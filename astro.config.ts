@@ -22,7 +22,12 @@ export default defineConfig({
   },
 
   integrations: [
-    react(),
+    // Disable React SSR to avoid React 19 MessageChannel incompatibility with Cloudflare Workers
+    // All React components use client:* directives anyway (client:load, etc.)
+    react({
+      include: ['**/**.tsx'],
+      experimentalReactChildren: true,
+    }),
     mdx({
       syntaxHighlight: 'shiki',
       shikiConfig: {
