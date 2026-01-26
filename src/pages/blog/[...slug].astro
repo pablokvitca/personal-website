@@ -1,0 +1,74 @@
+---
+import BlogPostLayout from '@/layouts/BlogPostLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { getSlugFromId, getBlogSnapshots } from '@/lib/blog';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const allSnapshots = await getCollection('blog', ({ data }) => !data.draft);
+
+  // Group snapshots by slug
+  const bySlug = new Map<string, typeof allSnapshots>();
+  for (const snapshot of allSnapshots) {
+    const slug = getSlugFromId(snapshot.id);
+    if (!bySlug.has(slug)) {
+      bySlug.set(slug, []);
+    }
+    bySlug.get(slug)!.push(snapshot);
+  }
+
+  const paths = [];
+
+  for (const [slug, snapshots] of bySlug) {
+    // Sort by snapshotDate descending
+    const sorted = snapshots.sort(
+      (a, b) =>
+        new Date(b.data.snapshotDate).getTime() -
+        new Date(a.data.snapshotDate).getTime()
+    );
+
+    // Generate path for latest version (live)
+    paths.push({
+      params: { slug },
+      props: { post: sorted[0], isSnapshot: false },
+    });
+
+    // Generate paths for historical snapshots
+    for (let i = 1; i < sorted.length; i++) {
+      const snapshot = sorted[i];
+      // Astro glob loader converts "2026-01-25-17-58.snapshot.mdx" ID to "2026-01-25-17-58snapshot"
+      const filename = snapshot.id.split('/')[1];
+      const timestamp = filename.replace('snapshot', '');
+      paths.push({
+        params: { slug: `${slug}/snapshot/${timestamp}` },
+        props: { post: snapshot, isSnapshot: true },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { post, isSnapshot } = Astro.props;
+const { Content } = await render(post);
+const slug = getSlugFromId(post.id);
+const snapshots = await getBlogSnapshots(slug);
+---
+
+<BlogPostLayout
+  title={post.data.title}
+  abstract={post.data.abstract}
+  publishedAt={post.data.publishedAt}
+  updatedAt={post.data.snapshotDate}
+  tags={post.data.tags}
+  seoTitle={post.data.seoTitle}
+  seoDescription={post.data.seoDescription}
+  ogImage={post.data.ogImage}
+  snapshots={snapshots}
+  slug={slug}
+  isSnapshot={isSnapshot}
+  snapshotDate={isSnapshot ? post.data.snapshotDate : undefined}
+>
+  <Content />
+</BlogPostLayout>

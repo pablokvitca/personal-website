@@ -1,0 +1,47 @@
+---
+import Header from '@/components/common/Header.astro';
+import Footer from '@/components/common/Footer.astro';
+import SEOHead from '@/components/common/SEOHead.astro';
+import '@/styles/starwind.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  article?: {
+    publishedTime: Date;
+    modifiedTime?: Date;
+    tags?: string[];
+  };
+}
+
+const { title, description, ogImage, article } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SEOHead
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      article={article}
+    />
+    <script is:inline>
+      // Prevent flash of wrong theme
+      (function() {
+        const theme = localStorage.getItem('theme') || 'system';
+        if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen bg-background text-foreground">
+    <Header />
+    <main class="container mx-auto px-4 py-8">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

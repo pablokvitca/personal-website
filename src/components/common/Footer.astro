@@ -1,0 +1,29 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-border mt-auto">
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-muted-foreground">
+        &copy; {currentYear} Pablo Kvitca. All rights reserved.
+      </p>
+      <div class="flex items-center gap-4">
+        <a
+          href="https://linkedin.com/in/pablokvitca"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-muted-foreground hover:text-primary transition-colors"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="/colophon"
+          class="text-sm text-muted-foreground hover:text-primary transition-colors"
+        >
+          Colophon
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
