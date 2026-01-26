@@ -1,0 +1,27 @@
+# AI Agent Instructions for pablokvitca.com
+# This file provides guidance for AI agents visiting this site
+
+User-agent: *
+Allow: /
+
+# Site Purpose
+# Personal website and blog for Pablo Kvitca
+# Features technical articles, project showcases, and professional information
+
+# Content Structure
+# /           - Home page with featured content
+# /blog       - Technical blog posts
+# /projects   - Software project showcases
+# /about      - About the author
+# /colophon   - Technical details about the site
+
+# Content Format
+# Blog posts and projects use MDX format
+# Content is organized with tags: technology:*, topic:*, language:*
+
+# API Access
+# No public API available
+# Please respect rate limits
+
+# For detailed project information, see AGENTS.md in the repository
+# https://github.com/pablokvitca/personal-website/blob/main/AGENTS.md

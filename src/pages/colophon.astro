@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Prose from '@/components/ui/starwind/prose';
+import { getEntry, render } from 'astro:content';
+
+export const prerender = true;
+
+const colophonEntry = await getEntry('pages', 'colophon');
+if (!colophonEntry) {
+  throw new Error('Colophon page not found');
+}
+
+const colophon = colophonEntry;
+const { Content } = await render(colophon);
+---
+
+<BaseLayout
+  title={`${colophon.data.title} - Pablo Kvitca`}
+  description={colophon.data.description}
+>
+  <div class="max-w-4xl mx-auto">
+    <Prose class="max-w-none">
+      <Content />
+    </Prose>
+  </div>
+</BaseLayout>

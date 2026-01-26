@@ -1,0 +1,25 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+  showEmpty?: boolean;
+}
+
+const { projects, showEmpty = true } = Astro.props;
+---
+
+{
+  projects.length > 0 ? (
+    <div class="grid gap-6 md:grid-cols-2">
+      {projects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+  ) : showEmpty ? (
+    <p class="text-muted-foreground text-center py-12">
+      No projects found.
+    </p>
+  ) : null
+}
