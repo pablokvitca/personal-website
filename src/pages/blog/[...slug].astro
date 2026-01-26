@@ -7,15 +7,32 @@ export const prerender = true;
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
+  const snapshots = await getCollection('blogSnapshots');
+
+  // Generate paths for main posts
+  const postPaths = posts.map((post) => ({
     params: { slug: getSlugFromId(post.id) },
-    props: { post },
+    props: { post, isSnapshot: false },
   }));
+
+  // Generate paths for snapshot versions
+  const snapshotPaths = snapshots.map((snapshot) => {
+    const slug = snapshot.id.split('/')[0];
+    const version = snapshot.id.split('/')[1].replace('.snapshot.mdx', '');
+    return {
+      params: { slug: `${slug}/${version}` },
+      props: { post: snapshot, isSnapshot: true },
+    };
+  });
+
+  return [...postPaths, ...snapshotPaths];
 }
 
-const { post } = Astro.props;
+const { post, isSnapshot } = Astro.props;
 const { Content } = await render(post);
-const slug = getSlugFromId(post.id);
+const slug = isSnapshot
+  ? post.id.split('/')[0]
+  : getSlugFromId(post.id);
 const snapshots = await getBlogSnapshots(slug);
 ---
 
@@ -23,31 +40,15 @@ const snapshots = await getBlogSnapshots(slug);
   title={post.data.title}
   abstract={post.data.abstract}
   publishedAt={post.data.publishedAt}
-  updatedAt={post.data.updatedAt}
+  updatedAt={isSnapshot ? new Date(post.data.snapshotDate) : post.data.updatedAt}
   tags={post.data.tags}
   seoTitle={post.data.seoTitle}
   seoDescription={post.data.seoDescription}
   ogImage={post.data.ogImage}
+  snapshots={snapshots}
+  slug={slug}
+  isSnapshot={isSnapshot}
+  snapshotDate={isSnapshot ? new Date(post.data.snapshotDate) : undefined}
 >
   <Content />
-
-  {
-    snapshots.length > 0 && (
-      <aside class="mt-12 pt-8 border-t border-border">
-        <h2 class="text-lg font-semibold mb-4">Edit History</h2>
-        <ul class="space-y-2">
-          {snapshots.map((snapshot) => (
-            <li>
-              <a
-                href={`/blog/${slug}/${snapshot.id.split('/')[1].replace('.snapshot.mdx', '')}`}
-                class="text-sm text-muted-foreground hover:text-primary"
-              >
-                {new Date(snapshot.data.snapshotDate).toLocaleString()}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </aside>
-    )
-  }
 </BlogPostLayout>
