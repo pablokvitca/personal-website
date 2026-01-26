@@ -49,10 +49,15 @@ const currentVersion = isSnapshot
   ? snapshots.findIndex((s) => new Date(s.data.snapshotDate).getTime() === snapshotDate?.getTime()) + 1
   : totalVersions;
 
-const snapshotData = snapshots.map((snapshot) => ({
-  url: `/blog/${slug}/${snapshot.id.split('/')[1].replace('.snapshot.mdx', '')}`,
-  date: new Date(snapshot.data.snapshotDate),
-}));
+const snapshotData = snapshots.map((snapshot) => {
+  // Astro glob loader converts "2026-01-25-17-58.snapshot.mdx" ID to "2026-01-25-17-58snapshot"
+  const filename = snapshot.id.split('/')[1];
+  const timestamp = filename.replace('snapshot', '');
+  return {
+    url: `/blog/${slug}/snapshot/${timestamp}`,
+    date: new Date(snapshot.data.snapshotDate),
+  };
+});
 ---
 
 <BaseLayout
