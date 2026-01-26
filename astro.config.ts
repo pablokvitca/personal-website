@@ -19,10 +19,13 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-    ssr: {
-      // Externalize React for SSR to avoid bundling React Server Components
-      // This prevents MessageChannel errors in Cloudflare Workers
-      external: ['react', 'react-dom', 'react-dom/server'],
+    resolve: {
+      // Use React's edge runtime for Cloudflare Workers compatibility
+      // Fixes "MessageChannel is not defined" error with React 19
+      // See: https://github.com/withastro/astro/issues/12824
+      alias: {
+        'react-dom/server': 'react-dom/server.edge',
+      },
     },
   },
 
