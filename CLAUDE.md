@@ -194,10 +194,11 @@ src/
 ## Testing Changes
 
 Before committing:
-1. Run `pnpm check` - Verify Astro configuration
-2. Run `pnpm typecheck` - Verify TypeScript types
-3. Run `pnpm build` - Verify production build succeeds
-4. Test in browser with `pnpm dev`
+1. Run `pnpm check` - Verify Astro configuration and TypeScript types
+2. Run `pnpm build` - Verify production build succeeds
+3. Test in browser with `pnpm dev`
+
+Note: `pnpm check` (astro check) is the primary type checker for this project as it has full Astro compiler context. The `pnpm typecheck` command (tsc --noEmit) may report false positives on Astro component imports and should be considered supplementary.
 
 ## Deployment
 
