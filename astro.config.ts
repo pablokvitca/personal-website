@@ -19,15 +19,18 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      // Use React's edge runtime for Cloudflare Workers compatibility
+      // Fixes "MessageChannel is not defined" error with React 19
+      // See: https://github.com/withastro/astro/issues/12824
+      alias: {
+        'react-dom/server': 'react-dom/server.edge',
+      },
+    },
   },
 
   integrations: [
-    // Disable React SSR to avoid React 19 MessageChannel incompatibility with Cloudflare Workers
-    // All React components use client:* directives anyway (client:load, etc.)
-    react({
-      include: ['**/**.tsx'],
-      experimentalReactChildren: true,
-    }),
+    react(),
     mdx({
       syntaxHighlight: 'shiki',
       shikiConfig: {
