@@ -23,9 +23,11 @@ export default defineConfig({
       // Use React's edge runtime for Cloudflare Workers compatibility
       // Fixes "MessageChannel is not defined" error with React 19
       // See: https://github.com/withastro/astro/issues/12824
-      alias: {
-        'react-dom/server': 'react-dom/server.edge',
-      },
+      alias: import.meta.env.PROD
+        ? {
+            'react-dom/server': 'react-dom/server.edge',
+          }
+        : undefined,
     },
   },
 
