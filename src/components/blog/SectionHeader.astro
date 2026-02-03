@@ -1,0 +1,93 @@
+---
+// This is a base component, see H1.astro, H2.astro, etc. for actual heading components
+export interface Props {
+  level: 1 | 2 | 3 | 4 | 5 | 6;
+  id?: string;
+  class?: string;
+}
+
+const { level, id, class: className, ...rest } = Astro.props;
+const Tag = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+---
+
+<Tag id={id} class={className} {...rest}>
+  <span class="heading-content">
+    <slot />
+  </span>
+  {id && (
+    <button
+      class="heading-link-button"
+      aria-label="Copy link to section"
+      data-heading-id={id}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+      </svg>
+    </button>
+  )}
+</Tag>
+
+<script>
+  // Handle heading link clicks
+  function setupHeadingLinks() {
+    const buttons = document.querySelectorAll('.heading-link-button');
+
+    buttons.forEach((button) => {
+      // Remove existing listener if any
+      const newButton = button.cloneNode(true) as HTMLElement;
+      button.replaceWith(newButton);
+
+      newButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const headingId = newButton.getAttribute('data-heading-id');
+        if (!headingId) return;
+
+        const url = `${window.location.origin}${window.location.pathname}#${headingId}`;
+
+        try {
+          await navigator.clipboard.writeText(url);
+
+          // Access toast from window object (set by Starwind toast)
+          if ((window as any).__starwind__?.toast) {
+            (window as any).__starwind__.toast.add({
+              title: 'Link copied to clipboard',
+              variant: 'success',
+              duration: 3000
+            });
+          }
+        } catch (error) {
+          console.error('Failed to copy link:', error);
+          if ((window as any).__starwind__?.toast) {
+            (window as any).__starwind__.toast.add({
+              title: 'Failed to copy link',
+              variant: 'error',
+              duration: 3000
+            });
+          }
+        }
+      });
+    });
+  }
+
+  // Run on initial load
+  setupHeadingLinks();
+
+  // Run on Astro page navigation (for view transitions)
+  document.addEventListener('astro:page-load', setupHeadingLinks);
+</script>
+
+<style>
+  h1, h2, h3, h4, h5, h6 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .heading-content {
+    flex: 1;
+  }
+</style>
