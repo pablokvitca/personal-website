@@ -25,6 +25,9 @@ const blog = defineCollection({
     draft: z.boolean().default(false),
     featured: z.boolean().default(false),
 
+    // Table of Contents
+    tocMaxDepth: z.number().min(1).max(6).default(3).optional(),
+
     // SEO frontmatter
     seoTitle: z.string().optional(),
     seoDescription: z.string().optional(),
