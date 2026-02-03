@@ -29,3 +29,6 @@ NOTE: **This website is currently under construction**
     - GitHub (https://github.com/)
     - Conventional Commits (https://www.conventionalcommits.org/en/v1.0.0/#specification)
 
+
+NOTE: Deployment is managed privately in its own repo.
+

@@ -165,3 +165,52 @@
     @apply cursor-pointer;
   }
 }
+
+/* Heading link button styles */
+.heading-wrapper {
+  display: inline;
+}
+
+.heading-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0.25rem;
+  color: hsl(var(--muted-foreground));
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.heading-link-button:hover {
+  color: hsl(var(--primary));
+}
+
+.heading-link-button:focus {
+  opacity: 1;
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Show link button when hovering over the heading itself */
+h1:hover .heading-link-button,
+h2:hover .heading-link-button,
+h3:hover .heading-link-button,
+h4:hover .heading-link-button,
+h5:hover .heading-link-button,
+h6:hover .heading-link-button {
+  opacity: 1;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  scroll-margin-top: 6rem;
+}
