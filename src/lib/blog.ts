@@ -138,3 +138,55 @@ export function formatDate(date: Date): string {
     day: 'numeric',
   });
 }
+
+/**
+ * Heading type from Astro's render()
+ */
+export interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+/**
+ * Tree node for nested TOC structure
+ */
+export interface TocNode {
+  heading: Heading;
+  children: TocNode[];
+}
+
+/**
+ * Filter headings by max depth
+ */
+export function filterHeadingsByDepth(headings: Heading[], maxDepth: number): Heading[] {
+  return headings.filter((heading) => heading.depth <= maxDepth);
+}
+
+/**
+ * Generate nested TOC tree from flat headings array
+ */
+export function generateTocTree(headings: Heading[]): TocNode[] {
+  const tree: TocNode[] = [];
+  const stack: TocNode[] = [];
+
+  for (const heading of headings) {
+    const node: TocNode = { heading, children: [] };
+
+    // Find the parent node
+    while (stack.length > 0 && stack[stack.length - 1].heading.depth >= heading.depth) {
+      stack.pop();
+    }
+
+    // Add to parent's children or root
+    if (stack.length === 0) {
+      tree.push(node);
+    } else {
+      stack[stack.length - 1].children.push(node);
+    }
+
+    stack.push(node);
+  }
+
+  return tree;
+}
