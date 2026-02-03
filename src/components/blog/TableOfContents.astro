@@ -1,0 +1,104 @@
+---
+import { filterHeadingsByDepth, generateTocTree } from '@/lib/blog';
+import type { Heading, TocNode } from '@/lib/blog';
+
+interface Props {
+  headings: Heading[];
+  maxDepth: number;
+  title: string;
+}
+
+const { headings, maxDepth } = Astro.props;
+
+// Filter headings by max depth
+const filteredHeadings = filterHeadingsByDepth(headings, maxDepth);
+
+// Generate tree structure
+const tocTree = generateTocTree(filteredHeadings);
+
+// Don't render if no headings or only one heading
+const shouldRender = filteredHeadings.length > 1;
+
+// Recursive component to render TOC tree
+function renderTocNode(node: TocNode, depth: number = 0): string {
+  const indent = depth > 0 ? 'pl-4' : '';
+  let html = `<li class="${indent}">
+    <a
+      href="#${node.heading.slug}"
+      class="block py-1 text-sm hover:text-primary transition-colors"
+    >
+      ${node.heading.text}
+    </a>`;
+
+  if (node.children.length > 0) {
+    html += '<ol class="space-y-1">';
+    for (const child of node.children) {
+      html += renderTocNode(child, depth + 1);
+    }
+    html += '</ol>';
+  }
+
+  html += '</li>';
+  return html;
+}
+---
+
+{shouldRender && (
+  <nav
+    aria-label="Table of contents"
+    class="toc-container lg:block hidden lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto mb-8 lg:mb-0"
+  >
+    <div class="lg:pr-4">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+        On This Page
+      </h2>
+      <ol class="space-y-1" set:html={tocTree.map(node => renderTocNode(node)).join('')} />
+    </div>
+  </nav>
+
+  <!-- Mobile TOC: Show above content -->
+  <nav
+    aria-label="Table of contents"
+    class="toc-container block lg:hidden mb-8 p-4 rounded-lg border bg-card"
+  >
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+      On This Page
+    </h2>
+    <ol class="space-y-1" set:html={tocTree.map(node => renderTocNode(node)).join('')} />
+  </nav>
+)}
+
+<style>
+  /* Smooth scroll behavior */
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar for TOC on desktop */
+  @media (min-width: 1024px) {
+    .toc-container {
+      scrollbar-width: thin;
+      scrollbar-color: hsl(var(--muted)) transparent;
+    }
+
+    .toc-container::-webkit-scrollbar {
+      width: 0.5rem;
+    }
+
+    .toc-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .toc-container::-webkit-scrollbar-thumb {
+      background-color: hsl(var(--muted));
+      border-radius: 0.25rem;
+    }
+  }
+
+  /* Active section highlighting */
+  .toc-container a:target,
+  .toc-container a[aria-current="location"] {
+    color: hsl(var(--primary));
+    font-weight: 500;
+  }
+</style>
