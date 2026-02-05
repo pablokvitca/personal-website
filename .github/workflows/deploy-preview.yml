@@ -92,14 +92,14 @@ jobs:
         id: deployment
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_PAT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: json
           script: |
-            const { head_ref, head_sha } = JSON.parse('${{ steps.pr-info.outputs.result }}');
+            const { head_ref } = JSON.parse('${{ steps.pr-info.outputs.result }}');
             const { data } = await github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo:  context.repo.repo,
-              ref: head_sha,
+              ref: head_ref,
               environment: 'preview',
               description: `Preview for PR #${context.payload.issue.number} (preview/${head_ref})`,
               required_contexts: [],
@@ -110,7 +110,7 @@ jobs:
       - name: Poll for Cloudflare result and update deployment status
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_PAT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const owner      = context.repo.owner;
             const repo       = context.repo.repo;
