@@ -14,9 +14,9 @@ export function initPostHog(): void {
     return;
   }
 
-  const cfPagesBranch = import.meta.env.CF_PAGES_BRANCH as string | undefined;
-  const cfPagesUrl = import.meta.env.CF_PAGES_URL as string | undefined;
-  const environment = cfPagesBranch === 'main' ? 'production' : 'preview';
+  const hostname = window.location.hostname;
+  const isProduction = hostname === 'pablokvitca.com';
+  const environment = isProduction ? 'production' : 'preview';
 
   posthog.init(posthogKey, {
     api_host: 'https://app.posthog.com',
@@ -27,8 +27,7 @@ export function initPostHog(): void {
 
   posthog.register({
     environment,
-    cf_pages_branch: cfPagesBranch ?? 'unknown',
-    cf_pages_url: cfPagesUrl ?? 'unknown',
+    deploy_url: `https://${hostname}`,
   });
 
   isInitialized = true;
