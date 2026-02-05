@@ -12,7 +12,7 @@ const slug = getSlugFromId(post.id);
 ---
 
 <article class="border border-border rounded-lg p-6 hover:border-primary transition-colors">
-  <a href={`/blog/${slug}`} class="block">
+  <a href={`/blog/${slug}`} class="block" data-analytics={`blog-card-${slug}`}>
     <h2 class="text-xl font-semibold mb-2 hover:text-primary transition-colors">
       {post.data.title}
     </h2>
