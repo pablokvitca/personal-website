@@ -46,6 +46,7 @@
   },
   "pnpm": {
     "overrides": {
+      "lodash": "^4.17.23",
       "wrangler": "^4.60.0"
     }
   }
