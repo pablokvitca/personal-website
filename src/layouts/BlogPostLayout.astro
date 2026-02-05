@@ -86,31 +86,33 @@ const snapshotData = snapshots.map((snapshot) => {
         <div class="flex flex-wrap gap-2 mb-4">
           {tags.map((tag) => <TagBadge tag={tag} size="md" />)}
         </div>
-        <div class="flex items-center gap-4 text-sm text-muted-foreground">
-          <time datetime={publishedAt.toISOString()}>
-            First Published: {formatDate(publishedAt)}
-          </time>
-          {
-            updatedAt && (
-              <div class="flex items-center gap-2">
-                <time datetime={updatedAt.toISOString()}>
-                  Last Updated: {formatDate(updatedAt)}
-                </time>
-                {snapshots.length > 0 && (
-                  <span>
-                    {"( "}
-                    <VersionHistoryDropdown
-                      currentVersion={currentVersion}
-                      totalVersions={totalVersions}
-                      snapshots={snapshotData}
-                      slug={slug}
-                    />
-                    {" )"}
-                  </span>
-                )}
-              </div>
-            )
-          }
+        <div class="text-sm text-muted-foreground">
+          {snapshots.length > 0 ? (
+            <span>
+              <time datetime={publishedAt.toISOString()}>
+                First Published: {formatDate(publishedAt)}
+              </time>
+              {" - "}
+              {updatedAt && (
+                <>
+                  <time datetime={updatedAt.toISOString()}>
+                    Last Updated: {formatDate(updatedAt)}
+                  </time>
+                  {" - "}
+                </>
+              )}
+              <VersionHistoryDropdown
+                currentVersion={currentVersion}
+                totalVersions={totalVersions}
+                snapshots={snapshotData}
+                slug={slug}
+              />
+            </span>
+          ) : (
+            <time datetime={publishedAt.toISOString()}>
+              Published on {formatDate(publishedAt)}
+            </time>
+          )}
         </div>
       </header>
       {isSnapshot && snapshotDate && (
