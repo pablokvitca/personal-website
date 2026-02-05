@@ -13,8 +13,8 @@ const { posts, showEmpty = true } = Astro.props;
 {
   posts.length > 0 ? (
     <div class="grid gap-6 md:grid-cols-2">
-      {posts.map((post) => (
-        <BlogCard post={post} />
+      {posts.map((post, index) => (
+        <BlogCard post={post} index={index} />
       ))}
     </div>
   ) : showEmpty ? (
