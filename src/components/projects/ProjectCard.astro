@@ -11,7 +11,7 @@ const slug = project.id.replace(/\.mdx$/, '');
 ---
 
 <article class="border border-border rounded-lg p-6 hover:border-primary transition-colors">
-  <a href={`/projects/${slug}`} class="block">
+  <a href={`/projects/${slug}`} class="block" data-analytics={`project-card-${slug}`}>
     <div class="flex items-start justify-between mb-2">
       <h2 class="text-xl font-semibold hover:text-primary transition-colors">
         {project.data.title}
