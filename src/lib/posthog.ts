@@ -14,11 +14,21 @@ export function initPostHog(): void {
     return;
   }
 
+  const cfPagesBranch = import.meta.env.CF_PAGES_BRANCH as string | undefined;
+  const cfPagesUrl = import.meta.env.CF_PAGES_URL as string | undefined;
+  const environment = cfPagesBranch === 'main' ? 'production' : 'preview';
+
   posthog.init(posthogKey, {
     api_host: 'https://app.posthog.com',
     capture_pageview: true,
     capture_pageleave: true,
     autocapture: true,
+  });
+
+  posthog.register({
+    environment,
+    cf_pages_branch: cfPagesBranch ?? 'unknown',
+    cf_pages_url: cfPagesUrl ?? 'unknown',
   });
 
   isInitialized = true;
