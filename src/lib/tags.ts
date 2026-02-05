@@ -66,6 +66,13 @@ export function formatTagValue(value: string): string {
 }
 
 /**
+ * Get non-technology tags (topic + language) from a list of tag strings
+ */
+export function getNonTechnologyTags(tags: string[]): ParsedTag[] {
+  return parseTags(tags).filter((t) => t.type !== 'technology');
+}
+
+/**
  * Get all unique tags from a collection of items
  */
 export function getUniqueTags(items: Array<{ tags: string[] }>): ParsedTag[] {
