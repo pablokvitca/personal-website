@@ -18,6 +18,8 @@ Hosted on Cloudflare Pages.
 
 ## Project Tooling
 - Use the upgraded project tooling CLIs: `mise`, `pnpm`, and `astro`; don't interact with legacy `npm` or `yarn` unless absolutely necessary.
+- Always run commands via `mise exec` to ensure the correct Node version is used (e.g. `mise exec pnpm install`, `mise exec pnpm build`).
+- The main branch is `main`. PRs should target `main`.
 - Prefer Astro-native Starwind UI components, fallback to shadcn components
 
 ## Post Versioning Pattern
@@ -163,13 +165,13 @@ chore: update dependencies
 This project uses **pnpm**. Do not use npm or yarn.
 
 ```bash
-pnpm install          # Install dependencies
-pnpm add <package>    # Add dependency
-pnpm add -D <package> # Add dev dependency
-pnpm dev              # Start dev server
-pnpm build            # Build for production
-pnpm check            # Run Astro check
-pnpm typecheck        # Run TypeScript check
+mise exec pnpm install          # Install dependencies
+mise exec pnpm add <package>    # Add dependency
+mise exec pnpm add -D <package> # Add dev dependency
+mise exec pnpm dev              # Start dev server
+mise exec pnpm build            # Build for production
+mise exec pnpm check            # Run Astro check
+mise exec pnpm typecheck        # Run TypeScript check
 ```
 
 ## File Organization
@@ -194,9 +196,9 @@ src/
 ## Testing Changes
 
 Before committing:
-1. Run `pnpm check` - Verify Astro configuration and TypeScript types
-2. Run `pnpm build` - Verify production build succeeds
-3. Test in browser with `pnpm dev`
+1. Run `mise exec pnpm check` - Verify Astro configuration and TypeScript types
+2. Run `mise exec pnpm build` - Verify production build succeeds
+3. Test in browser with `mise exec pnpm dev`
 
 Note: `pnpm check` (astro check) is the primary type checker for this project as it has full Astro compiler context. The `pnpm typecheck` command (tsc --noEmit) may report false positives on Astro component imports and should be considered supplementary.
 
