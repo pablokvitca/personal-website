@@ -8,7 +8,7 @@ on:
 
 permissions:
   contents: write
-  issues: write
+  deployments: write
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -81,21 +81,46 @@ jobs:
               core.info(`Created new branch ${previewBranch}`);
             }
 
-      - name: Post preview URL comment
+      - name: Create pending deployment
+        id: deployment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_PAT }}
+          result-encoding: json
+          script: |
+            const { head_ref, head_sha } = JSON.parse('${{ steps.pr-info.outputs.result }}');
+            const { data } = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              ref: head_sha,
+              environment: 'preview',
+              description: `Preview for PR #${context.payload.issue.number} (preview/${head_ref})`,
+              required_contexts: [],
+              auto_merge: false,
+            });
+            return { id: data.id };
+
+      - name: Wait for Cloudflare to build
+        run: sleep 30
+
+      - name: Mark deployment successful
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_PAT }}
           script: |
             const { head_ref } = JSON.parse('${{ steps.pr-info.outputs.result }}');
-            // Cloudflare Pages preview URL uses the branch name with slashes → hyphens
+            const { id: deploymentId } = JSON.parse('${{ steps.deployment.outputs.result }}');
             const slug = `preview-${head_ref}`.replace(/\//g, '-');
             const url  = `https://${slug}.pablokvitca-website.pages.dev`;
 
-            await github.rest.issues.createComment({
+            await github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo:  context.repo.repo,
-              issue_number: context.payload.issue.number,
-              body: `🚀 **Preview deployment triggered**\n\nBranch \`preview/${head_ref}\` has been created. Once Cloudflare finishes building, it will be available at:\n\n${url}\n\n> It may take a minute or two for the URL to go live.`,
+              deployment_id: deploymentId,
+              state: 'success',
+              target_url: url,
+              description: 'Preview deployed via Cloudflare Pages',
+              environment_url: url,
             });
 
   # ---------------------------------------------------------------------------
