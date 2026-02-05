@@ -1,6 +1,8 @@
 ---
-import TagBadge from './TagBadge.astro';
+import TagBadge from '@/components/ui/TagBadge.astro';
+import ToolingBadges from '@/components/ui/ToolingBadges.astro';
 import { formatDate, getSlugFromId } from '@/lib/blog';
+import { getNonTechnologyTags } from '@/lib/tags';
 import type { BlogPost } from '@/lib/blog';
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
 
 const { post, index } = Astro.props;
 const slug = getSlugFromId(post.id);
+const nonTechTags = getNonTechnologyTags(post.data.tags);
 ---
 
 <article class="border border-border rounded-lg p-6 hover:border-primary transition-colors">
@@ -20,9 +23,14 @@ const slug = getSlugFromId(post.id);
     <p class="text-muted-foreground mb-4 line-clamp-2">
       {post.data.abstract}
     </p>
-    <div class="flex flex-wrap gap-2 mb-4">
-      {post.data.tags.slice(0, 4).map((tag) => <TagBadge tag={tag} />)}
+    <div class={nonTechTags.length > 0 ? 'mb-2' : 'mb-4'}>
+      <ToolingBadges tags={post.data.tags} />
     </div>
+    {nonTechTags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-4">
+        {nonTechTags.map((tag) => <TagBadge tag={tag.raw} />)}
+      </div>
+    )}
     <time class="text-sm text-muted-foreground">
       {formatDate(post.data.publishedAt)}
     </time>

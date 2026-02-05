@@ -11,9 +11,10 @@ interface Props {
   totalVersions: number;
   snapshots: VersionSnapshot[];
   slug: string;
+  basePath: string;
 }
 
-const { currentVersion, totalVersions, snapshots, slug } = Astro.props;
+const { currentVersion, totalVersions, snapshots, slug, basePath } = Astro.props;
 ---
 
 <span class="version-history-container">
@@ -23,7 +24,7 @@ const { currentVersion, totalVersions, snapshots, slug } = Astro.props;
 
   <div class="version-dropdown">
     <div class="version-dropdown-content">
-      <a href={`/blog/${slug}`} class="version-item">
+      <a href={`${basePath}/${slug}`} class="version-item">
         <div class="version-label">Current version</div>
         <div class="version-date">Live</div>
       </a>

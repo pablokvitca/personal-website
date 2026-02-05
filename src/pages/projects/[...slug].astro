@@ -1,19 +1,75 @@
 ---
 import ProjectLayout from '@/layouts/ProjectLayout.astro';
+import H1 from '@/components/ui/headings/H1.astro';
+import H2 from '@/components/ui/headings/H2.astro';
+import H3 from '@/components/ui/headings/H3.astro';
+import H4 from '@/components/ui/headings/H4.astro';
+import H5 from '@/components/ui/headings/H5.astro';
+import H6 from '@/components/ui/headings/H6.astro';
 import { getCollection, render } from 'astro:content';
+import { getProjectSlugFromId, getProjectSnapshots } from '@/lib/projects';
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
-  return projects.map((project) => ({
-    params: { slug: project.id.replace(/\.mdx$/, '') },
-    props: { project },
-  }));
+  const allSnapshots = await getCollection('projects', ({ data }) => !data.draft);
+
+  // Group snapshots by slug
+  const bySlug = new Map<string, typeof allSnapshots>();
+  for (const snapshot of allSnapshots) {
+    const slug = getProjectSlugFromId(snapshot.id);
+    if (!bySlug.has(slug)) {
+      bySlug.set(slug, []);
+    }
+    bySlug.get(slug)!.push(snapshot);
+  }
+
+  const paths = [];
+
+  for (const [slug, snapshots] of bySlug) {
+    // Sort by snapshotDate descending
+    const sorted = snapshots.sort(
+      (a, b) =>
+        new Date(b.data.snapshotDate ?? 0).getTime() -
+        new Date(a.data.snapshotDate ?? 0).getTime()
+    );
+
+    // Generate path for latest version (live)
+    paths.push({
+      params: { slug },
+      props: { project: sorted[0], isSnapshot: false },
+    });
+
+    // Generate paths for historical snapshots
+    for (let i = 1; i < sorted.length; i++) {
+      const snapshot = sorted[i];
+      // Astro glob loader converts "2026-02-05-10-30.snapshot.mdx" ID to "2026-02-05-10-30snapshot"
+      const filename = snapshot.id.split('/')[1];
+      const timestamp = filename.replace('snapshot', '');
+      paths.push({
+        params: { slug: `${slug}/snapshot/${timestamp}` },
+        props: { project: snapshot, isSnapshot: true },
+      });
+    }
+  }
+
+  return paths;
 }
 
-const { project } = Astro.props;
-const { Content } = await render(project);
+const { project, isSnapshot } = Astro.props;
+const { Content, headings } = await render(project);
+const slug = getProjectSlugFromId(project.id);
+const snapshots = await getProjectSnapshots(slug);
+
+// MDX component overrides
+const components = {
+  h1: H1,
+  h2: H2,
+  h3: H3,
+  h4: H4,
+  h5: H5,
+  h6: H6,
+};
 ---
 
 <ProjectLayout
@@ -24,6 +80,12 @@ const { Content } = await render(project);
   startDate={project.data.startDate}
   endDate={project.data.endDate}
   links={project.data.links}
+  snapshots={snapshots}
+  slug={slug}
+  isSnapshot={isSnapshot}
+  snapshotDate={isSnapshot ? project.data.snapshotDate : undefined}
+  headings={headings}
+  tocMaxDepth={project.data.tocMaxDepth}
 >
-  <Content />
+  <Content components={components} />
 </ProjectLayout>
