@@ -1,5 +1,6 @@
 ---
-import ToolingBadges from './ToolingBadges.astro';
+import ToolingBadges from '@/components/ui/ToolingBadges.astro';
+import { getProjectSlugFromId } from '@/lib/projects';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const { project, index } = Astro.props;
-const slug = project.id.replace(/\.mdx$/, '');
+const slug = getProjectSlugFromId(project.id);
 ---
 
 <article class="border border-border rounded-lg p-6 hover:border-primary transition-colors">

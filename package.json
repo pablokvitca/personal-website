@@ -9,6 +9,7 @@
     "check": "astro check",
     "typecheck": "tsc --noEmit",
     "snapshot:blog": "node ./scripts/snapshot-blog.mjs",
+    "snapshot:project": "node ./scripts/snapshot-project.mjs",
     "lint": "eslint src --ext .ts,.tsx,.astro",
     "format": "prettier --write src",
     "astro": "astro"

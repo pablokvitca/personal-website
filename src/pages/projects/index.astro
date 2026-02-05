@@ -1,21 +1,11 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ProjectList from '@/components/projects/ProjectList.astro';
-import { getCollection } from 'astro:content';
+import { getAllProjects } from '@/lib/projects';
 
 export const prerender = true;
 
-const projects = await getCollection('projects');
-
-// Sort by featured first, then by start date
-const sortedProjects = projects.sort((a, b) => {
-  if (a.data.featured !== b.data.featured) {
-    return a.data.featured ? -1 : 1;
-  }
-  const aDate = a.data.startDate?.getTime() ?? 0;
-  const bDate = b.data.startDate?.getTime() ?? 0;
-  return bDate - aDate;
-});
+const sortedProjects = await getAllProjects();
 ---
 
 <BaseLayout
