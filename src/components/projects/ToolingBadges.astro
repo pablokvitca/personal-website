@@ -103,6 +103,7 @@ const techTags = getTechnologyTags(tags);
                 rel="noopener noreferrer"
                 class="inline-flex items-center justify-center p-1 transition-opacity hover:opacity-80"
                 aria-label={techInfo.name}
+                data-analytics={`tech-icon-${tag.value}`}
                 style={`color: ${techInfo.color};`}
               >
                 <IconComponent class="size-5" style={`fill: currentColor;`} />
