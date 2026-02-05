@@ -67,8 +67,25 @@ jobs:
             // Record the current time so the poll step can ignore stale CF comments
             const createdAt = new Date().toISOString();
 
+            let exists = false;
             try {
-              // Try to update existing ref
+              const { data: ref } = await github.rest.git.getRef({
+                owner, repo,
+                ref: `heads/${previewBranch}`,
+              });
+              exists = true;
+
+              if (ref.object.sha === head_sha) {
+                // Branch already at this SHA — delete and recreate to force a new CF build
+                await github.rest.git.deleteRef({ owner, repo, ref: `heads/${previewBranch}` });
+                core.info(`Deleted ${previewBranch} (same SHA) to force rebuild`);
+                exists = false;
+              }
+            } catch {
+              // Branch doesn't exist yet
+            }
+
+            if (exists) {
               await github.rest.git.updateRef({
                 owner, repo,
                 ref: `heads/${previewBranch}`,
@@ -76,14 +93,13 @@ jobs:
                 force: true,
               });
               core.info(`Updated existing branch ${previewBranch}`);
-            } catch {
-              // Doesn't exist yet — create it
+            } else {
               await github.rest.git.createRef({
                 owner, repo,
                 ref: `refs/heads/${previewBranch}`,
                 sha: head_sha,
               });
-              core.info(`Created new branch ${previewBranch}`);
+              core.info(`Created branch ${previewBranch}`);
             }
 
             return { createdAt };
