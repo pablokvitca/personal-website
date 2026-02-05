@@ -4,3 +4,4 @@ pnpm = "latest"
 
 [env]
 NODE_ENV = "development"
+_.file = ".env"
