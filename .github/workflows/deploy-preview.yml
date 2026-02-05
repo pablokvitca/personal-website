@@ -123,64 +123,58 @@ jobs:
             });
             return { id: data.id };
 
-      - name: Poll for Cloudflare result and update deployment status
+      - name: Poll for Cloudflare check run and update deployment status
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const owner      = context.repo.owner;
-            const repo       = context.repo.repo;
-            const prNumber   = context.payload.issue.number;
-            const { head_ref }     = JSON.parse('${{ steps.pr-info.outputs.result }}');
-            const { id: deploymentId } = JSON.parse('${{ steps.deployment.outputs.result }}');
-            const { createdAt } = JSON.parse('${{ steps.create-branch.outputs.result }}');
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+            const { head_ref, head_sha } = JSON.parse('${{ steps.pr-info.outputs.result }}');
+            const { id: deploymentId }   = JSON.parse('${{ steps.deployment.outputs.result }}');
+            const { createdAt }          = JSON.parse('${{ steps.create-branch.outputs.result }}');
             const branchCreatedAt = new Date(createdAt);
             const slug = `preview-${head_ref}`.replace(/\//g, '-');
             const url  = `https://${slug}.pablokvitca-website.pages.dev`;
 
-            // Poll PR comments for the Cloudflare bot status (up to 5 minutes)
+            // Poll the "Cloudflare Pages" check run on the preview branch's head SHA
+            // CF always updates this check run — even on re-deploys where it edits
+            // its PR comment instead of posting a new one.
             const maxAttempts = 30; // 30 × 10s = 5 min
             let cfStatus = null;
 
             for (let i = 0; i < maxAttempts; i++) {
-              const { data: comments } = await github.rest.issues.listComments({
-                owner, repo, issue_number: prNumber,
+              const { data } = await github.rest.checks.listForRef({
+                owner, repo, ref: head_sha,
               });
 
-              // Find the most recent CF bot comment posted *after* we created the branch
-              const cfComment = comments
-                .filter(c =>
-                  c.user.login === 'cloudflare-workers-and-pages[bot]'
-                  && new Date(c.created_at) >= branchCreatedAt
-                )
-                .pop();
+              const cfCheck = data.check_runs.find(
+                cr => cr.name === 'Cloudflare Pages'
+                   && cr.status === 'completed'
+                   && new Date(cr.completed_at) >= branchCreatedAt
+              );
 
-              if (cfComment) {
-                if (cfComment.body.includes('Deploy successful')) {
-                  cfStatus = 'success';
-                  break;
-                }
-                if (cfComment.body.includes('Deploy failed')) {
-                  cfStatus = 'failure';
-                  break;
-                }
+              if (cfCheck) {
+                cfStatus = cfCheck.conclusion === 'success' ? 'success' : 'failure';
+                core.info(`Cloudflare Pages check run concluded: ${cfCheck.conclusion}`);
+                break;
               }
 
-              core.info(`Attempt ${i + 1}/${maxAttempts}: waiting for Cloudflare bot...`);
+              core.info(`Attempt ${i + 1}/${maxAttempts}: waiting for Cloudflare Pages check run...`);
               await new Promise(resolve => setTimeout(resolve, 10000));
             }
 
-            // Determine final state and description
+            // Map to deployment status
             let state, description;
             if (cfStatus === 'success') {
               state = 'success';
               description = 'Preview deployed via Cloudflare Pages';
             } else if (cfStatus === 'failure') {
               state = 'failure';
-              description = 'Cloudflare Pages deployment failed — check the bot comment for details';
+              description = 'Cloudflare Pages deployment failed';
             } else {
               state = 'error';
-              description = 'Timed out waiting for Cloudflare Pages to report a status';
+              description = 'Timed out waiting for Cloudflare Pages';
             }
 
             await github.rest.repos.createDeploymentStatus({
