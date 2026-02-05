@@ -84,7 +84,7 @@ jobs:
       - name: Post preview URL comment
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_PAT }}
           script: |
             const { head_ref } = JSON.parse('${{ steps.pr-info.outputs.result }}');
             // Cloudflare Pages preview URL uses the branch name with slashes → hyphens
