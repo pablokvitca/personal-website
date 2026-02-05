@@ -14,11 +14,20 @@ export function initPostHog(): void {
     return;
   }
 
+  const hostname = window.location.hostname;
+  const isProduction = hostname === 'pablokvitca.com';
+  const environment = isProduction ? 'production' : 'preview';
+
   posthog.init(posthogKey, {
     api_host: 'https://app.posthog.com',
     capture_pageview: true,
     capture_pageleave: true,
     autocapture: true,
+  });
+
+  posthog.register({
+    environment,
+    deploy_url: `https://${hostname}`,
   });
 
   isInitialized = true;
