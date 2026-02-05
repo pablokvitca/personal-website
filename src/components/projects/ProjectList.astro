@@ -13,8 +13,8 @@ const { projects, showEmpty = true } = Astro.props;
 {
   projects.length > 0 ? (
     <div class="grid gap-6 md:grid-cols-2">
-      {projects.map((project) => (
-        <ProjectCard project={project} />
+      {projects.map((project, index) => (
+        <ProjectCard project={project} index={index} />
       ))}
     </div>
   ) : showEmpty ? (
