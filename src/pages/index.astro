@@ -3,15 +3,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import BlogList from '@/components/blog/BlogList.astro';
 import ProjectList from '@/components/projects/ProjectList.astro';
 import { getFeaturedBlogPosts } from '@/lib/blog';
-import { getCollection } from 'astro:content';
+import { getAllProjects } from '@/lib/projects';
 
 export const prerender = true;
 
 const featuredPosts = await getFeaturedBlogPosts();
-const featuredProjects = await getCollection(
-  'projects',
-  ({ data }) => data.featured
-);
+const allProjects = await getAllProjects();
+const featuredProjects = allProjects.filter((p) => p.data.featured);
 ---
 
 <BaseLayout

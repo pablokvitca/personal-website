@@ -35,10 +35,10 @@ const blog = defineCollection({
   }),
 });
 
-// Projects collection
+// Projects collection - all versions are snapshots, latest is "live"
 const projects = defineCollection({
   loader: glob({
-    pattern: '**/*.mdx',
+    pattern: '**/*.snapshot.mdx',
     base: './src/content/projects',
   }),
   schema: z.object({
@@ -56,6 +56,13 @@ const projects = defineCollection({
         docs: z.string().url().optional(),
       })
       .optional(),
+
+    // Versioning
+    snapshotDate: z.coerce.date().optional(),
+    draft: z.boolean().default(false),
+
+    // Table of Contents
+    tocMaxDepth: z.number().min(1).max(6).default(3).optional(),
   }),
 });
 
