@@ -52,15 +52,20 @@ jobs:
             return { head_ref: pr.head.ref, head_sha: pr.head.sha };
 
       - name: Create or update preview branch
+        id: create-branch
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          result-encoding: json
           script: |
             const owner = context.repo.owner;
             const repo  = context.repo.repo;
             const headRef = '${{ steps.pr-info.outputs.result }}';
             const { head_ref, head_sha } = JSON.parse(headRef);
             const previewBranch = `preview/${head_ref}`;
+
+            // Record the current time so the poll step can ignore stale CF comments
+            const createdAt = new Date().toISOString();
 
             try {
               // Try to update existing ref
@@ -81,6 +86,8 @@ jobs:
               core.info(`Created new branch ${previewBranch}`);
             }
 
+            return { createdAt };
+
       - name: Create pending deployment
         id: deployment
         uses: actions/github-script@v7
@@ -100,28 +107,76 @@ jobs:
             });
             return { id: data.id };
 
-      - name: Wait for Cloudflare to build
-        run: sleep 30
-
-      - name: Mark deployment successful
+      - name: Poll for Cloudflare result and update deployment status
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_PAT }}
           script: |
-            const { head_ref } = JSON.parse('${{ steps.pr-info.outputs.result }}');
+            const owner      = context.repo.owner;
+            const repo       = context.repo.repo;
+            const prNumber   = context.payload.issue.number;
+            const { head_ref }     = JSON.parse('${{ steps.pr-info.outputs.result }}');
             const { id: deploymentId } = JSON.parse('${{ steps.deployment.outputs.result }}');
+            const { createdAt } = JSON.parse('${{ steps.create-branch.outputs.result }}');
+            const branchCreatedAt = new Date(createdAt);
             const slug = `preview-${head_ref}`.replace(/\//g, '-');
             const url  = `https://${slug}.pablokvitca-website.pages.dev`;
 
+            // Poll PR comments for the Cloudflare bot status (up to 5 minutes)
+            const maxAttempts = 30; // 30 × 10s = 5 min
+            let cfStatus = null;
+
+            for (let i = 0; i < maxAttempts; i++) {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner, repo, issue_number: prNumber,
+              });
+
+              // Find the most recent CF bot comment posted *after* we created the branch
+              const cfComment = comments
+                .filter(c =>
+                  c.user.login === 'cloudflare-workers-and-pages[bot]'
+                  && new Date(c.created_at) >= branchCreatedAt
+                )
+                .pop();
+
+              if (cfComment) {
+                if (cfComment.body.includes('Deploy successful')) {
+                  cfStatus = 'success';
+                  break;
+                }
+                if (cfComment.body.includes('Deploy failed')) {
+                  cfStatus = 'failure';
+                  break;
+                }
+              }
+
+              core.info(`Attempt ${i + 1}/${maxAttempts}: waiting for Cloudflare bot...`);
+              await new Promise(resolve => setTimeout(resolve, 10000));
+            }
+
+            // Determine final state and description
+            let state, description;
+            if (cfStatus === 'success') {
+              state = 'success';
+              description = 'Preview deployed via Cloudflare Pages';
+            } else if (cfStatus === 'failure') {
+              state = 'failure';
+              description = 'Cloudflare Pages deployment failed — check the bot comment for details';
+            } else {
+              state = 'error';
+              description = 'Timed out waiting for Cloudflare Pages to report a status';
+            }
+
             await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo:  context.repo.repo,
+              owner, repo,
               deployment_id: deploymentId,
-              state: 'success',
+              state,
               target_url: url,
-              description: 'Preview deployed via Cloudflare Pages',
-              environment_url: url,
+              description,
+              environment_url: state === 'success' ? url : undefined,
             });
+
+            core.info(`Deployment marked as: ${state}`);
 
   # ---------------------------------------------------------------------------
   # Triggered when the PR is closed → deletes the preview/<head-branch>
