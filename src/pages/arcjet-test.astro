@@ -1,0 +1,22 @@
+---
+// This page is intentionally NOT prerendered so Arcjet middleware runs on it.
+// Use it to verify Shield and bot detection are working, then delete it.
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Arcjet Test" description="Temporary page to verify Arcjet is running">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Arcjet Test Page</h1>
+    <p class="text-foreground/70 mb-6">
+      If you can see this, the request was allowed by Arcjet. Shield and bot
+      detection are active on this route.
+    </p>
+    <div class="bg-background border rounded-lg p-4 text-sm">
+      <p class="font-medium mb-1">What's running:</p>
+      <ul class="list-disc list-inside text-foreground/70 space-y-1">
+        <li>Shield WAF — <span class="text-green-500 font-medium">LIVE</span> (blocks attacks)</li>
+        <li>Bot detection — <span class="text-yellow-500 font-medium">DRY_RUN</span> (logs only, check Arcjet dashboard)</li>
+      </ul>
+    </div>
+  </div>
+</BaseLayout>
