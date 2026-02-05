@@ -98,14 +98,14 @@ const snapshotData = snapshots.map((snapshot) => {
                 </time>
                 {snapshots.length > 0 && (
                   <span>
-                    (
+                    {"( "}
                     <VersionHistoryDropdown
                       currentVersion={currentVersion}
                       totalVersions={totalVersions}
                       snapshots={snapshotData}
                       slug={slug}
                     />
-                    )
+                    {" )"}
                   </span>
                 )}
               </div>
