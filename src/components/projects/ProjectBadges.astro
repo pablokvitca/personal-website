@@ -1,0 +1,44 @@
+---
+import { getGitHubBadges, getDemoStatusBadge, parseGitHubUrl } from '@/lib/shields';
+
+interface Props {
+  links?: {
+    github?: string;
+    demo?: string;
+  };
+}
+
+const { links } = Astro.props;
+
+const ghBadges = links?.github ? getGitHubBadges(links.github) : null;
+const ghRepo = links?.github ? parseGitHubUrl(links.github) : null;
+const demoStatus = links?.demo ? getDemoStatusBadge(links.demo) : null;
+
+// Construct per-badge click targets
+const ghBase = ghRepo ? `https://github.com/${ghRepo.owner}/${ghRepo.repo}` : '';
+---
+
+{
+  (ghBadges || demoStatus) && (
+    <div class="flex flex-wrap gap-1.5">
+      {ghBadges && ghBase && (
+        <>
+          <a href={`${ghBase}/stargazers`} target="_blank" rel="noopener noreferrer" aria-label="GitHub stars">
+            <img src={ghBadges.stars} alt="GitHub stars" class="h-5" />
+          </a>
+          <a href={`${ghBase}/network`} target="_blank" rel="noopener noreferrer" aria-label="GitHub forks">
+            <img src={ghBadges.forks} alt="GitHub forks" class="h-5" />
+          </a>
+          <a href={`${ghBase}/blob/main/LICENSE`} target="_blank" rel="noopener noreferrer" aria-label="GitHub license">
+            <img src={ghBadges.license} alt="License" class="h-5" />
+          </a>
+        </>
+      )}
+      {demoStatus && links?.demo && (
+        <a href={links.demo} target="_blank" rel="noopener noreferrer" aria-label="Demo deployment status">
+          <img src={demoStatus} alt="Demo status" class="h-5" />
+        </a>
+      )}
+    </div>
+  )
+}

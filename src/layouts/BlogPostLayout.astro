@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import TagBadge from '@/components/ui/TagBadge.astro';
+import ToolingBadges from '@/components/ui/ToolingBadges.astro';
 import Prose from '@/components/ui/starwind/prose';
 import VersionHistoryDropdown from '@/components/ui/VersionHistoryDropdown.astro';
 import TableOfContents from '@/components/ui/TableOfContents.astro';
@@ -8,6 +9,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/starwind/al
 import HistoryIcon from '@tabler/icons/outline/history.svg';
 import { formatDate } from '@/lib/blog';
 import type { Heading } from '@/lib/blog';
+import { getNonTechnologyTags } from '@/lib/tags';
 
 interface SnapshotData {
   id: string;
@@ -50,6 +52,8 @@ const {
   tocMaxDepth = 3,
 } = Astro.props;
 
+const nonTechTags = getNonTechnologyTags(tags);
+
 const totalVersions = snapshots.length + 1;
 const currentVersion = isSnapshot
   ? snapshots.findIndex((s) => new Date(s.data.snapshotDate).getTime() === snapshotDate?.getTime()) + 1
@@ -83,9 +87,14 @@ const snapshotData = snapshots.map((snapshot) => {
       <header class="mb-8">
         <h1 class="text-4xl font-bold mb-4">{title}</h1>
         <p class="text-xl text-muted-foreground mb-4">{abstract}</p>
-        <div class="flex flex-wrap gap-2 mb-4">
-          {tags.map((tag) => <TagBadge tag={tag} size="md" />)}
+        <div class={nonTechTags.length > 0 ? 'mb-2' : 'mb-4'}>
+          <ToolingBadges tags={tags} />
         </div>
+        {nonTechTags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mb-4">
+            {nonTechTags.map((tag) => <TagBadge tag={tag.raw} size="md" />)}
+          </div>
+        )}
         <div class="text-sm text-muted-foreground">
           {snapshots.length > 0 ? (
             <span>
