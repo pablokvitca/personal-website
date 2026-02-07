@@ -19,7 +19,8 @@ function isActive(href: string): boolean {
 ---
 
 <nav>
-  <ul class="flex items-center gap-6">
+  {/* Desktop nav: visible at md and above */}
+  <ul class="hidden md:flex items-center gap-6">
     {
       navItems.map((item) => (
         <li>
@@ -41,4 +42,38 @@ function isActive(href: string): boolean {
       <ThemeSwitcher client:load />
     </li>
   </ul>
+
+  {/* Mobile nav: visible below md */}
+  <div class="md:hidden flex items-center gap-2">
+    <ThemeSwitcher client:load />
+    <details class="relative">
+      <summary class="flex items-center justify-center w-10 h-10 rounded-md hover:bg-accent transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="18" y2="18" />
+        </svg>
+        <span class="sr-only">Menu</span>
+      </summary>
+      <ul class="absolute right-0 top-full mt-2 w-48 rounded-md border border-border bg-card shadow-lg py-2 z-50">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  'block px-4 py-2 text-sm transition-colors hover:bg-accent',
+                  isActive(item.href)
+                    ? 'text-primary font-medium'
+                    : 'text-muted-foreground',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
+  </div>
 </nav>
