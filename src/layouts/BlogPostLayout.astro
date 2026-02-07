@@ -97,27 +97,39 @@ const snapshotData = snapshots.map((snapshot) => {
         )}
         <div class="text-sm text-muted-foreground">
           {snapshots.length > 0 ? (
-            <span>
-              <time datetime={publishedAt.toISOString()}>
-                First Published: {formatDate(publishedAt)}
-              </time>
-              {" - "}
+            <div class="space-y-1">
+              <div>
+                <time datetime={publishedAt.toISOString()}>
+                  First Published: {formatDate(publishedAt)}
+                </time>
+              </div>
               {updatedAt && (
-                <>
+                <div>
                   <time datetime={updatedAt.toISOString()}>
                     Last Updated: {formatDate(updatedAt)}
                   </time>
-                  {" - "}
-                </>
+                  {" · "}
+                  <VersionHistoryDropdown
+                    currentVersion={currentVersion}
+                    totalVersions={totalVersions}
+                    snapshots={snapshotData}
+                    slug={slug}
+                    basePath="/blog"
+                  />
+                </div>
               )}
-              <VersionHistoryDropdown
-                currentVersion={currentVersion}
-                totalVersions={totalVersions}
-                snapshots={snapshotData}
-                slug={slug}
-                basePath="/blog"
-              />
-            </span>
+              {!updatedAt && (
+                <div>
+                  <VersionHistoryDropdown
+                    currentVersion={currentVersion}
+                    totalVersions={totalVersions}
+                    snapshots={snapshotData}
+                    slug={slug}
+                    basePath="/blog"
+                  />
+                </div>
+              )}
+            </div>
           ) : (
             <time datetime={publishedAt.toISOString()}>
               Published on {formatDate(publishedAt)}
