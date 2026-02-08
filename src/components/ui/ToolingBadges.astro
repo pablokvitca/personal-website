@@ -37,10 +37,14 @@ import {
   Posthog as PosthogIcon,
   Pnpm as PnpmIcon,
   Git as GitIcon,
+  Neo4j as Neo4jIcon,
+  Html5 as HTMLIcon,
 } from 'simple-icons-astro';
 
 // Custom icons not available in simple-icons
 import ArcjetIcon from '@/components/icons/ArcjetIcon.astro';
+import Css3Icon from '@/components/icons/Css3Icon.astro';
+import JavaIcon from '@/components/icons/JavaIcon.astro';
 
 // Map icon component names to actual components
 // Note: AWS and Azure icons may need different component names - they'll fall back to text
@@ -78,6 +82,10 @@ const iconComponents: Record<string, any> = {
   Arcjet: ArcjetIcon,
   Pnpm: PnpmIcon,
   Git: GitIcon,
+  Java: JavaIcon,
+  Neo4j: Neo4jIcon,
+  Css3: Css3Icon,
+  Html5: HTMLIcon,
 };
 
 interface Props {
