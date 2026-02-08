@@ -26,7 +26,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  const decision = await aj.protect(context.request);
+  let decision;
+  try {
+    decision = await aj.protect(context.request);
+  } catch {
+    // Fail open: allow the request through if Arcjet is unreachable.
+    return next();
+  }
 
   if (decision.isDenied()) {
     return new Response('Forbidden', { status: 403 });
