@@ -29,7 +29,16 @@ import {
   Graphql as GraphQLIcon,
   Vercel as VercelIcon,
   Cloudflare as CloudFlareIcon,
+  Angular as AngularIcon,
+  Contentful as ContentfulIcon,
+  Squarespace as SquarespaceIcon,
+  Mdx as MdxIcon,
+  Terraform as TerraformIcon,
+  Posthog as PosthogIcon,
 } from 'simple-icons-astro';
+
+// Custom icons not available in simple-icons
+import ArcjetIcon from '@/components/icons/ArcjetIcon.astro';
 
 // Map icon component names to actual components
 // Note: AWS and Azure icons may need different component names - they'll fall back to text
@@ -58,24 +67,89 @@ const iconComponents: Record<string, any> = {
   Graphql: GraphQLIcon,
   Vercel: VercelIcon,
   Cloudflare: CloudFlareIcon,
+  Angular: AngularIcon,
+  Contentful: ContentfulIcon,
+  Squarespace: SquarespaceIcon,
+  Mdx: MdxIcon,
+  Terraform: TerraformIcon,
+  Posthog: PosthogIcon,
+  Arcjet: ArcjetIcon,
 };
 
 interface Props {
   tags: string[];
+  /** "default" renders icon-only row; "inline" renders labeled badges for use within text */
+  mode?: 'default' | 'inline';
+  /** Separator between badges in inline mode (default: " ") */
+  separator?: string;
 }
 
-const { tags } = Astro.props;
-const techTags = getTechnologyTags(tags);
+const { tags, mode = 'default', separator = ' ' } = Astro.props;
+
+// In inline mode, tags are raw tech keys (e.g. ["react"]); in default mode they're full tags (e.g. ["technology:react"])
+const techEntries = mode === 'inline'
+  ? tags.map((key) => ({ value: key }))
+  : getTechnologyTags(tags);
+
+/**
+ * Check if a hex color is too dark to be visible on dark backgrounds.
+ * Returns true if the color's relative luminance is below a threshold.
+ */
+function isDarkColor(hex: string): boolean {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  // Relative luminance (simplified)
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance < 0.25;
+}
 ---
 
-{
-  techTags.length > 0 && (
+{mode === 'inline' ? (
+  techEntries.map((tag, i) => {
+    const techInfo = getTechnologyInfo(tag.value);
+    const IconComponent = techInfo ? iconComponents[techInfo.iconComponent] : null;
+
+    const dark = techInfo ? isDarkColor(techInfo.color) : false;
+
+    const badge = techInfo && IconComponent ? (
+      <Tooltip inline openDelay={100} closeDelay={100}>
+        <TooltipTrigger>
+          <a
+            href={techInfo.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={techInfo.name}
+            class:list={["not-sw-prose transition-opacity hover:opacity-70", dark && "tech-icon-dark"]}
+            style={!dark ? `color: ${techInfo.color};` : `--tech-brand-color: ${techInfo.color};`}
+          >
+            <IconComponent class="size-[1.1em] inline align-text-bottom" style="fill: currentColor;" />
+          </a>
+        </TooltipTrigger>
+        <TooltipContent side="top" inline>
+          <span class="flex items-center gap-1.5">
+            <span>{techInfo.name}</span>
+            <ExternalLink class="size-3.5" aria-hidden="true" />
+          </span>
+        </TooltipContent>
+      </Tooltip>
+    ) : (
+      <span class="not-sw-prose text-muted-foreground">
+        {tag.value}
+      </span>
+    );
+
+    return i < techEntries.length - 1
+      ? <>{badge}<Fragment set:html={separator} /></>
+      : badge;
+  })
+) : (
+  techEntries.length > 0 && (
     <div class="flex flex-wrap gap-2">
-      {techTags.map((tag) => {
+      {techEntries.map((tag) => {
         const techInfo = getTechnologyInfo(tag.value);
-        
+
         if (!techInfo) {
-          // Fallback for unknown technologies
           return (
             <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
               {tag.value}
@@ -84,16 +158,17 @@ const techTags = getTechnologyTags(tags);
         }
 
         const IconComponent = iconComponents[techInfo.iconComponent];
-        
+
         if (!IconComponent) {
-          // Fallback if icon component not found
           return (
             <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground">
               {techInfo.name}
             </span>
           );
         }
-        
+
+        const dark = isDarkColor(techInfo.color);
+
         return (
           <Tooltip>
             <TooltipTrigger>
@@ -101,10 +176,10 @@ const techTags = getTechnologyTags(tags);
                 href={techInfo.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center justify-center p-1 transition-opacity hover:opacity-80"
+                class:list={["inline-flex items-center justify-center p-1 transition-opacity hover:opacity-80", dark && "tech-icon-dark"]}
                 aria-label={techInfo.name}
                 data-analytics={`tech-icon-${tag.value}`}
-                style={`color: ${techInfo.color};`}
+                style={!dark ? `color: ${techInfo.color};` : `--tech-brand-color: ${techInfo.color};`}
               >
                 <IconComponent class="size-5" style={`fill: currentColor;`} />
               </a>
@@ -120,4 +195,15 @@ const techTags = getTechnologyTags(tags);
       })}
     </div>
   )
-}
+)}
+
+<style is:global>
+  /* Dark-colored brand icons: use brand color in light mode, inherit text color in dark mode */
+  .tech-icon-dark {
+    color: var(--tech-brand-color);
+  }
+  .dark .tech-icon-dark {
+    color: currentColor;
+  }
+</style>
+

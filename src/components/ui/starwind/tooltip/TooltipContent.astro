@@ -29,6 +29,10 @@ type Props = HTMLAttributes<"div"> & {
    * @default 150
    */
   animationDuration?: number;
+  /**
+   * When true, renders as a <span> instead of <div> for inline/phrasing contexts
+   */
+  inline?: boolean;
 };
 
 export const tooltipContent = tv({
@@ -45,6 +49,9 @@ export const tooltipContent = tv({
       right: "slide-in-from-left-2",
       bottom: "slide-in-from-top-2",
       top: "slide-in-from-bottom-2",
+    },
+    inline: {
+      true: "not-sw-prose",
     },
   },
   defaultVariants: { side: "top" },
@@ -69,12 +76,15 @@ const {
   sideOffset = 8,
   avoidCollisions = true,
   animationDuration = 150,
+  inline = false,
   class: className,
 } = Astro.props;
+
+const Tag = inline ? "span" : "div";
 ---
 
-<div
-  class={tooltipContent({ side, class: className })}
+<Tag
+  class={tooltipContent({ side, inline, class: className })}
   data-slot="tooltip-content"
   data-state="closed"
   data-side={side}
@@ -86,4 +96,4 @@ const {
 >
   <slot> My tooltip! </slot>
   <CaretUp class={tooltipCaret({ side })} />
-</div>
+</Tag>
