@@ -7,10 +7,10 @@ const tagSchema = z.string().regex(
   'Tags must be in format type:value (e.g., technology:react)'
 );
 
-// Blog collection - all versions are snapshots, latest is "live"
+// Blog collection - live.mdx is the current version, *.snapshot.mdx are historical milestones
 const blog = defineCollection({
   loader: glob({
-    pattern: '**/*.snapshot.mdx',
+    pattern: '**/{live,*.snapshot}.mdx',
     base: './src/content/blog',
   }),
   schema: z.object({
@@ -18,10 +18,13 @@ const blog = defineCollection({
     title: z.string(),
     abstract: z.string(),
     publishedAt: z.coerce.date(),
-    snapshotDate: z.coerce.date(),
     tags: z.array(tagSchema),
 
+    // Versioning - only present on snapshot files
+    snapshotDate: z.coerce.date().optional(),
+
     // Optional frontmatter
+    updatedAt: z.coerce.date().optional(),
     draft: z.boolean().default(false),
     featured: z.boolean().default(false),
 
@@ -35,10 +38,10 @@ const blog = defineCollection({
   }),
 });
 
-// Projects collection - all versions are snapshots, latest is "live"
+// Projects collection - live.mdx is the current version, *.snapshot.mdx are historical milestones
 const projects = defineCollection({
   loader: glob({
-    pattern: '**/*.snapshot.mdx',
+    pattern: '**/{live,*.snapshot}.mdx',
     base: './src/content/projects',
   }),
   schema: z.object({
@@ -57,8 +60,11 @@ const projects = defineCollection({
       })
       .optional(),
 
-    // Versioning
+    // Versioning - only present on snapshot files
     snapshotDate: z.coerce.date().optional(),
+
+    // Optional frontmatter
+    updatedAt: z.coerce.date().optional(),
     draft: z.boolean().default(false),
 
     // Table of Contents

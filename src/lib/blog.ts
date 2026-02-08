@@ -1,45 +1,21 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import { isLiveEntry, getSlugFromId } from '@/lib/content';
 
 export type BlogPost = CollectionEntry<'blog'>;
-
-/**
- * Extract slug from snapshot ID (e.g., "hello-world/2024-01-01-12-00.snapshot.mdx" -> "hello-world")
- */
-export function getSlugFromId(id: string): string {
-  return id.split('/')[0];
-}
+export { isLiveEntry, getSlugFromId };
 
 /**
  * Get the latest (live) version of each blog post
  */
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
-  const allSnapshots = await getCollection('blog', ({ data }) => !data.draft);
+  const allEntries = await getCollection('blog', ({ data }) => !data.draft);
 
-  // Group by slug
-  const bySlug = new Map<string, BlogPost[]>();
-  for (const snapshot of allSnapshots) {
-    const slug = getSlugFromId(snapshot.id);
-    if (!bySlug.has(slug)) {
-      bySlug.set(slug, []);
-    }
-    bySlug.get(slug)!.push(snapshot);
-  }
+  // Return only live entries
+  const livePosts = allEntries.filter(isLiveEntry);
 
-  // Get latest snapshot for each slug
-  const latestPosts: BlogPost[] = [];
-  for (const [, snapshots] of bySlug) {
-    // Sort by snapshotDate descending
-    const sorted = snapshots.sort(
-      (a, b) =>
-        new Date(b.data.snapshotDate).getTime() -
-        new Date(a.data.snapshotDate).getTime()
-    );
-    latestPosts.push(sorted[0]);
-  }
-
-  // Sort by publishedAt
-  return latestPosts.sort(
+  // Sort by publishedAt descending
+  return livePosts.sort(
     (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
   );
 }
@@ -53,39 +29,36 @@ export async function getFeaturedBlogPosts(): Promise<BlogPost[]> {
 }
 
 /**
- * Get the latest (live) version of a blog post by slug
+ * Get the live version of a blog post by slug
  */
 export async function getBlogPost(slug: string): Promise<BlogPost | undefined> {
-  const snapshots = await getCollection('blog', ({ id }) =>
-    id.startsWith(slug + '/')
+  const entries = await getCollection('blog', ({ id }) =>
+    id === `${slug}/live`
   );
 
-  if (snapshots.length === 0) return undefined;
-
-  // Sort by snapshotDate descending and return latest
-  return snapshots.sort(
-    (a, b) =>
-      new Date(b.data.snapshotDate).getTime() -
-      new Date(a.data.snapshotDate).getTime()
-  )[0];
+  return entries[0];
 }
 
 /**
- * Get all historical snapshots for a blog post (excluding the latest)
+ * Get all historical snapshots for a blog post, excluding the most recent one.
+ * The most recent snapshot represents the current live state and is redundant
+ * with live.mdx, so it's hidden from version history.
  */
 export async function getBlogSnapshots(slug: string): Promise<BlogPost[]> {
   const allSnapshots = await getCollection('blog', ({ id }) =>
-    id.startsWith(slug + '/')
+    id.startsWith(slug + '/') && !id.endsWith('/live')
   );
+
+  if (allSnapshots.length <= 1) return [];
 
   // Sort by snapshotDate descending
   const sorted = allSnapshots.sort(
     (a, b) =>
-      new Date(b.data.snapshotDate).getTime() -
-      new Date(a.data.snapshotDate).getTime()
+      new Date(b.data.snapshotDate ?? 0).getTime() -
+      new Date(a.data.snapshotDate ?? 0).getTime()
   );
 
-  // Return all except the first (latest)
+  // Return all except the most recent snapshot (it matches current live)
   return sorted.slice(1);
 }
 
@@ -97,7 +70,7 @@ export async function getSnapshotByTimestamp(
   timestamp: string
 ): Promise<BlogPost | undefined> {
   const allSnapshots = await getCollection('blog', ({ id }) =>
-    id.startsWith(slug + '/')
+    id.startsWith(slug + '/') && !id.endsWith('/live')
   );
 
   return allSnapshots.find((s) => s.id.includes(timestamp));

@@ -24,25 +24,50 @@ Hosted on Cloudflare Pages.
 
 ## Post Versioning Pattern
 
-Blog posts support versioning for edit history tracking.
+Blog posts and projects support versioning for edit history tracking.
+
+### Core Concept
+
+- `live.mdx` is the **single source of truth** — it has the full git history for the post
+- Snapshots are created at significant milestones (not every edit)
+- Minor edits (typos, formatting) are committed directly to `live.mdx` without a snapshot
+- You decide on a case-by-case basis when a snapshot is warranted
 
 ### File Structure
 ```
 src/content/blog/[shortname]/
-├── live.mdx                           # Current published version
-└── YYYY-MM-DD-HH-mm-SS.snapshot.mdx   # Historical snapshots
+├── live.mdx                         # Current published version (full git history)
+└── YYYY-MM-DD-HH-mm.snapshot.mdx   # Historical milestone snapshots
 ```
+
+### Creating a New Post
+```bash
+pnpm new:blog <shortname>
+pnpm new:project <shortname>
+```
+
+This creates both `live.mdx` and an initial snapshot with identical content. The initial snapshot is required but hidden from the version dropdown (it represents the initial state).
 
 ### Creating Snapshots
 ```bash
 pnpm snapshot:blog <shortname>
+pnpm snapshot:project <shortname>
 ```
 
-This copies `live.mdx` to a timestamped snapshot file.
+This copies `live.mdx` to a timestamped snapshot file, adding a `snapshotDate` to the frontmatter. After committing, tag the commit:
+```bash
+git tag "blog-snapshot:<shortname>:<YYYY-MM-DD-HH-mm>"
+```
+
+### Version Display Logic
+
+- The **most recent snapshot** is always hidden from the dropdown (it matches the current live content)
+- When there's only 1 snapshot (the initial one), no version history is shown
+- All older snapshots appear as historical versions in the dropdown
 
 ### URL Structure
 - Current version: `/blog/[slug]`
-- Historical version: `/blog/[slug]/[version]`
+- Historical version: `/blog/[slug]/snapshot/[timestamp]`
 
 ## Tag Format
 
@@ -81,6 +106,12 @@ seoTitle: string       # Optional - Custom SEO title
 seoDescription: string # Optional - Custom meta description
 ogImage: string        # Optional - Open Graph image path
 ---
+```
+
+### Blog Snapshots (`*.snapshot.mdx`)
+Same as live.mdx, plus:
+```yaml
+snapshotDate: date     # Required - When the snapshot was taken (auto-set by script)
 ```
 
 ### Projects

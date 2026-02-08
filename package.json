@@ -8,6 +8,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "typecheck": "tsc --noEmit",
+    "new:blog": "node ./scripts/new-blog.mjs",
+    "new:project": "node ./scripts/new-project.mjs",
     "snapshot:blog": "node ./scripts/snapshot-blog.mjs",
     "snapshot:project": "node ./scripts/snapshot-project.mjs",
     "lint": "eslint src --ext .ts,.tsx,.astro",
