@@ -176,13 +176,20 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  padding: 0.25rem;
+  padding: 0.125rem;
   color: var(--color-muted-foreground);
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
   border: none;
   background: transparent;
   cursor: pointer;
+}
+
+/* On hover-capable devices, hide by default and reveal on heading hover */
+@media (hover: hover) {
+  .heading-link-button {
+    opacity: 0;
+  }
 }
 
 .heading-link-button:hover {
