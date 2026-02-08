@@ -4,57 +4,41 @@ import path from 'path';
 
 const PROJECT_DIR = './src/content/projects';
 
-async function getLatestSnapshot(projectDir) {
-  const files = await fs.readdir(projectDir);
-  const snapshots = files
-    .filter((f) => f.endsWith('.snapshot.mdx'))
-    .sort()
-    .reverse();
-
-  return snapshots[0] || null;
+function formatTimestamp(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day}-${hour}-${minute}`;
 }
 
 async function createSnapshot(shortname) {
   const projectDir = path.join(PROJECT_DIR, shortname);
+  const livePath = path.join(projectDir, 'live.mdx');
 
-  // Check if project directory exists
+  // Check if live.mdx exists
   try {
-    await fs.access(projectDir);
+    await fs.access(livePath);
   } catch {
-    console.error(`Error: Project directory not found for "${shortname}"`);
-    console.error(`Expected path: ${projectDir}`);
+    console.error(`Error: live.mdx not found for "${shortname}"`);
+    console.error(`Expected path: ${livePath}`);
     process.exit(1);
   }
 
-  // Find latest snapshot
-  const latestSnapshot = await getLatestSnapshot(projectDir);
-  if (!latestSnapshot) {
-    console.error(`Error: No snapshots found for "${shortname}"`);
-    console.error('Create an initial snapshot manually first.');
-    process.exit(1);
-  }
-
-  const latestPath = path.join(projectDir, latestSnapshot);
-
-  // Generate timestamp in format YYYY-MM-DD-HH-mm (without seconds)
   const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  const hour = String(now.getHours()).padStart(2, '0');
-  const minute = String(now.getMinutes()).padStart(2, '0');
-  const timestamp = `${year}-${month}-${day}-${hour}-${minute}`;
+  const timestamp = formatTimestamp(now);
 
   const snapshotName = `${timestamp}.snapshot.mdx`;
   const snapshotPath = path.join(projectDir, snapshotName);
 
-  // Read latest snapshot content
-  const content = await fs.readFile(latestPath, 'utf-8');
+  // Read live.mdx content
+  const content = await fs.readFile(livePath, 'utf-8');
 
-  // Update snapshotDate in frontmatter
+  // Add snapshotDate to frontmatter
   const snapshotDateLine = `snapshotDate: ${now.toISOString()}`;
 
-  // Replace existing snapshotDate or add it
+  // Replace existing snapshotDate or add it after the opening ---
   let updatedContent;
   if (content.includes('snapshotDate:')) {
     updatedContent = content.replace(/snapshotDate:.*/, snapshotDateLine);
@@ -65,9 +49,14 @@ async function createSnapshot(shortname) {
   // Write new snapshot
   await fs.writeFile(snapshotPath, updatedContent);
 
-  console.log(`✓ Created new snapshot from: ${latestSnapshot}`);
-  console.log(`✓ New snapshot: ${snapshotName}`);
-  console.log(`\nYou can now edit: ${snapshotPath}`);
+  const tagName = `project-snapshot:${shortname}:${timestamp}`;
+
+  console.log(`Created snapshot from: live.mdx`);
+  console.log(`New snapshot: ${snapshotName}`);
+  console.log(`\nNext steps:`);
+  console.log(`  1. Stage the snapshot: git add ${snapshotPath}`);
+  console.log(`  2. Commit your changes`);
+  console.log(`  3. Tag the commit: git tag "${tagName}"`);
 }
 
 // CLI handling
