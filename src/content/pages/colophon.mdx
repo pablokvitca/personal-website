@@ -1,41 +1,46 @@
 ---
 title: Colophon
-description: Technical details about how this website was built.
+description: Technical details about how this website was built, its history, and the tools behind it.
 ---
 
-This website is built with modern web technologies, prioritizing performance, accessibility, and developer experience.
+This site is over-engineered and I'm fine with that. It's a playground for trying new web technologies: frameworks, standards, dev tooling, analytics, you name it.
+
+## History
+
+The first version was built on [Angular](https://angular.dev) and [Contentful](https://www.contentful.com). Then it got simplified to a GitHub readme for a while, and after that it lived on [Squarespace](https://www.squarespace.com). The current version is a ground-up rebuild with a modern stack.
 
 ## Technology Stack
 
 ### Framework
 
-- **[Astro](https://astro.build)** - Static site generator with islands architecture
+- **[Astro](https://astro.build)** - Static site generator with [islands architecture](https://docs.astro.build/en/concepts/islands/)
 - **[React](https://react.dev)** - For interactive components
 - **[TypeScript](https://www.typescriptlang.org)** - Type-safe development
 
-### Styling
+### Styling & UI
 
 - **[Tailwind CSS](https://tailwindcss.com)** - Utility-first CSS framework
-- **[Starwind](https://starwind.dev)** - Astro component library
+- **[Starwind](https://starwind.dev)** - Astro-native component library (static, zero-JS by default)
 
 ### Content
 
-- **[MDX](https://mdxjs.com)** - Markdown with JSX components
-- **Astro Content Collections** - Type-safe content management
+- **[MDX](https://mdxjs.com)** - Markdown with JSX components, stored in git
+- **Astro Content Collections** - Type-safe content management with Zod validation
+- **Snapshot-based versioning** - Blog posts support edit history through timestamped snapshots
 
 ## Hosting & Infrastructure
 
 - **[Cloudflare Pages](https://pages.cloudflare.com)** - Edge deployment and hosting
-- **[Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/)** - Privacy-first analytics
+- **[Terraform](https://www.terraform.io)** - Infrastructure as code for Cloudflare configuration
 
 ## Security
 
-- **[Arcjet](https://arcjet.com)** - Application security
+- **[Arcjet](https://arcjet.com)** - Application security (just for fun, really)
 
 ## Analytics
 
 - **[PostHog](https://posthog.com)** - Product analytics and event tracking
-- **[Cloudflare Analytics](https://www.cloudflare.com/web-analytics/)** - Basic web analytics
+- **[Cloudflare Analytics](https://www.cloudflare.com/web-analytics/)** - Privacy-first web analytics
 
 ## Development
 
