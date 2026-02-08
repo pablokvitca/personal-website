@@ -56,16 +56,19 @@ function renderTocNode(node: TocNode, depth: number = 0): string {
     </div>
   </nav>
 
-  <!-- Mobile TOC: Show above content -->
-  <nav
-    aria-label="Table of contents"
-    class="toc-container block lg:hidden mb-8 p-4 rounded-lg border bg-card"
+  <details
+    class="toc-container block lg:hidden mb-8 rounded-lg border bg-card"
   >
-    <h2 class="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+    <summary class="p-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between text-sm font-semibold uppercase tracking-wider text-muted-foreground">
       On This Page
-    </h2>
-    <ol class="space-y-1" set:html={tocTree.map(node => renderTocNode(node)).join('')} />
-  </nav>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="toc-chevron" aria-hidden="true">
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    </summary>
+    <div class="px-4 pb-4">
+      <ol class="space-y-1" set:html={tocTree.map(node => renderTocNode(node)).join('')} />
+    </div>
+  </details>
 )}
 
 <style>
@@ -78,7 +81,7 @@ function renderTocNode(node: TocNode, depth: number = 0): string {
   @media (min-width: 1024px) {
     .toc-container {
       scrollbar-width: thin;
-      scrollbar-color: hsl(var(--muted)) transparent;
+      scrollbar-color: var(--color-muted) transparent;
     }
 
     .toc-container::-webkit-scrollbar {
@@ -90,15 +93,24 @@ function renderTocNode(node: TocNode, depth: number = 0): string {
     }
 
     .toc-container::-webkit-scrollbar-thumb {
-      background-color: hsl(var(--muted));
+      background-color: var(--color-muted);
       border-radius: 0.25rem;
     }
+  }
+
+  /* Chevron rotation for mobile collapsible TOC */
+  .toc-chevron {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  details[open] .toc-chevron {
+    transform: rotate(180deg);
   }
 
   /* Active section highlighting */
   .toc-container a:target,
   .toc-container a[aria-current="location"] {
-    color: hsl(var(--primary));
+    color: var(--color-primary);
     font-weight: 500;
   }
 </style>

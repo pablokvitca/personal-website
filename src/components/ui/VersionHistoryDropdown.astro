@@ -17,30 +17,28 @@ interface Props {
 const { currentVersion, totalVersions, snapshots, slug, basePath } = Astro.props;
 ---
 
-<span class="version-history-container">
-  <button type="button" class="version-button">
+<details class="version-history-container">
+  <summary class="version-button">
     Version {currentVersion}/{totalVersions}
-  </button>
+  </summary>
 
-  <div class="version-dropdown">
-    <div class="version-dropdown-content">
-      <a href={`${basePath}/${slug}`} class="version-item">
-        <div class="version-label">Current version</div>
-        <div class="version-date">Live</div>
-      </a>
-      <div class="version-divider"></div>
-      {snapshots.map((snapshot, index) => (
-        <>
-          <a href={snapshot.url} class="version-item">
-            <div class="version-label">Version {totalVersions - index - 1}</div>
-            <div class="version-date">{formatDate(snapshot.date)}</div>
-          </a>
-          {index < snapshots.length - 1 && <div class="version-divider"></div>}
-        </>
-      ))}
-    </div>
+  <div class="version-dropdown-content">
+    <a href={`${basePath}/${slug}`} class="version-item">
+      <div class="version-label">Current version</div>
+      <div class="version-date">Live</div>
+    </a>
+    <div class="version-divider"></div>
+    {snapshots.map((snapshot, index) => (
+      <>
+        <a href={snapshot.url} class="version-item">
+          <div class="version-label">Version {totalVersions - index - 1}</div>
+          <div class="version-date">{formatDate(snapshot.date)}</div>
+        </a>
+        {index < snapshots.length - 1 && <div class="version-divider"></div>}
+      </>
+    ))}
   </div>
-</span>
+</details>
 
 <style>
   .version-history-container {
@@ -50,7 +48,7 @@ const { currentVersion, totalVersions, snapshots, slug, basePath } = Astro.props
 
   .version-button {
     font-size: 0.875rem;
-    color: hsl(var(--muted-foreground));
+    color: var(--color-muted-foreground);
     text-decoration: underline;
     text-decoration-style: dotted;
     cursor: pointer;
@@ -59,54 +57,32 @@ const { currentVersion, totalVersions, snapshots, slug, basePath } = Astro.props
     padding: 0;
     font: inherit;
     transition: color 0.2s;
+    list-style: none;
+  }
+
+  .version-button::-webkit-details-marker {
+    display: none;
   }
 
   .version-button:hover {
-    color: hsl(var(--primary));
+    color: var(--color-primary);
   }
 
-  .version-dropdown {
+  .version-dropdown-content {
     position: absolute;
     left: 0;
     top: calc(100% + 0.25rem);
     z-index: 50;
     min-width: 200px;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
-  }
-
-  /* Create an invisible bridge between button and dropdown */
-  .version-dropdown::before {
-    content: '';
-    position: absolute;
-    top: -0.25rem;
-    left: 0;
-    right: 0;
-    height: 0.25rem;
-  }
-
-  .version-history-container:hover .version-dropdown {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-
-  .version-dropdown-content {
+    max-width: calc(100vw - 2rem);
     border-radius: 0.375rem;
-    border: 1px solid hsl(var(--border));
-    background-color: white;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-card);
     padding: 0.5rem;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.2);
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-  }
-
-  /* Dark mode background */
-  :global(.dark) .version-dropdown-content {
-    background-color: rgb(10, 10, 10);
   }
 
   .version-item {
@@ -120,7 +96,7 @@ const { currentVersion, totalVersions, snapshots, slug, basePath } = Astro.props
   }
 
   .version-item:hover {
-    background-color: hsl(var(--accent));
+    background-color: var(--color-accent);
   }
 
   .version-label {
@@ -129,11 +105,11 @@ const { currentVersion, totalVersions, snapshots, slug, basePath } = Astro.props
 
   .version-date {
     font-size: 0.75rem;
-    color: hsl(var(--muted-foreground));
+    color: var(--color-muted-foreground);
   }
 
   .version-divider {
-    border-top: 2px solid hsl(var(--border));
+    border-top: 2px solid var(--color-border);
     margin: 0.375rem 0;
     opacity: 0.5;
   }

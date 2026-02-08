@@ -5,6 +5,7 @@ import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import partytown from '@astrojs/partytown';
+import arcjet from '@arcjet/astro';
 import compress from '@playform/compress';
 
 export default defineConfig({
@@ -46,6 +47,8 @@ export default defineConfig({
       },
     }),
     sitemap(),
+    // Arcjet base client — rules are added per-route or in middleware via .withRule()
+    arcjet({ rules: [] }),
     // compress must be last
     compress(),
   ],
