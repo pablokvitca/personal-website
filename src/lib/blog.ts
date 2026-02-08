@@ -1,23 +1,9 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import { isLiveEntry, getSlugFromId } from '@/lib/content';
 
 export type BlogPost = CollectionEntry<'blog'>;
-
-/**
- * Check if a collection entry is a live file (not a snapshot)
- */
-export function isLiveEntry(entry: BlogPost): boolean {
-  return entry.id.endsWith('/live');
-}
-
-/**
- * Extract slug from entry ID
- * "welcome/live" -> "welcome"
- * "welcome/2026-02-07-12-00snapshot" -> "welcome"
- */
-export function getSlugFromId(id: string): string {
-  return id.split('/')[0];
-}
+export { isLiveEntry, getSlugFromId };
 
 /**
  * Get the latest (live) version of each blog post

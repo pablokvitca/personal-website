@@ -1,23 +1,19 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+import { isLiveEntry, getSlugFromId } from '@/lib/content';
 
 export type Project = CollectionEntry<'projects'>;
-
-/**
- * Check if a collection entry is a live file (not a snapshot)
- */
-export function isLiveEntry(entry: Project): boolean {
-  return entry.id.endsWith('/live');
-}
+export { isLiveEntry };
 
 /**
  * Extract slug from a project entry ID.
  * "personal-website/live" -> "personal-website"
  * "personal-website/2026-02-05-10-30snapshot" -> "personal-website"
+ * Legacy flat: "personal-website.mdx" -> "personal-website"
  */
 export function getProjectSlugFromId(id: string): string {
   if (id.includes('/')) {
-    return id.split('/')[0];
+    return getSlugFromId(id);
   }
   return id.replace(/\.mdx$/, '');
 }
