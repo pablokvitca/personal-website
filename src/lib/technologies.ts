@@ -268,6 +268,34 @@ const technologyMap: Record<string, TechnologyInfo> = {
     iconComponent: 'Git',
     color: '#F05032',
   },
+  java: {
+    name: 'Java',
+    url: 'https://www.java.com',
+    icon: 'java',
+    iconComponent: 'Java',
+    color: '#437291',
+  },
+  neo4j: {
+    name: 'Neo4j',
+    url: 'https://neo4j.com',
+    icon: 'neo4j',
+    iconComponent: 'Neo4j',
+    color: '#4581C3',
+  },
+  css: {
+    name: 'CSS3',
+    url: 'https://developer.mozilla.org/en-US/docs/Web/CSS',
+    icon: 'css3',
+    iconComponent: 'Css3',
+    color: '#264DE4',
+  },
+  html: {
+    name: 'HTML',
+    url: 'https://developer.mozilla.org/en-US/docs/Web/HTML',
+    icon: 'html5',
+    iconComponent: 'Html5',
+    color: '#E34F26',
+  },
 };
 
 /**
