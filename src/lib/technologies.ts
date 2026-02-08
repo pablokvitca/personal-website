@@ -205,6 +205,55 @@ const technologyMap: Record<string, TechnologyInfo> = {
     iconComponent: 'Cloudflare',
     color: '#F38020',
   },
+  angular: {
+    name: 'Angular',
+    url: 'https://angular.dev',
+    icon: 'angular',
+    iconComponent: 'Angular',
+    color: '#DD0031',
+  },
+  contentful: {
+    name: 'Contentful',
+    url: 'https://www.contentful.com',
+    icon: 'contentful',
+    iconComponent: 'Contentful',
+    color: '#2478CC',
+  },
+  squarespace: {
+    name: 'Squarespace',
+    url: 'https://www.squarespace.com',
+    icon: 'squarespace',
+    iconComponent: 'Squarespace',
+    color: '#000000',
+  },
+  mdx: {
+    name: 'MDX',
+    url: 'https://mdxjs.com',
+    icon: 'mdx',
+    iconComponent: 'Mdx',
+    color: '#FCB32C',
+  },
+  terraform: {
+    name: 'Terraform',
+    url: 'https://www.terraform.io',
+    icon: 'terraform',
+    iconComponent: 'Terraform',
+    color: '#844FBA',
+  },
+  posthog: {
+    name: 'PostHog',
+    url: 'https://posthog.com',
+    icon: 'posthog',
+    iconComponent: 'Posthog',
+    color: '#F54E00',
+  },
+  arcjet: {
+    name: 'Arcjet',
+    url: 'https://arcjet.com',
+    icon: 'arcjet',
+    iconComponent: 'Arcjet',
+    color: '#472FC1',
+  },
 };
 
 /**

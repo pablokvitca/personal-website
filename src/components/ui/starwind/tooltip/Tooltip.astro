@@ -15,6 +15,10 @@ type Props = HTMLAttributes<"div"> & {
    * When true, prevents the tooltip from staying open when hovering over its content
    */
   disableHoverableContent?: boolean;
+  /**
+   * When true, renders as a <span> instead of <div> for inline/phrasing contexts
+   */
+  inline?: boolean;
 };
 
 export const tooltip = tv({ base: "starwind-tooltip relative inline-block" });
@@ -23,11 +27,14 @@ const {
   openDelay = 200,
   closeDelay = 200,
   disableHoverableContent = false,
+  inline = false,
   class: className,
 } = Astro.props;
+
+const Tag = inline ? "span" : "div";
 ---
 
-<div
+<Tag
   class={tooltip({ class: className })}
   data-slot="tooltip"
   data-state="closed"
@@ -36,7 +43,7 @@ const {
   {...!disableHoverableContent && { "data-content-hoverable": "" }}
 >
   <slot />
-</div>
+</Tag>
 
 <script>
   class TooltipHandler {
