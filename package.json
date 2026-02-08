@@ -26,7 +26,7 @@
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/vite": "^4.1.18",
     "@twocaretcat/astro-snapshot": "^2.1.0",
-    "arcjet": "1.0.0",
+    "arcjet": "^1.0.0",
     "astro": "^5.16.15",
     "posthog-js": "^1.335.2",
     "react": "^19.2.3",
