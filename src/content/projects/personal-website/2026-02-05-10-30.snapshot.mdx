@@ -7,6 +7,10 @@ tags:
   - technology:typescript
   - technology:tailwind
   - technology:cloudflare
+  - technology:terraform
+  - technology:mdx
+  - technology:posthog
+  - technology:arcjet
 featured: true
 status: active
 startDate: 2025-01-01
@@ -20,23 +24,38 @@ links:
 
 This is my personal website, rebuilt from scratch with a modern tech stack. It serves as my home on the internet where I share my thoughts, projects, and learnings.
 
+This site is over-engineered and I'm fine with that. It's a playground for trying new web technologies: frameworks, standards, dev tooling, analytics, you name it.
+
+## History
+
+The first version was built on Angular and Contentful. Then it got simplified to a GitHub readme for a while, and after that it lived on Squarespace. The current version is a ground-up rebuild with Astro, using islands architecture, pure-git content in MDX, and deployed through Cloudflare and Terraform.
+
 ## Features
 
-- **Blog with versioning** - Each blog post supports edit history through snapshots
-- **Project showcase** - Curated list of projects with tooling badges
+- **Blog with versioning** - Each blog post supports edit history through timestamped snapshots
+- **Project showcase** - Curated list of projects with tooling badges and shields.io stats
 - **Tag-based organization** - Content organized by technology, topic, and language
+- **Bilingual content** - Posts in both English and Spanish
 - **Fast and accessible** - Built with performance and accessibility in mind
 
 ## Technical Highlights
 
 ### Islands Architecture
 
-Using Astro's islands architecture, the site ships minimal JavaScript while still supporting rich interactivity where needed.
+Using Astro's islands architecture, the site ships minimal JavaScript while still supporting rich interactivity where needed. Static UI components use Starwind (Astro-native, zero-JS), with React reserved for interactive elements.
 
 ### Content Collections
 
-Type-safe content management with Zod validation ensures content integrity across the site.
+Type-safe content management with Zod validation ensures content integrity across the site. Blog posts and projects use MDX stored directly in git, with no external CMS dependency.
+
+### Snapshot-Based Versioning
+
+Blog posts support edit history through a snapshot system. Each edit creates a timestamped copy, and readers can browse the version history of any post.
+
+### Infrastructure as Code
+
+Cloudflare Pages configuration is managed through Terraform, keeping infrastructure reproducible and version-controlled alongside the application code.
 
 ### Edge Deployment
 
-Deployed on Cloudflare Pages for fast, global delivery with built-in security features.
+Deployed on Cloudflare Pages for fast, global delivery, with Arcjet for application-level security.
