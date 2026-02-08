@@ -254,6 +254,20 @@ const technologyMap: Record<string, TechnologyInfo> = {
     iconComponent: 'Arcjet',
     color: '#472FC1',
   },
+  pnpm: {
+    name: 'pnpm',
+    url: 'https://pnpm.io',
+    icon: 'pnpm',
+    iconComponent: 'Pnpm',
+    color: '#F69220',
+  },
+  git: {
+    name: 'Git',
+    url: 'https://git-scm.com',
+    icon: 'git',
+    iconComponent: 'Git',
+    color: '#F05032',
+  },
 };
 
 /**

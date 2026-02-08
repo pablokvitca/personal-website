@@ -1,48 +1,55 @@
 ---
 title: Colophon
-description: Technical details about how this website was built.
+description: Technical details about how this website was built, its history, and the tools behind it.
 ---
 
-This website is built with modern web technologies, prioritizing performance, accessibility, and developer experience.
+import ToolingBadges from '@/components/ui/ToolingBadges.astro';
+
+This site is over-engineered and I'm fine with that. It's a playground for trying new web technologies: frameworks, standards, dev tooling, analytics, you name it.
+
+## History
+
+The first version was built on Angular <ToolingBadges tags={["angular"]} mode="inline" /> and Contentful <ToolingBadges tags={["contentful"]} mode="inline" />. Then it got simplified to a GitHub readme for a while, and after that it lived on Squarespace <ToolingBadges tags={["squarespace"]} mode="inline" />. The current version is a ground-up rebuild with a modern stack.
 
 ## Technology Stack
 
 ### Framework
 
-- **[Astro](https://astro.build)** - Static site generator with islands architecture
-- **[React](https://react.dev)** - For interactive components
-- **[TypeScript](https://www.typescriptlang.org)** - Type-safe development
+- **[Astro](https://astro.build)** <ToolingBadges tags={["astro"]} mode="inline" /> - Static site generator with [islands architecture](https://docs.astro.build/en/concepts/islands/)
+- **[React](https://react.dev)** <ToolingBadges tags={["react"]} mode="inline" /> - For interactive components
+- **[TypeScript](https://www.typescriptlang.org)** <ToolingBadges tags={["typescript"]} mode="inline" /> - Type-safe development
 
-### Styling
+### Styling & UI
 
-- **[Tailwind CSS](https://tailwindcss.com)** - Utility-first CSS framework
-- **[Starwind](https://starwind.dev)** - Astro component library
+- **[Tailwind CSS](https://tailwindcss.com)** <ToolingBadges tags={["tailwind"]} mode="inline" /> - Utility-first CSS framework
+- **[Starwind](https://starwind.dev)** - Astro-native component library (static, zero-JS by default)
 
 ### Content
 
-- **[MDX](https://mdxjs.com)** - Markdown with JSX components
-- **Astro Content Collections** - Type-safe content management
+- **[MDX](https://mdxjs.com)** <ToolingBadges tags={["mdx"]} mode="inline" /> - Markdown with JSX components, stored in git
+- **Astro Content Collections** - Type-safe content management with Zod validation
+- **Snapshot-based versioning** - Blog posts support edit history through timestamped snapshots
 
 ## Hosting & Infrastructure
 
-- **[Cloudflare Pages](https://pages.cloudflare.com)** - Edge deployment and hosting
-- **[Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/)** - Privacy-first analytics
+- **[Cloudflare Pages](https://pages.cloudflare.com)** <ToolingBadges tags={["cloudflare"]} mode="inline" /> - Edge deployment and hosting
+- **[Terraform](https://www.terraform.io)** <ToolingBadges tags={["terraform"]} mode="inline" /> - Infrastructure as code for Cloudflare configuration
 
 ## Security
 
-- **[Arcjet](https://arcjet.com)** - Application security
+- **[Arcjet](https://arcjet.com)** <ToolingBadges tags={["arcjet"]} mode="inline" /> - Application security (just for fun, really)
 
 ## Analytics
 
-- **[PostHog](https://posthog.com)** - Product analytics and event tracking
-- **[Cloudflare Analytics](https://www.cloudflare.com/web-analytics/)** - Basic web analytics
+- **[PostHog](https://posthog.com)** <ToolingBadges tags={["posthog"]} mode="inline" /> - Product analytics and event tracking
+- **[Cloudflare Analytics](https://www.cloudflare.com/web-analytics/)** <ToolingBadges tags={["cloudflare"]} mode="inline" /> - Privacy-first web analytics
 
 ## Development
 
-- **[pnpm](https://pnpm.io)** - Package manager
+- **[pnpm](https://pnpm.io)** <ToolingBadges tags={["pnpm"]} mode="inline" /> - Package manager
 - **[mise](https://mise.jdx.dev)** - Runtime version management
-- **[Git](https://git-scm.com)** - Version control with conventional commits
+- **[Git](https://git-scm.com)** <ToolingBadges tags={["git"]} mode="inline" /> - Version control with conventional commits
 
 ## Source Code
 
-The source code for this website is available on [GitHub](https://github.com/pablokvitca/personal-website).
+The source code for this website is available on [GitHub](https://github.com/pablokvitca/personal-website) <ToolingBadges tags={["github"]} mode="inline" />.
