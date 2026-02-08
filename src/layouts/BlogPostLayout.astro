@@ -14,7 +14,7 @@ import { getNonTechnologyTags } from '@/lib/tags';
 interface SnapshotData {
   id: string;
   data: {
-    snapshotDate: string | Date;
+    snapshotDate?: string | Date;
   };
 }
 
@@ -56,7 +56,7 @@ const nonTechTags = getNonTechnologyTags(tags);
 
 const totalVersions = snapshots.length + 1;
 const currentVersion = isSnapshot
-  ? snapshots.findIndex((s) => new Date(s.data.snapshotDate).getTime() === snapshotDate?.getTime()) + 1
+  ? snapshots.findIndex((s) => new Date(s.data.snapshotDate ?? 0).getTime() === snapshotDate?.getTime()) + 1
   : totalVersions;
 
 const snapshotData = snapshots.map((snapshot) => {
@@ -65,7 +65,7 @@ const snapshotData = snapshots.map((snapshot) => {
   const timestamp = filename.replace('snapshot', '');
   return {
     url: `/blog/${slug}/snapshot/${timestamp}`,
-    date: new Date(snapshot.data.snapshotDate),
+    date: new Date(snapshot.data.snapshotDate ?? 0),
   };
 });
 ---

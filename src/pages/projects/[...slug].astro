@@ -7,49 +7,57 @@ import H4 from '@/components/ui/headings/H4.astro';
 import H5 from '@/components/ui/headings/H5.astro';
 import H6 from '@/components/ui/headings/H6.astro';
 import { getCollection, render } from 'astro:content';
-import { getProjectSlugFromId, getProjectSnapshots } from '@/lib/projects';
+import { getProjectSlugFromId, getProjectSnapshots, isLiveEntry } from '@/lib/projects';
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const allSnapshots = await getCollection('projects', ({ data }) => !data.draft);
+  const allEntries = await getCollection('projects', ({ data }) => !data.draft);
+
+  // Separate live entries and snapshot entries
+  const liveEntries = allEntries.filter(isLiveEntry);
+  const snapshotEntries = allEntries.filter((e) => !isLiveEntry(e));
 
   // Group snapshots by slug
-  const bySlug = new Map<string, typeof allSnapshots>();
-  for (const snapshot of allSnapshots) {
+  const snapshotsBySlug = new Map<string, typeof snapshotEntries>();
+  for (const snapshot of snapshotEntries) {
     const slug = getProjectSlugFromId(snapshot.id);
-    if (!bySlug.has(slug)) {
-      bySlug.set(slug, []);
+    if (!snapshotsBySlug.has(slug)) {
+      snapshotsBySlug.set(slug, []);
     }
-    bySlug.get(slug)!.push(snapshot);
+    snapshotsBySlug.get(slug)!.push(snapshot);
   }
 
   const paths = [];
 
-  for (const [slug, snapshots] of bySlug) {
-    // Sort by snapshotDate descending
-    const sorted = snapshots.sort(
-      (a, b) =>
-        new Date(b.data.snapshotDate ?? 0).getTime() -
-        new Date(a.data.snapshotDate ?? 0).getTime()
-    );
-
-    // Generate path for latest version (live)
+  // Generate paths for live versions
+  for (const liveEntry of liveEntries) {
+    const slug = getProjectSlugFromId(liveEntry.id);
     paths.push({
       params: { slug },
-      props: { project: sorted[0], isSnapshot: false },
+      props: { project: liveEntry, isSnapshot: false },
     });
 
-    // Generate paths for historical snapshots
-    for (let i = 1; i < sorted.length; i++) {
-      const snapshot = sorted[i];
-      // Astro glob loader converts "2026-02-05-10-30.snapshot.mdx" ID to "2026-02-05-10-30snapshot"
-      const filename = snapshot.id.split('/')[1];
-      const timestamp = filename.replace('snapshot', '');
-      paths.push({
-        params: { slug: `${slug}/snapshot/${timestamp}` },
-        props: { project: snapshot, isSnapshot: true },
-      });
+    // Generate paths for historical snapshots (all except the most recent)
+    const slugSnapshots = snapshotsBySlug.get(slug) ?? [];
+    if (slugSnapshots.length > 1) {
+      const sorted = slugSnapshots.sort(
+        (a, b) =>
+          new Date(b.data.snapshotDate ?? 0).getTime() -
+          new Date(a.data.snapshotDate ?? 0).getTime()
+      );
+
+      // Skip the most recent snapshot (index 0), generate routes for the rest
+      for (let i = 1; i < sorted.length; i++) {
+        const snapshot = sorted[i];
+        // Astro glob loader converts "2026-02-05-10-30.snapshot.mdx" ID to "2026-02-05-10-30snapshot"
+        const filename = snapshot.id.split('/')[1];
+        const timestamp = filename.replace('snapshot', '');
+        paths.push({
+          params: { slug: `${slug}/snapshot/${timestamp}` },
+          props: { project: snapshot, isSnapshot: true },
+        });
+      }
     }
   }
 
