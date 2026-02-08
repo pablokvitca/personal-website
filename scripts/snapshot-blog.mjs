@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import fs from 'fs/promises';
 import path from 'path';
-import { execSync } from 'child_process';
 
 const BLOG_DIR = './src/content/blog';
 
@@ -50,42 +49,21 @@ async function createSnapshot(shortname) {
   // Write new snapshot
   await fs.writeFile(snapshotPath, updatedContent);
 
+  const tagName = `blog-snapshot:${shortname}:${timestamp}`;
+
   console.log(`Created snapshot from: live.mdx`);
   console.log(`New snapshot: ${snapshotName}`);
-
-  // Create git tag
-  const tagName = `blog-snapshot:${shortname}:${timestamp}`;
-  const shouldTag = process.argv.includes('--tag');
-
-  if (shouldTag) {
-    try {
-      execSync(`git tag "${tagName}"`, { stdio: 'pipe' });
-      console.log(`Git tag created: ${tagName}`);
-    } catch (err) {
-      console.error(`Warning: Failed to create git tag "${tagName}"`);
-      console.error('You can create it manually after committing.');
-    }
-  } else {
-    console.log(`\nTo tag this snapshot after committing:`);
-    console.log(`  git tag "${tagName}"`);
-  }
-
   console.log(`\nNext steps:`);
   console.log(`  1. Stage the snapshot: git add ${snapshotPath}`);
   console.log(`  2. Commit your changes`);
-  if (!shouldTag) {
-    console.log(`  3. Tag the commit: git tag "${tagName}"`);
-  }
+  console.log(`  3. Tag the commit: git tag "${tagName}"`);
 }
 
 // CLI handling
 const shortname = process.argv[2];
 if (!shortname) {
-  console.error('Usage: pnpm snapshot:blog <shortname> [--tag]');
+  console.error('Usage: pnpm snapshot:blog <shortname>');
   console.error('Example: pnpm snapshot:blog hello-world');
-  console.error('');
-  console.error('Options:');
-  console.error('  --tag    Create a git tag immediately (run after committing)');
   process.exit(1);
 }
 

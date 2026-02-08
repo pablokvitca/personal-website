@@ -59,11 +59,6 @@ This copies `live.mdx` to a timestamped snapshot file, adding a `snapshotDate` t
 git tag "blog-snapshot:<shortname>:<YYYY-MM-DD-HH-mm>"
 ```
 
-Or use `--tag` to create the tag immediately:
-```bash
-pnpm snapshot:blog <shortname> -- --tag
-```
-
 ### Version Display Logic
 
 - The **most recent snapshot** is always hidden from the dropdown (it matches the current live content)
