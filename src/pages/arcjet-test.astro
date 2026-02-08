@@ -2,6 +2,8 @@
 // This page is intentionally NOT prerendered so Arcjet middleware runs on it.
 // Use it to verify Shield and bot detection are working, then delete it.
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export const prerender = false;
 ---
 
 <BaseLayout title="Arcjet Test" description="Temporary page to verify Arcjet is running">
