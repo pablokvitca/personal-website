@@ -433,6 +433,9 @@ const { class: className, ...rest } = Astro.props;
   .sw-prose table:not(:where(.not-sw-prose *)) {
     width: 100%;
     table-layout: auto;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     margin-top: var(--sw-prose-spacing);
     margin-bottom: var(--sw-prose-spacing);
     font-size: var(--sw-prose-code-size);
