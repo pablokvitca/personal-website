@@ -125,7 +125,7 @@ function isDarkColor(hex: string): boolean {
     const dark = techInfo ? isDarkColor(techInfo.color) : false;
 
     const badge = techInfo && IconComponent ? (
-      <Tooltip inline openDelay={100} closeDelay={100} class="mx-[0.1em]">
+      <Tooltip inline openDelay={100} closeDelay={100} class="mx-[0.2em]">
         <TooltipTrigger>
           <a
             href={techInfo.url}
