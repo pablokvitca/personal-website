@@ -1,4 +1,5 @@
 import posthog from 'posthog-js';
+import { getTrackingParamsForAnalytics } from '@/lib/ref';
 
 let isInitialized = false;
 let currentCookieless: boolean | null = null;
@@ -44,6 +45,12 @@ export function initPostHog(cookieless = false): void {
     environment,
     deploy_url: `https://${hostname}`,
   });
+
+  // Attach ref/UTM tracking params as super-properties (sent with every event)
+  const trackingParams = getTrackingParamsForAnalytics();
+  if (Object.keys(trackingParams).length > 0) {
+    posthog.register(trackingParams);
+  }
 
   isInitialized = true;
   currentCookieless = cookieless;
