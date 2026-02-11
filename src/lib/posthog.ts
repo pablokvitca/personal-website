@@ -3,10 +3,11 @@ import posthog from 'posthog-js';
 let isInitialized = false;
 
 /**
- * Initialize PostHog analytics
+ * Initialize PostHog analytics.
+ * When cookieless is true, PostHog runs in memory-only mode (no persistent cookies).
  */
-export function initPostHog(): void {
-  if (typeof window === 'undefined' || isInitialized) return;
+export function initPostHog(cookieless = false): void {
+  if (typeof window === 'undefined') return;
 
   const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
   if (!posthogKey) {
@@ -18,11 +19,20 @@ export function initPostHog(): void {
   const isProduction = hostname === 'pablokvitca.com';
   const environment = isProduction ? 'production' : 'preview';
 
+  if (isInitialized) {
+    // Re-init is not supported by posthog-js; reset and reload if mode changes
+    posthog.reset();
+    isInitialized = false;
+  }
+
   posthog.init(posthogKey, {
     api_host: 'https://app.posthog.com',
     capture_pageview: true,
     capture_pageleave: true,
     autocapture: true,
+    ...(cookieless
+      ? { persistence: 'memory', disable_persistence: true }
+      : {}),
   });
 
   posthog.register({
@@ -31,6 +41,10 @@ export function initPostHog(): void {
   });
 
   isInitialized = true;
+}
+
+export function initPostHogCookieless(): void {
+  initPostHog(true);
 }
 
 /**
