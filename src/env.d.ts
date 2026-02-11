@@ -9,3 +9,9 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+// GA Consent Mode — gtag is set up via is:inline in GoogleAnalytics.astro
+interface Window {
+  gtag?: (...args: unknown[]) => void;
+  dataLayer?: unknown[];
+}
