@@ -37,7 +37,20 @@ const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
       }
 
       gtag('js', new Date());
-      gtag('config', measurementId);
+
+      // Pass ref param as a custom dimension (GA4 handles utm_* natively from URL)
+      var gaConfigParams = {};
+      try {
+        var trackingRaw = sessionStorage.getItem('tracking-params');
+        if (trackingRaw) {
+          var trackingData = JSON.parse(trackingRaw);
+          if (trackingData && typeof trackingData.ref === 'string') {
+            gaConfigParams.ref = trackingData.ref;
+          }
+        }
+      } catch (_e) {}
+
+      gtag('config', measurementId, gaConfigParams);
     </script>
     <script
       type="text/partytown"
