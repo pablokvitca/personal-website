@@ -53,10 +53,10 @@ export function parseAndStoreTrackingParams(): TrackingParams {
   const stored = getStoredTrackingParams();
   const merged: TrackingParams = { ...stored };
   const refFromUrl = search.get('ref');
-  if (refFromUrl !== null) merged.ref = refFromUrl;
+  if (refFromUrl) merged.ref = refFromUrl;
   for (const key of UTM_KEYS) {
     const val = search.get(key);
-    if (val !== null) merged[key as UtmKey] = val;
+    if (val) merged[key as UtmKey] = val;
   }
   try {
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(merged));

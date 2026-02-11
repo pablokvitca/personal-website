@@ -61,6 +61,19 @@ export function initPostHogCookieless(): void {
 }
 
 /**
+ * Re-register ref/UTM tracking params as PostHog super-properties.
+ * Call this after sessionStorage may have been updated (e.g. on each page navigation)
+ * so that new attribution values are picked up without requiring a full re-init.
+ */
+export function refreshTrackingParams(): void {
+  if (typeof window === 'undefined' || !isInitialized) return;
+  const trackingParams = getTrackingParamsForAnalytics();
+  if (Object.keys(trackingParams).length > 0) {
+    posthog.register(trackingParams);
+  }
+}
+
+/**
  * Track a custom event
  */
 export function trackEvent(
