@@ -1,4 +1,6 @@
 ---
+import ArcjetIcon from '@/components/icons/ArcjetIcon.astro';
+
 const currentYear = new Date().getFullYear();
 ---
 
@@ -32,6 +34,18 @@ const currentYear = new Date().getFullYear();
           Cookie preferences
         </button>
       </div>
+    </div>
+    <div class="flex justify-center pt-4 border-t border-border/50">
+      <a
+        href="https://arcjet.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
+        data-analytics="footer-arcjet-badge"
+      >
+        Protected by Arcjet
+        <ArcjetIcon class="size-3.5" />
+      </a>
     </div>
   </div>
 </footer>
