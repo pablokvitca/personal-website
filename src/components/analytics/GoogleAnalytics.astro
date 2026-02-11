@@ -4,43 +4,58 @@ const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 
 {measurementId && (
   <>
-    {/* Scripts held in a template — inert until consent is confirmed */}
-    <template id="ga-scripts">
-      <script
-        type="text/partytown"
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-      />
-      <script type="text/partytown" define:vars={{ measurementId }}>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', measurementId);
-      </script>
-    </template>
+    {/*
+      GA Consent Mode v2 (Advanced):
+      - The gtag script always loads so GA can do cookieless/modelled measurement
+      - consent 'default' is set to denied before gtag('config') fires
+      - consent 'update' is called to 'granted' when the user accepts via the banner
+      - On subsequent page loads, stored consent is applied before config via the
+        inline script below, so GA never fires cookies without consent
+    */}
+    <script is:inline define:vars={{ measurementId }}>
+      // Set up dataLayer and gtag shim before the async script arrives
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+
+      // Default all consent types to denied — GA will do cookieless modelling
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+      });
+
+      // If the user already accepted on a previous visit, upgrade before config fires
+      var storedConsent = localStorage.getItem('analytics-consent');
+      if (storedConsent === 'accepted') {
+        gtag('consent', 'update', {
+          analytics_storage: 'granted',
+          ad_storage: 'granted',
+          ad_user_data: 'granted',
+          ad_personalization: 'granted',
+        });
+      }
+
+      gtag('js', new Date());
+      gtag('config', measurementId);
+    </script>
+    <script
+      type="text/partytown"
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+    />
 
     <script>
-      import { getConsent } from '@/lib/consent';
-
-      function loadGA() {
-        const template = document.getElementById('ga-scripts') as HTMLTemplateElement | null;
-        if (!template) return;
-        const clone = template.content.cloneNode(true) as DocumentFragment;
-        document.head.appendChild(clone);
-        template.remove();
-      }
-
-      if (getConsent() === 'accepted') {
-        loadGA();
-      }
-
+      // Grant/revoke consent when the user interacts with the banner (same-page)
       window.addEventListener('consent-updated', (e) => {
         const { value } = (e as CustomEvent<{ value: string }>).detail;
-        if (value === 'accepted') {
-          loadGA();
-        }
+        const state = value === 'accepted' ? 'granted' : 'denied';
+        window.gtag?.('consent', 'update', {
+          analytics_storage: state,
+          ad_storage: state,
+          ad_user_data: state,
+          ad_personalization: state,
+        });
       });
     </script>
   </>
