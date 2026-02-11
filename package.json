@@ -12,6 +12,7 @@
     "new:project": "node ./scripts/new-project.mjs",
     "snapshot:blog": "node ./scripts/snapshot-blog.mjs",
     "snapshot:project": "node ./scripts/snapshot-project.mjs",
+    "ref:url": "node ./scripts/make-ref-url.mjs",
     "lint": "eslint src --ext .ts,.tsx,.astro",
     "format": "prettier --write src",
     "astro": "astro"
