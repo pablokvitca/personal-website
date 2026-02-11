@@ -1,10 +1,12 @@
 import posthog from 'posthog-js';
 
 let isInitialized = false;
+let currentCookieless: boolean | null = null;
 
 /**
  * Initialize PostHog analytics.
  * When cookieless is true, PostHog runs in memory-only mode (no persistent cookies).
+ * No-ops when already initialized in the same mode to avoid unnecessary resets.
  */
 export function initPostHog(cookieless = false): void {
   if (typeof window === 'undefined') return;
@@ -15,12 +17,15 @@ export function initPostHog(cookieless = false): void {
     return;
   }
 
+  // No-op if already running in the requested mode — avoids wiping identity/super-properties
+  if (isInitialized && currentCookieless === cookieless) return;
+
   const hostname = window.location.hostname;
   const isProduction = hostname === 'pablokvitca.com';
   const environment = isProduction ? 'production' : 'preview';
 
   if (isInitialized) {
-    // Re-init is not supported by posthog-js; reset and reload if mode changes
+    // Mode changed (e.g. user accepted consent after initial cookieless run); reset first
     posthog.reset();
     isInitialized = false;
   }
@@ -41,6 +46,7 @@ export function initPostHog(cookieless = false): void {
   });
 
   isInitialized = true;
+  currentCookieless = cookieless;
 }
 
 export function initPostHogCookieless(): void {
