@@ -25,7 +25,22 @@ const currentYear = new Date().getFullYear();
         >
           Colophon
         </a>
+        <button
+          id="footer-cookie-preferences"
+          class="text-sm text-muted-foreground hover:text-primary transition-colors bg-transparent border-none p-0 cursor-pointer"
+        >
+          Cookie preferences
+        </button>
       </div>
     </div>
   </div>
 </footer>
+
+<script>
+  import { clearConsent } from '@/lib/consent';
+
+  document.getElementById('footer-cookie-preferences')?.addEventListener('click', () => {
+    clearConsent();
+    window.location.reload();
+  });
+</script>
