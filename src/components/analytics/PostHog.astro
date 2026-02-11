@@ -1,4 +1,25 @@
 <script>
-  import { initPostHog } from '@/lib/posthog';
-  initPostHog();
+  import { initPostHog, initPostHogCookieless } from '@/lib/posthog';
+  import { getConsent } from '@/lib/consent';
+
+  function startPostHog() {
+    const consent = getConsent();
+    if (consent === 'accepted') {
+      initPostHog();
+    } else {
+      // No consent or declined: run cookieless (no persistent identity)
+      initPostHogCookieless();
+    }
+  }
+
+  startPostHog();
+
+  window.addEventListener('consent-updated', (e) => {
+    const { value } = (e as CustomEvent<{ value: string }>).detail;
+    if (value === 'accepted') {
+      initPostHog();
+    } else {
+      initPostHogCookieless();
+    }
+  });
 </script>

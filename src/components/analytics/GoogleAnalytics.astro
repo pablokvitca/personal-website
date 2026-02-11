@@ -1,0 +1,47 @@
+---
+const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+---
+
+{measurementId && (
+  <>
+    {/* Scripts held in a template — inert until consent is confirmed */}
+    <template id="ga-scripts">
+      <script
+        type="text/partytown"
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+      />
+      <script type="text/partytown" define:vars={{ measurementId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', measurementId);
+      </script>
+    </template>
+
+    <script>
+      import { getConsent } from '@/lib/consent';
+
+      function loadGA() {
+        const template = document.getElementById('ga-scripts') as HTMLTemplateElement | null;
+        if (!template) return;
+        const clone = template.content.cloneNode(true) as DocumentFragment;
+        document.head.appendChild(clone);
+        template.remove();
+      }
+
+      if (getConsent() === 'accepted') {
+        loadGA();
+      }
+
+      window.addEventListener('consent-updated', (e) => {
+        const { value } = (e as CustomEvent<{ value: string }>).detail;
+        if (value === 'accepted') {
+          loadGA();
+        }
+      });
+    </script>
+  </>
+)}
