@@ -1,4 +1,5 @@
 import posthog from 'posthog-js';
+import { getTrackingParamsForAnalytics } from '@/lib/ref';
 
 let isInitialized = false;
 let currentCookieless: boolean | null = null;
@@ -45,12 +46,31 @@ export function initPostHog(cookieless = false): void {
     deploy_url: `https://${hostname}`,
   });
 
+  // Attach ref/UTM tracking params as super-properties (sent with every event)
+  const trackingParams = getTrackingParamsForAnalytics();
+  if (Object.keys(trackingParams).length > 0) {
+    posthog.register(trackingParams);
+  }
+
   isInitialized = true;
   currentCookieless = cookieless;
 }
 
 export function initPostHogCookieless(): void {
   initPostHog(true);
+}
+
+/**
+ * Re-register ref/UTM tracking params as PostHog super-properties.
+ * Call this after sessionStorage may have been updated (e.g. on each page navigation)
+ * so that new attribution values are picked up without requiring a full re-init.
+ */
+export function refreshTrackingParams(): void {
+  if (typeof window === 'undefined' || !isInitialized) return;
+  const trackingParams = getTrackingParamsForAnalytics();
+  if (Object.keys(trackingParams).length > 0) {
+    posthog.register(trackingParams);
+  }
 }
 
 /**

@@ -31,6 +31,34 @@ const { title, description, ogImage, article } = Astro.props;
       ogImage={ogImage}
       article={article}
     />
+    <script is:inline>
+      // Parse and store ref/UTM tracking params early (before GA config fires)
+      (function () {
+        var SESSION_KEY = 'tracking-params';
+        var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+        try {
+          var search = new URLSearchParams(window.location.search);
+          var stored = {};
+          try {
+            var raw = sessionStorage.getItem(SESSION_KEY);
+            if (raw) {
+              var parsed = JSON.parse(raw);
+              if (parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                stored = parsed;
+              }
+            }
+          } catch (_e) {}
+          var merged = Object.assign({}, stored);
+          var ref = search.get('ref');
+          if (ref) merged.ref = ref;
+          for (var i = 0; i < UTM_KEYS.length; i++) {
+            var val = search.get(UTM_KEYS[i]);
+            if (val) merged[UTM_KEYS[i]] = val;
+          }
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(merged));
+        } catch (_e) {}
+      })();
+    </script>
     <GoogleAnalytics />
     <script is:inline>
       // Prevent flash of wrong theme
