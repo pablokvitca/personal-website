@@ -32,7 +32,8 @@ export function initPostHog(cookieless = false): void {
   }
 
   posthog.init(posthogKey, {
-    api_host: 'https://app.posthog.com',
+    api_host: 'https://e.pablokvitca.com',
+    ui_host: 'https://us.posthog.com',
     capture_pageview: true,
     capture_pageleave: true,
     autocapture: true,
