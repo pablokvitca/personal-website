@@ -60,17 +60,8 @@ const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     />
 
     <script>
-      // Grant/revoke consent when the user interacts with the banner (same-page)
-      window.addEventListener('consent-updated', (e) => {
-        const { value } = (e as CustomEvent<{ value: string }>).detail;
-        const state = value === 'accepted' ? 'granted' : 'denied';
-        window.gtag?.('consent', 'update', {
-          analytics_storage: state,
-          ad_storage: state,
-          ad_user_data: state,
-          ad_personalization: state,
-        });
-      });
+      import { listenForConsentUpdates } from '@/lib/ga-consent';
+      listenForConsentUpdates();
     </script>
   </>
 )}
