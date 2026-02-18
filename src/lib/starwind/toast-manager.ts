@@ -37,7 +37,9 @@ type SwipeDirection = "up" | "down" | "left" | "right";
 export class StarwindToastManager {
   readonly viewport: HTMLElement;
   private toasts: ToastState[] = [];
-  private queue: ToastState[] = [];
+  // queue is reserved for future overflow/queuing support (toasts beyond the limit);
+  // commented out to silence the unused-variable hint until the feature is implemented.
+  // private queue: ToastState[] = [];
   private limit: number;
   private defaultDuration: number;
   private expanded: boolean = false;
@@ -192,7 +194,7 @@ export class StarwindToastManager {
       toast.element?.remove();
     });
     this.toasts = [];
-    this.queue = [];
+    // this.queue = []; // queue field is commented out — see class property declaration
 
     // Remove all event listeners
     this.removeEvents();
@@ -380,7 +382,7 @@ export class StarwindToastManager {
    */
   public closeAll(): void {
     [...this.toasts].forEach((toast) => this.close(toast.id));
-    this.queue = [];
+    // this.queue = []; // queue field is commented out — see class property declaration
   }
 
   private renderToast(toast: ToastState): void {
