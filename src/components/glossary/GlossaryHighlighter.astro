@@ -1,0 +1,18 @@
+---
+import type { GlossaryTermData } from '@/lib/glossary';
+
+interface Props {
+  terms: GlossaryTermData[];
+}
+
+const { terms } = Astro.props;
+---
+
+<script is:inline type="application/json" id="glossary-data" set:html={JSON.stringify(terms)} />
+
+<script>
+  import { highlightGlossaryTerms } from '@/lib/glossary-highlighter';
+
+  highlightGlossaryTerms();
+  document.addEventListener('astro:after-swap', highlightGlossaryTerms);
+</script>

@@ -1,0 +1,26 @@
+---
+title: "AI Agents"
+alternativeNames:
+  - "Autonomous Agents"
+  - "LLM Agents"
+  - "Agentic AI"
+shortDescription: "AI systems that perceive their environment and take sequences of actions to achieve goals, often using language models as a reasoning core."
+externalSources:
+  - label: "LangChain — Agents"
+    url: "https://python.langchain.com/docs/concepts/agents/"
+  - label: "Anthropic — Building Effective Agents"
+    url: "https://www.anthropic.com/research/building-effective-agents"
+relatedTerms:
+  - "ai-alignment"
+  - "machine-learning"
+---
+
+AI agents are systems that act autonomously to complete tasks, often over multiple steps. Unlike a single-shot language model call, an agent can use tools, browse the web, write and execute code, and loop until a goal is met.
+
+Key components of modern LLM agents:
+- **Reasoning core**: A language model that plans and decides
+- **Tool use**: APIs, code interpreters, web search, file systems
+- **Memory**: Short-term context and long-term retrieval stores
+- **Feedback loops**: Observing results and adapting plans
+
+Agentic systems raise unique alignment challenges since errors can compound across multi-step reasoning chains.

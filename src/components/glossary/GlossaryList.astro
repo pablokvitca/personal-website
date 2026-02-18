@@ -1,0 +1,23 @@
+---
+import GlossaryCard from './GlossaryCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entries: CollectionEntry<'glossary'>[];
+  showEmpty?: boolean;
+}
+
+const { entries, showEmpty = true } = Astro.props;
+---
+
+{
+  entries.length > 0 ? (
+    <div class="grid grid-cols-1 gap-6">
+      {entries.map((entry) => (
+        <GlossaryCard entry={entry} />
+      ))}
+    </div>
+  ) : showEmpty ? (
+    <p class="text-muted-foreground text-center py-12">No glossary entries found.</p>
+  ) : null
+}

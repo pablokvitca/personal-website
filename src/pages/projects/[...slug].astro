@@ -6,8 +6,10 @@ import H3 from '@/components/ui/headings/H3.astro';
 import H4 from '@/components/ui/headings/H4.astro';
 import H5 from '@/components/ui/headings/H5.astro';
 import H6 from '@/components/ui/headings/H6.astro';
+import GlossaryHighlighter from '@/components/glossary/GlossaryHighlighter.astro';
 import { getCollection, render } from 'astro:content';
 import { getProjectSlugFromId, getProjectSnapshots, isLiveEntry } from '@/lib/projects';
+import { getGlossaryTermData } from '@/lib/glossary';
 
 export const prerender = true;
 
@@ -68,6 +70,7 @@ const { project, isSnapshot } = Astro.props;
 const { Content, headings } = await render(project);
 const slug = getProjectSlugFromId(project.id);
 const snapshots = await getProjectSnapshots(slug);
+const glossaryTerms = await getGlossaryTermData();
 
 // MDX component overrides
 const components = {
@@ -96,4 +99,5 @@ const components = {
   tocMaxDepth={project.data.tocMaxDepth}
 >
   <Content components={components} />
+  <GlossaryHighlighter terms={glossaryTerms} />
 </ProjectLayout>
