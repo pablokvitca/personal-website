@@ -14,4 +14,10 @@ interface ImportMeta {
 interface Window {
   gtag?: (...args: unknown[]) => void;
   dataLayer?: unknown[];
+  // Starwind UI namespace — set up by Toaster and used by heading-links
+  __starwind__?: {
+    toast?: import('./lib/starwind/toast-manager').StarwindToastManager | null;
+  };
+  // Last mouse position tracked by StarwindToastManager for focus-out collision detection
+  __lastMousePosition?: { x: number; y: number };
 }
