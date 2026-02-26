@@ -53,7 +53,8 @@
     "overrides": {
       "lodash": "^4.17.23",
       "wrangler": "^4.60.0",
-      "@connectrpc/connect-node>undici": "^6.23.0"
+      "@connectrpc/connect-node>undici": "^6.23.0",
+      "basic-ftp": "^5.2.0"
     }
   }
 }
