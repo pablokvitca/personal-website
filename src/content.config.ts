@@ -84,4 +84,26 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { blog, projects, pages };
+// Glossary collection - concept definitions with optional extended MDX body
+const glossary = defineCollection({
+  loader: glob({
+    pattern: '*.mdx',
+    base: './src/content/glossary',
+  }),
+  schema: z.object({
+    title: z.string(),
+    alternativeNames: z.array(z.string()).default([]),
+    shortDescription: z.string(),
+    externalSources: z
+      .array(
+        z.object({
+          label: z.string(),
+          url: z.string().url(),
+        })
+      )
+      .default([]),
+    relatedTerms: z.array(z.string()).default([]), // slugs of related entries
+  }),
+});
+
+export const collections = { blog, projects, pages, glossary };

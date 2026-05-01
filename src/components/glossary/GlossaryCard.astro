@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'glossary'>;
+  usageCount?: number;
+}
+
+const { entry, usageCount } = Astro.props;
+const slug = entry.id.replace(/\.mdx$/, '');
+---
+
+<article class="border border-border rounded-lg p-6 hover:border-primary transition-colors">
+  <a href={`/glossary/${slug}`} class="block">
+    <h2 class="text-xl font-semibold mb-2 hover:text-primary transition-colors">
+      {entry.data.title}
+    </h2>
+    <p class="text-muted-foreground mb-4 line-clamp-2">
+      {entry.data.shortDescription}
+    </p>
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+      {entry.data.alternativeNames.length > 0 && (
+        <span>
+          Also: {entry.data.alternativeNames.join(', ')}
+        </span>
+      )}
+      {usageCount !== undefined && (
+        <span>
+          {usageCount} {usageCount === 1 ? 'mention' : 'mentions'}
+        </span>
+      )}
+    </div>
+  </a>
+</article>

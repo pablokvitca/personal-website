@@ -1,0 +1,171 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { getAllGlossaryEntries, getUsagesForTerm } from '@/lib/glossary';
+import { formatDate } from '@/lib/blog';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const entries = await getAllGlossaryEntries();
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.mdx$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const slug = entry.id.replace(/\.mdx$/, '');
+
+const { Content } = await render(entry);
+
+const usages = await getUsagesForTerm(
+  slug,
+  entry.data.title,
+  entry.data.alternativeNames
+);
+
+// Load related term entries for linking
+const allEntries = await getCollection('glossary');
+const relatedEntries = allEntries.filter((e) =>
+  entry.data.relatedTerms.includes(e.id.replace(/\.mdx$/, ''))
+);
+
+const INITIAL_SHOW = 10;
+---
+
+<BaseLayout
+  title={`${entry.data.title} — Glossary — Pablo Kvitca`}
+  description={entry.data.shortDescription}
+>
+  <div class="max-w-4xl mx-auto">
+    {/* Back link */}
+    <nav class="mb-8">
+      <a href="/glossary" class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+        ← Back to Glossary
+      </a>
+    </nav>
+
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-4">{entry.data.title}</h1>
+
+      {entry.data.alternativeNames.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-4">
+          {entry.data.alternativeNames.map((name) => (
+            <span class="px-2 py-1 bg-muted text-muted-foreground rounded text-sm font-mono">
+              {name}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <p class="text-xl text-muted-foreground">{entry.data.shortDescription}</p>
+    </header>
+
+    {/* Extended description from MDX body */}
+    <div class="sw-prose max-w-none mb-10">
+      <Content />
+    </div>
+
+    {/* External sources */}
+    {entry.data.externalSources.length > 0 && (
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold mb-4">External Sources</h2>
+        <ul class="space-y-2">
+          {entry.data.externalSources.map((source) => (
+            <li>
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-primary hover:underline text-sm"
+              >
+                {source.label} ↗
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {/* Related terms */}
+    {relatedEntries.length > 0 && (
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold mb-4">Related Terms</h2>
+        <div class="flex flex-wrap gap-3">
+          {relatedEntries.map((related) => {
+            const relatedSlug = related.id.replace(/\.mdx$/, '');
+            return (
+              <a
+                href={`/glossary/${relatedSlug}`}
+                class="px-3 py-1.5 border border-border rounded-md text-sm hover:border-primary hover:text-primary transition-colors"
+              >
+                {related.data.title}
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    {/* Usages */}
+    <section>
+      <h2 class="text-xl font-semibold mb-4">
+        Mentioned In
+        {usages.length > 0 && (
+          <span class="text-base font-normal text-muted-foreground ml-2">
+            ({usages.length} {usages.length === 1 ? 'entry' : 'entries'})
+          </span>
+        )}
+      </h2>
+
+      {usages.length === 0 ? (
+        <p class="text-muted-foreground">No blog posts or projects mention this term yet.</p>
+      ) : (
+        <>
+          <ul class="space-y-3" id="usages-list">
+            {usages.map((usage, i) => (
+              <li class:list={['usage-item', i >= INITIAL_SHOW && 'hidden']}>
+                <a
+                  href={`/${usage.type === 'blog' ? 'blog' : 'projects'}/${usage.slug}`}
+                  class="flex items-start justify-between gap-4 p-4 border border-border rounded-lg hover:border-primary transition-colors"
+                >
+                  <div>
+                    <span class="text-xs text-muted-foreground uppercase tracking-wide font-medium mr-2">
+                      {usage.type === 'blog' ? 'Blog' : 'Project'}
+                    </span>
+                    <span class="font-medium">{usage.title}</span>
+                  </div>
+                  <time class="text-sm text-muted-foreground shrink-0">
+                    {formatDate(usage.date)}
+                  </time>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          {usages.length > INITIAL_SHOW && (
+            <button
+              id="show-more-usages"
+              class="mt-4 text-sm text-primary hover:underline"
+            >
+              Show {usages.length - INITIAL_SHOW} more
+            </button>
+          )}
+        </>
+      )}
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  const btn = document.getElementById('show-more-usages');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.usage-item.hidden').forEach((el) => {
+        el.classList.remove('hidden');
+      });
+      btn.remove();
+    });
+  }
+</script>
