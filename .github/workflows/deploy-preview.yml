@@ -1,12 +1,6 @@
 name: Deploy Preview
 
-# Comment "/deploy" on a PR to upload it as a version of the separate
-# pablokvitca-website-preview Worker, under a pr-<number> preview alias.
-#
-# Threat model: the PR's code is untrusted. It is built in a job with no secrets
-# and no shared cache, and nothing from that build is used as Wrangler config
-# (Wrangler can run a `build.command` from config). The preview Worker holds no
-# production secrets, so preview code cannot read them at runtime.
+# Comment "/deploy" on a PR to publish a preview build.
 on:
   issue_comment:
     types: [created]

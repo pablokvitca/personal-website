@@ -1,0 +1,256 @@
+# AI Agent Rules for Personal Website
+
+This document provides guidelines for AI agents assisting with development on this project.
+
+## Project Overview
+
+Personal website for Pablo Kvitca built with Astro, React, TypeScript, and Tailwind CSS.
+Hosted on Cloudflare Workers.
+
+## Type Safety Requirements
+
+- **No JavaScript files** - All code must be TypeScript (`.ts`, `.tsx`, `.astro`)
+- Use `astro/tsconfigs/strictest` as the base TypeScript configuration
+- **No `any` types** unless absolutely necessary with documented justification
+- Use Zod schemas for runtime validation of content frontmatter
+- All props must be explicitly typed
+- Prefer `unknown` over `any` when type is truly unknown
+
+## Project Tooling
+- Use the upgraded project tooling CLIs: `mise`, `pnpm`, and `astro`; don't interact with legacy `npm` or `yarn` unless absolutely necessary.
+- Always run commands via `mise exec` to ensure the correct Node version is used (e.g. `mise exec pnpm install`, `mise exec pnpm build`).
+- The main branch is `main`. PRs should target `main`.
+- Prefer Astro-native Starwind UI components, fallback to shadcn components
+
+## Post Versioning Pattern
+
+Blog posts and projects support versioning for edit history tracking.
+
+### Core Concept
+
+- `live.mdx` is the **single source of truth** — it has the full git history for the post
+- Snapshots are created at significant milestones (not every edit)
+- Minor edits (typos, formatting) are committed directly to `live.mdx` without a snapshot
+- You decide on a case-by-case basis when a snapshot is warranted
+
+### File Structure
+```
+src/content/blog/[shortname]/
+├── live.mdx                         # Current published version (full git history)
+└── YYYY-MM-DD-HH-mm.snapshot.mdx   # Historical milestone snapshots
+```
+
+### Creating a New Post
+```bash
+pnpm new:blog <shortname>
+pnpm new:project <shortname>
+```
+
+This creates both `live.mdx` and an initial snapshot with identical content. The initial snapshot is required but hidden from the version dropdown (it represents the initial state).
+
+### Creating Snapshots
+```bash
+pnpm snapshot:blog <shortname>
+pnpm snapshot:project <shortname>
+```
+
+This copies `live.mdx` to a timestamped snapshot file, adding a `snapshotDate` to the frontmatter. After committing, tag the commit:
+```bash
+git tag "blog-snapshot:<shortname>:<YYYY-MM-DD-HH-mm>"
+```
+
+### Version Display Logic
+
+- The **most recent snapshot** is always hidden from the dropdown (it matches the current live content)
+- When there's only 1 snapshot (the initial one), no version history is shown
+- All older snapshots appear as historical versions in the dropdown
+
+### URL Structure
+- Current version: `/blog/[slug]`
+- Historical version: `/blog/[slug]/snapshot/[timestamp]`
+
+## Tag Format
+
+Tags follow a `type:value` format for categorization and filtering.
+
+### Tag Types
+- `technology:` - Technologies used (e.g., `technology:react`, `technology:typescript`)
+- `language:` - Content language (e.g., `language:english`, `language:spanish`)
+- `topic:` - Subject matter (e.g., `topic:machine-learning`, `topic:web-development`)
+
+### Tag Validation
+Tags are validated via Zod regex: `/^(technology|language|topic):[a-z0-9-]+$/`
+
+### Examples
+```yaml
+tags:
+  - technology:astro
+  - technology:react
+  - topic:web-development
+  - language:english
+```
+
+## Required Frontmatter
+
+### Blog Posts (`live.mdx`)
+```yaml
+---
+title: string          # Required - Post title
+abstract: string       # Required - Brief description/TLDR
+publishedAt: date      # Required - Publication date
+tags: string[]         # Required - Array of type:value tags
+updatedAt: date        # Optional - Last update date
+draft: boolean         # Optional - Default: false
+featured: boolean      # Optional - Default: false (show on homepage)
+seoTitle: string       # Optional - Custom SEO title
+seoDescription: string # Optional - Custom meta description
+ogImage: string        # Optional - Open Graph image path
+---
+```
+
+### Blog Snapshots (`*.snapshot.mdx`)
+Same as live.mdx, plus:
+```yaml
+snapshotDate: date     # Required - When the snapshot was taken (auto-set by script)
+```
+
+### Projects
+```yaml
+---
+title: string          # Required - Project title
+description: string    # Required - Project description
+tags: string[]         # Required - Array of type:value tags
+featured: boolean      # Optional - Default: false
+status: enum           # Optional - 'active' | 'completed' | 'archived'
+startDate: date        # Optional - Project start date
+endDate: date          # Optional - Project end date
+links:                 # Optional - Related links
+  github: url
+  demo: url
+  docs: url
+---
+```
+
+## UI Components
+
+### Starwind (Astro Components)
+Located in `src/components/ui/` - Static Astro components for non-interactive UI.
+- Preferred for static content
+- Zero JavaScript by default
+
+### shadcn/ui (React Components)
+Located in `src/components/ui/*.tsx` - Interactive React components.
+- Use with `client:load` or `client:visible` directives
+- Only use when interactivity is required
+
+### Component Selection
+1. Default to Astro components for static content
+2. Use React components only for interactive elements
+3. Prefer `client:visible` over `client:load` for below-the-fold content
+4. Prefer `client:idle` for non-critical interactive elements
+
+## Git Commit Conventions
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/) specification.
+
+### Commit Types
+- `feat:` - New feature
+- `fix:` - Bug fix
+- `docs:` - Documentation changes
+- `style:` - Code style/formatting (no logic changes)
+- `refactor:` - Code refactoring (no feature/fix)
+- `test:` - Adding or updating tests
+- `chore:` - Maintenance tasks (deps, config, etc.)
+
+### Examples
+```
+feat: add blog search functionality
+fix: correct tag filtering on mobile
+docs: update README with deployment instructions
+style: format components with prettier
+refactor: extract tag utilities to lib/tags.ts
+chore: update dependencies
+```
+
+## Security Requirements
+
+### Secrets Management
+- **NEVER** commit secrets, API keys, or credentials
+- Use environment variables for sensitive data
+- Required env vars:
+  - `ARCJET_KEY` - Arcjet security key
+  - `POSTHOG_KEY` / `PUBLIC_POSTHOG_KEY` - PostHog analytics
+
+### Environment Files
+- `.env` - Local development (gitignored)
+- `.env.example` - Template for required variables (committed)
+
+### Security Practices
+- Validate all user input
+- Sanitize content before rendering
+- Use HTTPS for all external requests
+
+## Package Manager
+
+This project uses **pnpm**. Do not use npm or yarn.
+
+```bash
+mise exec pnpm install          # Install dependencies
+mise exec pnpm add <package>    # Add dependency
+mise exec pnpm add -D <package> # Add dev dependency
+mise exec pnpm dev              # Start dev server
+mise exec pnpm build            # Build for production
+mise exec pnpm check            # Run Astro check
+mise exec pnpm typecheck        # Run TypeScript check
+mise exec pnpm lint             # Run ESLint
+```
+
+## File Organization
+
+```
+src/
+├── components/
+│   ├── ui/           # Reusable UI components
+│   ├── blog/         # Blog-specific components
+│   ├── projects/     # Project-specific components
+│   ├── common/       # Shared layout components
+│   └── analytics/    # Analytics components
+├── content/
+│   ├── blog/         # Blog posts (MDX)
+│   └── projects/     # Project entries (MDX)
+├── layouts/          # Page layouts
+├── lib/              # Utility functions
+├── pages/            # Route pages
+└── styles/           # Global styles
+```
+
+## Testing Changes
+
+Before committing:
+1. Run `mise exec pnpm check` - Verify Astro configuration and TypeScript types
+2. Run `mise exec pnpm lint` - ESLint (TypeScript, Astro, React hooks, a11y); `mise exec pnpm lint:fix` auto-fixes
+3. Run `mise exec pnpm build` - Verify production build succeeds
+4. Test in browser with `mise exec pnpm dev`
+
+Note: `pnpm check` (astro check) is the primary type checker for this project as it has full Astro compiler context. The `pnpm typecheck` command (tsc --noEmit) may report false positives on Astro component imports and should be considered supplementary.
+
+## Deployment
+
+The site is deployed by the workflows in `.github/workflows/`. Deployment, infrastructure and security operations are documented privately, outside this repository.
+
+- Never run deploys, change DNS, or change GitHub or hosting settings without explicit confirmation from the owner.
+- Credentials are never stored in this repo. Ask before loading any local credential files.
+- Local `astro dev` and `astro preview` run in workerd and read secrets from `.dev.vars` (see `.dev.vars.example`).
+
+## Operations and Lessons Learned
+
+### Dependencies
+- Upgrade `astro` and its integrations together, especially `@astrojs/cloudflare`. A lone core bump breaks the adapter (Dependabot groups them).
+- Keep TypeScript on 5.x: `astro check` does not support TypeScript 7.
+- For transitive security fixes, raise the `pnpm.overrides` floor to the first patched version. Caret overrides don't move versions that are already locked. Remove overrides that no longer match anything.
+- `compressHTML: true` and `prerenderEnvironment: 'node'` in `astro.config.ts` are deliberate; see the comments there.
+
+### Verifying upgrades
+- Build `main` first as a baseline. Then diff the prerendered HTML in `dist/client` against the new build: heading IDs, visible text, and inline script order. Astro upgrades have changed whitespace (`compressHTML`) and can change heading IDs.
+- Smoke-test in workerd with `mise exec pnpm build && mise exec pnpm astro preview`: every page and a 404.
+- To judge browser impact, compare `/_astro/*` asset hashes with production. Identical hashes mean nothing changes in the browser.

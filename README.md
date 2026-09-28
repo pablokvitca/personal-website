@@ -15,7 +15,7 @@ My personal website built with [Astro](https://astro.build/), [React](https://re
 
 ### Hosting & Infrastructure
 - [Cloudflare Workers](https://workers.cloudflare.com/) for edge deployment
-- [Terraform](https://www.terraform.io/) for infrastructure as code (managed in a separate repo)
+- [Terraform](https://www.terraform.io/) for infrastructure as code
 
 ### Security & Analytics
 - [Arcjet](https://arcjet.com/) for application security
