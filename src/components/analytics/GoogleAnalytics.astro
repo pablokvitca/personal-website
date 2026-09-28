@@ -13,11 +13,16 @@ const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
         inline script below, so GA never fires cookies without consent
     */}
     <script is:inline define:vars={{ measurementId }}>
-      // Set up dataLayer and gtag shim before the async script arrives
+      // Set up dataLayer and gtag shim before the async script arrives.
+      // define:vars wraps this script in a function, so gtag must be assigned to window
+      // explicitly for later consent updates (src/lib/ga-consent.ts) to reach it.
       window.dataLayer = window.dataLayer || [];
-      // gtag.js requires the Arguments object itself in dataLayer, not an array.
-      // eslint-disable-next-line prefer-rest-params
-      function gtag() { dataLayer.push(arguments); }
+      window.gtag = function gtag() {
+        // gtag.js requires the Arguments object itself in dataLayer, not an array.
+        // eslint-disable-next-line prefer-rest-params
+        window.dataLayer.push(arguments);
+      };
+      const gtag = window.gtag;
 
       // Default all consent types to denied — GA will do cookieless modelling
       gtag('consent', 'default', {
