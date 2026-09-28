@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "pablokvitca-website",
+  "compatibility_date": "2026-09-26",
+  // Production is served only from the custom domains managed in the infra repository.
+  "workers_dev": false,
+  // Version URLs back the /deploy PR previews; protect them with Access (see infra README).
+  "preview_urls": true,
+  "observability": {
+    "enabled": true
+  }
+}

@@ -11,26 +11,20 @@ import compress from '@playform/compress';
 export default defineConfig({
   site: 'https://pablokvitca.com',
   output: 'server',
+  // Sessions are unused; without this the adapter wires up a SESSION KV binding.
+  session: false,
+  // Astro 7 defaults to 'jsx', which drops whitespace between inline elements.
+  compressHTML: true,
 
   adapter: cloudflare({
     imageService: 'compile',
-    platformProxy: {
-      enabled: true,
-    },
+    // The workerd prerenderer only sees Wrangler bindings, not build env vars like ARCJET_KEY,
+    // which the Arcjet middleware requires at module load even for prerendered routes.
+    prerenderEnvironment: 'node',
   }),
 
   vite: {
     plugins: [tailwindcss()],
-    resolve: {
-      // Use React's edge runtime for Cloudflare Workers compatibility
-      // Fixes "MessageChannel is not defined" error with React 19
-      // See: https://github.com/withastro/astro/issues/12824
-      alias: import.meta.env.PROD
-        ? {
-            'react-dom/server': 'react-dom/server.edge',
-          }
-        : undefined,
-    },
   },
 
   integrations: [

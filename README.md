@@ -14,7 +14,7 @@ My personal website built with [Astro](https://astro.build/), [React](https://re
 - [MDX](https://mdxjs.com/) for content with JSX components
 
 ### Hosting & Infrastructure
-- [Cloudflare Pages](https://pages.cloudflare.com/) for edge deployment
+- [Cloudflare Workers](https://workers.cloudflare.com/) for edge deployment
 - [Terraform](https://www.terraform.io/) for infrastructure as code (managed in a separate repo)
 
 ### Security & Analytics

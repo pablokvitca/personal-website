@@ -1,5 +1,6 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 // Tag schema: type:value format
 const tagSchema = z.string().regex(
@@ -54,9 +55,9 @@ const projects = defineCollection({
     endDate: z.coerce.date().optional(),
     links: z
       .object({
-        github: z.string().url().optional(),
-        demo: z.string().url().optional(),
-        docs: z.string().url().optional(),
+        github: z.url().optional(),
+        demo: z.url().optional(),
+        docs: z.url().optional(),
       })
       .optional(),
 

@@ -37,3 +37,8 @@ override.tf.json
 *_override.tf.json
 .terraformrc
 terraform.rc
+
+# Cloudflare Workers local secrets and state
+.dev.vars*
+!.dev.vars.example
+.wrangler/

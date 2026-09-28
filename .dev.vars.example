@@ -1,0 +1,4 @@
+# Local secrets for `astro dev` / `astro preview` (workerd). Copy to .dev.vars.
+# Production values are Cloudflare Worker secrets.
+ARCJET_KEY=
+ARCJET_ENV=development

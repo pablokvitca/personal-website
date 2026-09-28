@@ -1,32 +1,30 @@
 name: Deploy Preview
 
+# Comment "/deploy" on a PR to upload it as a Worker version with a pr-<number>
+# preview alias. Previews never receive production traffic.
 on:
   issue_comment:
     types: [created]
-  pull_request:
-    types: [closed]
 
 permissions:
-  contents: write
-  deployments: write
+  contents: read
+
+concurrency:
+  group: preview-${{ github.event.issue.number }}
+  cancel-in-progress: true
 
 jobs:
-  # ---------------------------------------------------------------------------
-  # Triggered by "/deploy" comment on a PR → creates preview/<head-branch>
-  # ---------------------------------------------------------------------------
-  create-preview:
+  authorize:
     if: >
-      github.event_name == 'issue_comment'
-      && github.event.action == 'created'
-      && github.event.issue.pull_request != null
-      && contains(github.event.comment.body, '/deploy')
+      github.event.issue.pull_request != null
+      && startsWith(github.event.comment.body, '/deploy')
     runs-on: ubuntu-latest
-
+    outputs:
+      head_sha: ${{ steps.pr.outputs.head_sha }}
     steps:
       - name: Verify commenter has write access
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
               owner: context.repo.owner,
@@ -37,180 +35,133 @@ jobs:
               core.setFailed('Commenter does not have write access.');
             }
 
-      - name: Get PR head branch and SHA
-        id: pr-info
+      - name: Get PR head SHA
+        id: pr
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: json
           script: |
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.payload.issue.number,
             });
-            return { head_ref: pr.head.ref, head_sha: pr.head.sha };
+            core.setOutput('head_sha', pr.head.sha);
 
-      - name: Create or update preview branch
-        id: create-branch
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: json
-          script: |
-            const owner = context.repo.owner;
-            const repo  = context.repo.repo;
-            const headRef = '${{ steps.pr-info.outputs.result }}';
-            const { head_ref, head_sha } = JSON.parse(headRef);
-            const previewBranch = `preview/${head_ref}`;
-
-            // Record the current time so the poll step can ignore stale CF comments
-            const createdAt = new Date().toISOString();
-
-            let exists = false;
-            try {
-              const { data: ref } = await github.rest.git.getRef({
-                owner, repo,
-                ref: `heads/${previewBranch}`,
-              });
-              exists = true;
-
-              if (ref.object.sha === head_sha) {
-                // Branch already at this SHA — delete and recreate to force a new CF build
-                await github.rest.git.deleteRef({ owner, repo, ref: `heads/${previewBranch}` });
-                core.info(`Deleted ${previewBranch} (same SHA) to force rebuild`);
-                exists = false;
-              }
-            } catch {
-              // Branch doesn't exist yet
-            }
-
-            if (exists) {
-              await github.rest.git.updateRef({
-                owner, repo,
-                ref: `heads/${previewBranch}`,
-                sha: head_sha,
-                force: true,
-              });
-              core.info(`Updated existing branch ${previewBranch}`);
-            } else {
-              await github.rest.git.createRef({
-                owner, repo,
-                ref: `refs/heads/${previewBranch}`,
-                sha: head_sha,
-              });
-              core.info(`Created branch ${previewBranch}`);
-            }
-
-            return { createdAt };
-
-      - name: Create pending deployment
-        id: deployment
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: json
-          script: |
-            const { head_ref } = JSON.parse('${{ steps.pr-info.outputs.result }}');
-            const { data } = await github.rest.repos.createDeployment({
-              owner: context.repo.owner,
-              repo:  context.repo.repo,
-              ref: head_ref,
-              environment: 'preview',
-              description: `Preview for PR #${context.payload.issue.number} (preview/${head_ref})`,
-              required_contexts: [],
-              auto_merge: false,
-            });
-            return { id: data.id };
-
-      - name: Poll for Cloudflare check run and update deployment status
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const owner = context.repo.owner;
-            const repo  = context.repo.repo;
-            const { head_ref, head_sha } = JSON.parse('${{ steps.pr-info.outputs.result }}');
-            const { id: deploymentId }   = JSON.parse('${{ steps.deployment.outputs.result }}');
-            const { createdAt }          = JSON.parse('${{ steps.create-branch.outputs.result }}');
-            const branchCreatedAt = new Date(createdAt);
-            const slug = `preview-${head_ref}`.replace(/\//g, '-');
-            const url  = `https://${slug}.pablokvitca-website.pages.dev`;
-
-            // Poll the "Cloudflare Pages" check run on the preview branch's head SHA
-            // CF always updates this check run — even on re-deploys where it edits
-            // its PR comment instead of posting a new one.
-            const maxAttempts = 30; // 30 × 10s = 5 min
-            let cfStatus = null;
-
-            for (let i = 0; i < maxAttempts; i++) {
-              const { data } = await github.rest.checks.listForRef({
-                owner, repo, ref: head_sha,
-              });
-
-              const cfCheck = data.check_runs.find(
-                cr => cr.name === 'Cloudflare Pages'
-                   && cr.status === 'completed'
-                   && new Date(cr.completed_at) >= branchCreatedAt
-              );
-
-              if (cfCheck) {
-                cfStatus = cfCheck.conclusion === 'success' ? 'success' : 'failure';
-                core.info(`Cloudflare Pages check run concluded: ${cfCheck.conclusion}`);
-                break;
-              }
-
-              core.info(`Attempt ${i + 1}/${maxAttempts}: waiting for Cloudflare Pages check run...`);
-              await new Promise(resolve => setTimeout(resolve, 10000));
-            }
-
-            // Map to deployment status
-            let state, description;
-            if (cfStatus === 'success') {
-              state = 'success';
-              description = 'Preview deployed via Cloudflare Pages';
-            } else if (cfStatus === 'failure') {
-              state = 'failure';
-              description = 'Cloudflare Pages deployment failed';
-            } else {
-              state = 'error';
-              description = 'Timed out waiting for Cloudflare Pages';
-            }
-
-            await github.rest.repos.createDeploymentStatus({
-              owner, repo,
-              deployment_id: deploymentId,
-              state,
-              target_url: url,
-              description,
-              environment_url: state === 'success' ? url : undefined,
-            });
-
-            core.info(`Deployment marked as: ${state}`);
-
-  # ---------------------------------------------------------------------------
-  # Triggered when the PR is closed → deletes the preview/<head-branch>
-  # ---------------------------------------------------------------------------
-  cleanup-preview:
-    if: >
-      github.event_name == 'pull_request'
-      && github.event.action == 'closed'
+  # Builds the PR's code without access to any secrets.
+  build:
+    needs: authorize
     runs-on: ubuntu-latest
-
     steps:
-      - name: Delete preview branch if it exists
-        uses: actions/github-script@v7
+      - name: Checkout PR head
+        uses: actions/checkout@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const owner = context.repo.owner;
-            const repo  = context.repo.repo;
-            const headRef = context.payload.pull_request.head.ref;
-            const previewBranch = `heads/preview/${headRef}`;
+          ref: ${{ needs.authorize.outputs.head_sha }}
+          persist-credentials: false
 
-            try {
-              await github.rest.git.deleteRef({ owner, repo, ref: previewBranch });
-              core.info(`Deleted branch preview/${headRef}`);
-            } catch (e) {
-              core.info(`No preview branch to clean up (preview/${headRef})`);
-            }
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build project
+        run: pnpm build
+        env:
+          PUBLIC_POSTHOG_KEY: ${{ vars.PUBLIC_POSTHOG_KEY }}
+          PUBLIC_GA_MEASUREMENT_ID: ${{ vars.PUBLIC_GA_MEASUREMENT_ID }}
+          ARCJET_KEY: ajkey_build_placeholder
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-build
+          path: dist
+          include-hidden-files: true
+          retention-days: 3
+
+  # Uploads the version using wrangler from the trusted default branch.
+  deploy:
+    needs: [authorize, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    environment:
+      name: preview
+      url: ${{ steps.upload.outputs.url }}
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: preview-build
+          path: dist
+
+      - name: Verify generated Worker config
+        # The config comes from the PR build; refuse anything beyond the expected Worker and assets.
+        run: |
+          jq -e '
+            .name == "pablokvitca-website"
+            and ((.kv_namespaces // []) | length == 0)
+            and ((.d1_databases // []) | length == 0)
+            and ((.r2_buckets // []) | length == 0)
+            and ((.services // []) | length == 0)
+            and ((.durable_objects.bindings // []) | length == 0)
+            and ((.routes // []) | length == 0)
+          ' dist/server/wrangler.json
+
+      - name: Upload preview version
+        id: upload
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          pnpm exec wrangler versions upload \
+            --config dist/server/wrangler.json \
+            --preview-alias "pr-${PR_NUMBER}" \
+            --message "PR #${PR_NUMBER}" | tee upload.log
+          url=$(grep -oE 'https://pr-[0-9]+-[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev' upload.log | head -n1)
+          if [ -z "$url" ]; then echo "Could not find preview alias URL in wrangler output" >&2; exit 1; fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview URL
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_URL: ${{ steps.upload.outputs.url }}
+          HEAD_SHA: ${{ needs.authorize.outputs.head_sha }}
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: `Preview for ${process.env.HEAD_SHA.slice(0, 7)} deployed: ${process.env.PREVIEW_URL}`,
+            });

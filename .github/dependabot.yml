@@ -1,0 +1,54 @@
+version: 2
+updates:
+  - package-ecosystem: npm # also covers pnpm-lock.yaml
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # Skip releases younger than a few days to reduce exposure to compromised or yanked versions.
+    cooldown:
+      default-days: 3
+      semver-major-days: 14
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      # Astro core and its integrations must move together; a lone astro bump breaks the adapter.
+      astro:
+        patterns:
+          - astro
+          - "@astrojs/*"
+          - "@arcjet/astro"
+          - arcjet
+          - wrangler
+          - vite
+      tailwind:
+        patterns:
+          - tailwindcss
+          - "@tailwindcss/*"
+          - tailwind-*
+      react:
+        patterns:
+          - react
+          - react-dom
+          - "@types/react"
+          - "@types/react-dom"
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # astro check does not support TypeScript 7 yet.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: chore(ci)
+    groups:
+      actions:
+        patterns:
+          - "*"
