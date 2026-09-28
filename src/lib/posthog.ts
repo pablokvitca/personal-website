@@ -1,4 +1,5 @@
 import posthog from 'posthog-js';
+import { getAnalyticsEnvironment } from '@/lib/analytics-env';
 import { getTrackingParamsForAnalytics } from '@/lib/ref';
 
 let isInitialized = false;
@@ -18,12 +19,13 @@ export function initPostHog(cookieless = false): void {
     return;
   }
 
+  const hostname = window.location.hostname;
+  const environment = getAnalyticsEnvironment(hostname);
+  // Local dev and local preview builds never send analytics.
+  if (environment === 'local') return;
+
   // No-op if already running in the requested mode — avoids wiping identity/super-properties
   if (isInitialized && currentCookieless === cookieless) return;
-
-  const hostname = window.location.hostname;
-  const isProduction = hostname === 'pablokvitca.com';
-  const environment = isProduction ? 'production' : 'preview';
 
   if (isInitialized) {
     // Mode changed (e.g. user accepted consent after initial cookieless run); reset first

@@ -59,7 +59,12 @@ const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
         // Missing or corrupt tracking params: configure GA without them.
       }
 
-      gtag('config', measurementId, gaConfigParams);
+      // Local dev and local preview builds never send hits: gtag.js only sends after 'config'.
+      // Keep in sync with LOCAL_HOST in src/lib/analytics-env.ts.
+      const isLocalHost = /^(localhost|127\.0\.0\.1|\[::1\])$|\.localhost$/.test(location.hostname);
+      if (!isLocalHost) {
+        gtag('config', measurementId, gaConfigParams);
+      }
     </script>
     <script
       is:inline
