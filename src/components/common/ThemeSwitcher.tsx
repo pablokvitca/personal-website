@@ -1,6 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 
 type Theme = 'light' | 'dark' | 'system';
+
+const THEME_KEY = 'theme';
+const THEME_CHANGE_EVENT = 'theme-change';
+
+function readStoredTheme(): Theme {
+  const stored = localStorage.getItem(THEME_KEY);
+  return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+}
+
+function subscribeToTheme(onChange: () => void): () => void {
+  window.addEventListener('storage', onChange);
+  window.addEventListener(THEME_CHANGE_EVENT, onChange);
+  return () => {
+    window.removeEventListener('storage', onChange);
+    window.removeEventListener(THEME_CHANGE_EVENT, onChange);
+  };
+}
 
 interface ThemeSwitcherProps {
   variant?: 'full' | 'toggle';
@@ -81,18 +98,13 @@ function resolveEffectiveTheme(theme: Theme): 'light' | 'dark' {
 }
 
 export default function ThemeSwitcher({ variant = 'full' }: ThemeSwitcherProps) {
-  const [theme, setTheme] = useState<Theme>('system');
-
-  useEffect(() => {
-    const stored = localStorage.getItem('theme') as Theme | null;
-    if (stored) {
-      setTheme(stored);
-    }
-  }, []);
+  // Server snapshot is 'system' so hydration matches the SSR output; the stored choice
+  // is read right after, without an effect, and all instances stay in sync.
+  const theme = useSyncExternalStore(subscribeToTheme, readStoredTheme, () => 'system' as const);
 
   const applyTheme = (newTheme: Theme) => {
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
+    localStorage.setItem(THEME_KEY, newTheme);
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
 
     if (newTheme === 'system') {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;

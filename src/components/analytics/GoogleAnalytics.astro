@@ -15,6 +15,8 @@ const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     <script is:inline define:vars={{ measurementId }}>
       // Set up dataLayer and gtag shim before the async script arrives
       window.dataLayer = window.dataLayer || [];
+      // gtag.js requires the Arguments object itself in dataLayer, not an array.
+      // eslint-disable-next-line prefer-rest-params
       function gtag() { dataLayer.push(arguments); }
 
       // Default all consent types to denied — GA will do cookieless modelling
@@ -26,7 +28,7 @@ const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
       });
 
       // If the user already accepted on a previous visit, upgrade before config fires
-      var storedConsent = localStorage.getItem('analytics-consent');
+      const storedConsent = localStorage.getItem('analytics-consent');
       if (storedConsent === 'accepted') {
         gtag('consent', 'update', {
           analytics_storage: 'granted',
@@ -39,16 +41,18 @@ const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
       gtag('js', new Date());
 
       // Pass ref param as a custom dimension (GA4 handles utm_* natively from URL)
-      var gaConfigParams = {};
+      const gaConfigParams = {};
       try {
-        var trackingRaw = sessionStorage.getItem('tracking-params');
+        const trackingRaw = sessionStorage.getItem('tracking-params');
         if (trackingRaw) {
-          var trackingData = JSON.parse(trackingRaw);
+          const trackingData = JSON.parse(trackingRaw);
           if (trackingData && typeof trackingData.ref === 'string' && trackingData.ref) {
             gaConfigParams.ref = trackingData.ref;
           }
         }
-      } catch (_e) {}
+      } catch {
+        // Missing or corrupt tracking params: configure GA without them.
+      }
 
       gtag('config', measurementId, gaConfigParams);
     </script>

@@ -34,6 +34,9 @@ jobs:
       - name: Run Astro check
         run: pnpm check
 
+      - name: Run lint
+        run: pnpm lint
+
       - name: Build project
         run: pnpm build
         env:
