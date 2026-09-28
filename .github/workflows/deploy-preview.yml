@@ -15,7 +15,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: preview-${{ github.event.issue.number }}
+  # Only /deploy comments share a group; any other comment (e.g. bots) gets a unique
+  # group so it cannot cancel an in-progress preview deploy.
+  group: preview-${{ github.event.issue.number }}-${{ startsWith(github.event.comment.body, '/deploy') && 'deploy' || github.run_id }}
   cancel-in-progress: true
 
 env:
