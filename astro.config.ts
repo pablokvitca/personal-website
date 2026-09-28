@@ -8,6 +8,9 @@ import partytown from '@astrojs/partytown';
 import arcjet from '@arcjet/astro';
 import compress from '@playform/compress';
 
+// Captured once per build so prerendered pages and the server bundle show the same deploy time.
+const buildTime = new Date().toISOString();
+
 export default defineConfig({
   site: 'https://pablokvitca.com',
   output: 'server',
@@ -25,6 +28,9 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    define: {
+      __SITE_BUILD_TIME__: JSON.stringify(buildTime),
+    },
   },
 
   integrations: [

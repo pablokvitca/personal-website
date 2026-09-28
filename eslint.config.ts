@@ -16,7 +16,8 @@ export default defineConfig(
 
   {
     files: ['src/**/*.{ts,tsx,astro}'],
-    languageOptions: { globals: globals.browser },
+    // __SITE_BUILD_TIME__ is injected at build time by vite.define (astro.config.ts).
+    languageOptions: { globals: { ...globals.browser, __SITE_BUILD_TIME__: 'readonly' } },
   },
   {
     files: ['scripts/**/*.mjs', '*.config.ts'],

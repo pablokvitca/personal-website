@@ -1,5 +1,8 @@
 /// <reference path="../.astro/types.d.ts" />
 
+// ISO timestamp of the build, injected by vite.define in astro.config.ts.
+declare const __SITE_BUILD_TIME__: string;
+
 interface ImportMetaEnv {
   readonly PUBLIC_POSTHOG_KEY: string;
   readonly PUBLIC_GA_MEASUREMENT_ID: string;
