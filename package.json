@@ -19,7 +19,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@arcjet/astro": "^1.13.0",
+    "@arcjet/astro": "^1.14.0",
     "@astrojs/check": "^0.9.10",
     "@astrojs/cloudflare": "^14.3.3",
     "@astrojs/mdx": "^8.0.2",
@@ -29,7 +29,7 @@
     "@tabler/icons": "^3.48.0",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/vite": "^4.3.3",
-    "arcjet": "^1.13.0",
+    "arcjet": "^1.14.0",
     "astro": "~7.3.5",
     "posthog-js": "^1.434.15",
     "react": "^19.3.0",
@@ -55,7 +55,7 @@
     "jiti": "^2.7.0",
     "tailwindcss": "^4.3.3",
     "typescript-eslint": "^8.70.1",
-    "wrangler": "^4.142.0"
+    "wrangler": "^4.147.0"
   },
   "pnpm": {
     "overrides": {
