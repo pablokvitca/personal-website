@@ -1,0 +1,6 @@
+# Applied by Cloudflare's static asset layer, so these never invoke the Worker.
+# https://developers.cloudflare.com/workers/static-assets/redirects/
+/sitemap.xml   /sitemap-index.xml          301
+/security.txt  /.well-known/security.txt   301
+/contact       /about/                     301
+/contact/      /about/                     301
