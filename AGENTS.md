@@ -252,6 +252,10 @@ The site is deployed by the workflows in `.github/workflows/`. Deployment, infra
 - For transitive security fixes, raise the `overrides` floor in `pnpm-workspace.yaml` to the first patched version. Caret overrides don't move versions that are already locked. Remove overrides that no longer match anything.
 - `compressHTML: true` and `prerenderEnvironment: 'node'` in `astro.config.ts` are deliberate; see the comments there.
 
+### Static files and redirects
+- `public/_redirects` is applied by Cloudflare's static asset layer before the Worker, so redirects there cost nothing. Prefer it over Astro `redirects` for fixed paths.
+- `public/.well-known/security.txt` has a required `Expires` date (RFC 9116, at most a year out). Renew it before it lapses.
+
 ### Verifying upgrades
 - Build `main` first as a baseline. Then diff the prerendered HTML in `dist/client` against the new build: heading IDs, visible text, and inline script order. Astro upgrades have changed whitespace (`compressHTML`) and can change heading IDs.
 - Smoke-test in workerd with `mise exec pnpm build && mise exec pnpm astro preview`: every page and a 404.
