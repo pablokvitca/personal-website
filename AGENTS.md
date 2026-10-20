@@ -247,7 +247,9 @@ The site is deployed by the workflows in `.github/workflows/`. Deployment, infra
 ### Dependencies
 - Upgrade `astro` and its integrations together, especially `@astrojs/cloudflare`. A lone core bump breaks the adapter (Dependabot groups them).
 - Keep TypeScript on 5.x: `astro check` does not support TypeScript 7.
-- For transitive security fixes, raise the `pnpm.overrides` floor to the first patched version. Caret overrides don't move versions that are already locked. Remove overrides that no longer match anything.
+- pnpm is pinned once, in `package.json#packageManager`; CI reads it from there. pnpm settings live in `pnpm-workspace.yaml` (pnpm 11+ ignores `package.json#pnpm` and non-auth `.npmrc` keys).
+- New dependencies with build scripts fail the install until they are listed under `allowBuilds` in `pnpm-workspace.yaml` (`true` to run the script, `false` to skip it).
+- For transitive security fixes, raise the `overrides` floor in `pnpm-workspace.yaml` to the first patched version. Caret overrides don't move versions that are already locked. Remove overrides that no longer match anything.
 - `compressHTML: true` and `prerenderEnvironment: 'node'` in `astro.config.ts` are deliberate; see the comments there.
 
 ### Verifying upgrades
