@@ -1,6 +1,6 @@
 [tools]
 node = "lts"
-pnpm = "latest"
+pnpm = "12.14.0"
 
 [env]
 NODE_ENV = "development"
