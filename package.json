@@ -31,7 +31,7 @@
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/vite": "^4.3.3",
     "arcjet": "^1.14.1",
-    "astro": "~7.4.0",
+    "astro": "~7.4.2",
     "posthog-js": "^1.438.12",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -56,6 +56,6 @@
     "jiti": "^2.7.0",
     "tailwindcss": "^4.3.3",
     "typescript-eslint": "^8.71.2",
-    "wrangler": "^4.151.1"
+    "wrangler": "^4.152.0"
   }
 }
