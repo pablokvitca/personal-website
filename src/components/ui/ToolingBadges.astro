@@ -39,15 +39,27 @@ import {
   Git as GitIcon,
   Neo4j as Neo4jIcon,
   Html5 as HTMLIcon,
+  Obsidian as ObsidianIcon,
+  Npm as NpmIcon,
+  Esbuild as EsbuildIcon,
+  Vitest as VitestIcon,
+  Eslint as EslintIcon,
+  Codemirror as CodemirrorIcon,
+  Githubactions as GithubActionsIcon,
+  Googlegemini as GoogleGeminiIcon,
+  Elevenlabs as ElevenLabsIcon,
 } from 'simple-icons-astro';
 
 // Custom icons not available in simple-icons
 import ArcjetIcon from '@/components/icons/ArcjetIcon.astro';
 import Css3Icon from '@/components/icons/Css3Icon.astro';
 import JavaIcon from '@/components/icons/JavaIcon.astro';
+import AwsIcon from '@/components/icons/AwsIcon.astro';
+import PollyIcon from '@/components/icons/PollyIcon.astro';
+import OpenaiIcon from '@/components/icons/OpenaiIcon.astro';
 
 // Map icon component names to actual components
-// Note: AWS and Azure icons may need different component names - they'll fall back to text
+// Note: Azure has no icon and falls back to text
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const iconComponents: Record<string, any> = {
   Astro: AstroIcon,
@@ -86,6 +98,18 @@ const iconComponents: Record<string, any> = {
   Neo4j: Neo4jIcon,
   Css3: Css3Icon,
   Html5: HTMLIcon,
+  Obsidian: ObsidianIcon,
+  Npm: NpmIcon,
+  Esbuild: EsbuildIcon,
+  Vitest: VitestIcon,
+  Eslint: EslintIcon,
+  Codemirror: CodemirrorIcon,
+  Githubactions: GithubActionsIcon,
+  Googlegemini: GoogleGeminiIcon,
+  Elevenlabs: ElevenLabsIcon,
+  Amazonaws: AwsIcon,
+  Amazonpolly: PollyIcon,
+  Openai: OpenaiIcon,
 };
 
 interface Props {
